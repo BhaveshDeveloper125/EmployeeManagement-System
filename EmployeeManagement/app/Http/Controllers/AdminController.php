@@ -1,0 +1,96 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\EmployeeTimeWatcher;
+use App\Models\ExtraUserData;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class AdminController extends Controller
+{
+    public function hello()
+    {
+        $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
+            ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+            ->select(
+                'employee_time_watchers.user_id',
+                'employee_time_watchers.entry',
+                'employee_time_watchers.leave',
+                'extra_user_data.post',
+                'extra_user_data.mobile',
+                'extra_user_data.address',
+                'extra_user_data.qualificatio',
+                'users.name',
+            )
+            ->get();
+        return view('AdminPanel', ['data' => $MergedData]);
+    }
+
+    public function AddUsers(Request $request)
+    {
+        $request->validate([
+            'name' => 'required | string | max:255',
+            'email' => 'required | string | email | max:255 | unique:users',
+            'password' => 'required | string | min:8'
+        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+
+        if ($user->save()) {
+            $user = User::latest()->first();
+            return view('EployeeDetails', ['data' => $user]);
+        }
+        print_r($request->all());
+    }
+
+    public function GetLatestUser()
+    {
+        $user = User::latest()->first();
+        // dd($user);
+        return view('EployeeDetails', ['data' => $user]);
+    }
+
+    public function AddUserDetails(Request $request)
+    {
+
+        $userData = new ExtraUserData();
+
+        $userData->fill($request->all());
+
+        if ($userData->save()) {
+            return response()->json(["message" => "User created Successfuly"]);
+        }
+    }
+
+    public function SearchUser(Request $request)
+    {
+        $alldata = DB::table('combined_user_data')->where('name', 'like', '%' . $request->name . '%')->get();
+        // dd($alldata);
+        // $user = DB::select("SELECT * FROM users WHERE name LIKE ?", ['%' . $request->name . '%']);
+        $user = User::where('name', 'like', '%' . $request->name . '%')->get();
+        $user_id = $user->pluck('id')->toArray();
+        $EmployeeTime = EmployeeTimeWatcher::whereIn('user_id', $user_id)->get();
+
+
+
+        $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
+            ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+            ->select(
+                'employee_time_watchers.user_id',
+                'employee_time_watchers.entry',
+                'employee_time_watchers.leave',
+                'extra_user_data.post',
+                'extra_user_data.mobile',
+                'extra_user_data.address',
+                'extra_user_data.qualificatio',
+                'users.name',
+            )
+            ->get();
+
+        return view('AdminPanel', ['alldata' => $alldata, 'userData' => $user, 'EployeeTime' => $EmployeeTime, 'data' => $MergedData]);
+    }
+}
