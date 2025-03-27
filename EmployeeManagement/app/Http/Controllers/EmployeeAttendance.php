@@ -18,7 +18,8 @@ class EmployeeAttendance extends Controller
         $Entry->user_id = $user->id;
 
         if ($Entry->save()) {
-            return view('EmployeeTakenLeave', ['work_start' => "Employee Started Working"]);
+            return response()->json(["message" => "Employee Started Working"]);
+            // return view('EmployeeTakenLeave', ['work_start' => "Employee Started Working"]);
         }
     }
 
@@ -33,7 +34,8 @@ class EmployeeAttendance extends Controller
             $gettingLeaveRow->leave = $request->end;
 
             if ($gettingLeaveRow->save()) {
-                return view('EmployeeAttendance', ['work_end' => "Employees has taken a Leave..."]);
+                return response()->json(["message" => "Employee has taken a Leave"]);
+                // return view('EmployeeAttendance', ['work_end' => "Employees has taken a Leave..."]);
             }
         }
 
