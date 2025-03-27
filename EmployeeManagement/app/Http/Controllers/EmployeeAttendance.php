@@ -19,7 +19,7 @@ class EmployeeAttendance extends Controller
         $Entry->save();
 
         if ($Entry->save()) {
-            return response()->json(["message" => "Employee Started Working"]);
+            return response("<h1>Employee Started Working</h1>");
         }
         return response()->json($request->all());
     }
@@ -35,7 +35,7 @@ class EmployeeAttendance extends Controller
             $gettingLeaveRow->leave = $request->end;
 
             if ($gettingLeaveRow->save()) {
-                return response()->json(["message" => "Employees has taken a Leave..."]);
+                return response("<h1>Employees has taken a Leave...</h1>");
             }
         }
 
