@@ -16,12 +16,10 @@ class EmployeeAttendance extends Controller
         $Entry = new EmployeeTimeWatcher();
         $Entry->entry = $request->start;
         $Entry->user_id = $user->id;
-        $Entry->save();
 
         if ($Entry->save()) {
-            return response("<h1>Employee Started Working</h1>");
+            return view('EmployeeTakenLeave', ['work_start' => "Employee Started Working"]);
         }
-        return response()->json($request->all());
     }
 
 
@@ -35,7 +33,7 @@ class EmployeeAttendance extends Controller
             $gettingLeaveRow->leave = $request->end;
 
             if ($gettingLeaveRow->save()) {
-                return response("<h1>Employees has taken a Leave...</h1>");
+                return view('EmployeeAttendance', ['work_end' => "Employees has taken a Leave..."]);
             }
         }
 

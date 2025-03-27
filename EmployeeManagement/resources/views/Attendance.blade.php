@@ -188,7 +188,7 @@
             <tbody>
                 @foreach ($data as $i)
                 <tr>
-                    <td>{{ $i->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ \Carbon\Carbon::parse($i->entry)->format('d-m-y') }}</td>
                     <td class="{{ in_array(\Carbon\Carbon::parse($i->entry)->format('D'), ['Sat', 'Sun']) ? 'day-weekend' : '' }}">
                         {{ \Carbon\Carbon::parse($i->entry)->format('D') }}

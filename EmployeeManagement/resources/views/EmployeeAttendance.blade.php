@@ -174,6 +174,8 @@
 
     <hr>
 
+
+
     @auth
     <a href="/attendance/{{ Auth::id() }}" class="attendance-link">View Your Attendance History</a>
     @else
