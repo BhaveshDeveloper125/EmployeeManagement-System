@@ -94,11 +94,20 @@ class AdminController extends Controller
             )
             ->get();
 
-        return view('AdminPanel', ['alldata' => $alldata, 'userData' => $user, 'EployeeTime' => $EmployeeTime, 'data' => $MergedData]);
+        $todayAttendance = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->count();
+        $lateEmployees = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->whereTime('entry', '>', '10:10:00')->count();
+        $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
+
+        return view('AdminPanel', ['alldata' => $alldata, 'userData' => $user, 'EployeeTime' => $EmployeeTime, 'data' => $MergedData, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance]);
     }
 
     public function EditEmpData()
     {
         return view('EditEmpData');
+    }
+
+    public function EditEmpDatas($id)
+    {
+        return response()->json($id);
     }
 }

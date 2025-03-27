@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Employee Management System</title>
 <style>
-    /* Dashboard Cards Styling */
     .cardcontainer {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -422,11 +421,19 @@
                 <h1>{{ $lateEmp }}</h1>
             </div>
             <div class="cards">
-                <h1>Attendance Today</h1>
+                <h1>Present Today</h1>
                 <h1>{{ $presentToday }}</h1>
             </div>
             <div class="cards">
                 <h1>Leave Today</h1>
+                <h1>{{ $leaveToday }}</h1>
+            </div>
+            <div class="cards">
+                <h1>Absent Today</h1>
+                <h1>{{ $leaveToday }}</h1>
+            </div>
+            <div class="cards">
+                <h1>Early Leave Today</h1>
                 <h1>{{ $leaveToday }}</h1>
             </div>
         </div>
@@ -461,6 +468,7 @@
                         <th>Mobile</th>
                         <th>Address</th>
                         <th>Qualification</th>
+                        <th>Edit User Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -474,6 +482,11 @@
                         <td>{{ $i->mobile }}</td>
                         <td>{{ $i->address }}</td>
                         <td>{{ $i->qualificatio }}</td>
+                        <td class="edit">
+                            <a href="{{ $i->id }}" style="height: 100%; width: 100%;">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
