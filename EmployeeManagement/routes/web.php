@@ -5,8 +5,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\EmployeeAttendance;
-use App\Models\ExtraUserData;
+// use App\Models\ExtraUserData;
 use App\Http\Middleware\AdminCheck;
+
+
 
 
 Route::get('/', function () {
