@@ -235,7 +235,6 @@
 
 <body>
     <div class="container">
-        <!-- User Registration Form -->
         <div class="form-container">
             <h1>Generate User</h1>
             <form action="user_register" method="post">
@@ -248,7 +247,6 @@
             </form>
         </div>
 
-        <!-- Employee Table -->
         <div class="table-container">
             <h2>Employee Records</h2>
             <table>
@@ -281,7 +279,6 @@
             </table>
         </div>
 
-        <!-- Search Form -->
         <div class="form-container">
             <h2>Search Employee</h2>
             <form action="/get_user_info" method="post">
@@ -291,7 +288,6 @@
             </form>
         </div>
 
-        <!-- Search Results -->
         @if (isset($alldata) && $alldata->isNotEmpty())
         <div class="table-container">
             <h2>Search Results</h2>
