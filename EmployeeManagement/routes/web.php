@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\EmployeeAttendance;
+use App\Http\Controllers\MediaController;
 // use App\Models\ExtraUserData;
 use App\Http\Middleware\AdminCheck;
 
@@ -21,6 +22,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/attendance/{id}', [EmployeeAttendance::class, 'EmployeeAttendance']);
 Route::get('/admin', [AdminController::class, 'hello'])->middleware(AdminCheck::class);
 Route::get('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(AdminCheck::class);
+Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator']);
 
 
 Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser']);

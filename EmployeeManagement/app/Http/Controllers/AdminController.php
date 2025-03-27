@@ -74,8 +74,6 @@ class AdminController extends Controller
     public function SearchUser(Request $request)
     {
         $alldata = DB::table('combined_user_data')->where('name', 'like', '%' . $request->name . '%')->get();
-        // dd($alldata);
-        // $user = DB::select("SELECT * FROM users WHERE name LIKE ?", ['%' . $request->name . '%']);
         $user = User::where('name', 'like', '%' . $request->name . '%')->get();
         $user_id = $user->pluck('id')->toArray();
         $EmployeeTime = EmployeeTimeWatcher::whereIn('user_id', $user_id)->get();
