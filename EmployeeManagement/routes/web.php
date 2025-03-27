@@ -22,6 +22,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/attendance/{id}', [EmployeeAttendance::class, 'EmployeeAttendance']);
 Route::get('/admin', [AdminController::class, 'hello'])->middleware(AdminCheck::class);
 Route::get('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(AdminCheck::class);
+Route::get('/editemp', [AdminController::class, 'EditEmpData']);
 Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator']);
 
 

@@ -16,6 +16,16 @@
             --table-highlight: rgba(228, 58, 25, 0.1);
         }
 
+        @media print {
+
+            #pdf,
+            #excel,
+            #print {
+                display: none;
+            }
+        }
+
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--light-gray);
@@ -183,13 +193,128 @@
         tr:nth-child(3) {
             animation-delay: 0.3s;
         }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(17, 31, 77, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .action-btn:hover::before {
+            opacity: 1;
+        }
+
+        .action-btn i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .btn-excel {
+            background-color: var(--success-green);
+            color: var(--soft-white);
+        }
+
+        .btn-pdf {
+            background-color: var(--vibrant-red);
+            color: var(--soft-white);
+        }
+
+        .btn-print {
+            background-color: var(--navy-blue);
+            color: var(--soft-white);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(17, 31, 77, 0.25);
+        }
+
+        .action-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(17, 31, 77, 0.2);
+        }
+
+        /* Icon styling using Unicode characters */
+        .action-btn::after {
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 8px;
+        }
+
+        .btn-excel::after {
+            content: '\f1c3';
+            /* Excel icon */
+        }
+
+        .btn-pdf::after {
+            content: '\f1c1';
+            /* PDF icon */
+        }
+
+        .btn-print::after {
+            content: '\f02f';
+            /* Print icon */
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .action-btn {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <div class="table-container">
         <h2>Employee Records</h2>
+        <div class="action-buttons">
+            <!-- <button id="excel" class=" action-btn btn-excel">
+                <i class="fas fa-file-excel"></i> Excel
+            </button> -->
+            <button id="pdf" class=" action-btn btn-pdf" onclick="window.print()">
+                <i class="fas fa-file-pdf"></i> PDF
+            </button>
+            <button id="print" class=" action-btn btn-print" onclick="window.print()">
+                <i class="fas fa-print"></i> Print
+            </button>
+        </div>
         <table>
             <thead>
                 <tr>

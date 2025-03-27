@@ -96,4 +96,9 @@ class AdminController extends Controller
 
         return view('AdminPanel', ['alldata' => $alldata, 'userData' => $user, 'EployeeTime' => $EmployeeTime, 'data' => $MergedData]);
     }
+
+    public function EditEmpData()
+    {
+        return view('EditEmpData');
+    }
 }
