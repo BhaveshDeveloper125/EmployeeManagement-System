@@ -7,6 +7,7 @@ use App\Models\ExtraUserData;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -25,7 +26,11 @@ class AdminController extends Controller
                 'users.name',
             )
             ->get();
-        return view('AdminPanel', ['data' => $MergedData]);
+        $user = User::count();
+        $todayAttendance = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->count();
+        $lateEmployees = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->whereTime('entry', '>', '10:10:00')->count();
+        $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
+        return view('AdminPanel', ['data' => $MergedData, 'userData' => $user, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance]);
     }
 
     public function AddUsers(Request $request)

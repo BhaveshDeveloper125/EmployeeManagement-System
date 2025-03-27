@@ -127,7 +127,6 @@
             box-shadow: 0 5px 15px rgba(228, 58, 25, 0.3);
         }
 
-        /* Table Styling */
         .table-container {
             background-color: var(--soft-white);
             border-radius: 12px;
@@ -184,7 +183,6 @@
             font-size: 20px;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .container {
                 padding: 20px 15px;
@@ -210,7 +208,6 @@
             }
         }
 
-        /* Scrollbar styling */
         ::-webkit-scrollbar {
             height: 8px;
             width: 8px;
@@ -229,12 +226,72 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--vibrant-red);
         }
+
+        .cardcontainer {
+            height: fit-content;
+            width: 100%;
+            background-color: #111F4D;
+            padding: 8px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .cards {
+            height: 16rem;
+            width: 25%;
+            background-color: #E43A19;
+            /* --navy-blue: #111F4D;
+            --light-gray: #F2F4F7;
+            --vibrant-red: #E43A19;
+            --deep-black: #020205;
+            --gold-accent: #FFD700;
+            --soft-white: #FFFFFF; */
+        }
+
+        .cards h1 {
+            color: white;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
+        <div class="cardcontainer">
+            <div class="cards">
+                <h1>
+                    Total Employees
+                </h1>
+                <h1>
+                    {{ $userData }}
+                </h1>
+            </div>
+            <div class="cards">
+                <h1>
+                    Late Today
+                </h1>
+                <h1>
+                    {{ $lateEmp }}
+                </h1>
+            </div>
+            <div class="cards">
+                <h1>
+                    Attendance Today
+                </h1>
+                <h1>
+                    {{ $presentToday }}
+                </h1>
+            </div>
+            <div class="cards">
+                <h1>
+                    Leave Today
+                </h1>
+                <h1>
+                    {{ $leaveToday }}
+                </h1>
+            </div>
+        </div>
+        <br><br><br><br>
         <div class="form-container">
             <h1>Generate User</h1>
             <form action="user_register" method="post">
@@ -332,6 +389,7 @@
         </div>
         @endif
     </div>
+
 </body>
 
 </html>
