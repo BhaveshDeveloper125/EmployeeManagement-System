@@ -263,7 +263,7 @@
             </div>
             <div class="cards">
                 <h1>Early Leave/Month</h1>
-                <h1></h1>
+                <h1>{{ $earlyLeave }}</h1>
             </div>
         </div>
         <h1>Attendance Records</h1>
