@@ -69,6 +69,8 @@ class AdminController extends Controller
 
         if ($userData->save()) {
             return response()->json(["message" => "User created Successfuly"]);
+        } else {
+            return response()->json(["message" => "User not created"]);
         }
     }
 
