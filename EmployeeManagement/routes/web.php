@@ -28,9 +28,9 @@ Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser']);
 
 
 Route::get('/ipaddress', function () {
-    $ipAddress = Request::ip();
-
-    return response()->json("IP : $ipAddress");
+    // $ipAddress = Request::ip();
+    $ipAddress = $_SERVER['REMOTE_ADDR'];
+    return response()->json("PHP : $ipAddress");
 });
 
 
