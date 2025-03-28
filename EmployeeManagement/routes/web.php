@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\EmployeeAttendance;
 use App\Http\Controllers\MediaController;
+use App\Http\Middleware\AddUserDetailsCheck;
 // use App\Models\ExtraUserData;
 use App\Http\Middleware\AdminCheck;
 
@@ -21,7 +22,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/attendance/{id}', [EmployeeAttendance::class, 'EmployeeAttendance']);
 Route::get('/admin', [AdminController::class, 'hello'])->middleware(AdminCheck::class);
-Route::get('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(AdminCheck::class);
+Route::get('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(AddUserDetailsCheck::class);
 Route::get('/editemp', [AdminController::class, 'EditEmpData']);
 Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas']);
 Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator']);
