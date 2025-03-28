@@ -9,9 +9,7 @@ use App\Http\Controllers\MediaController;
 use App\Http\Middleware\AddUserDetailsCheck;
 // use App\Models\ExtraUserData;
 use App\Http\Middleware\AdminCheck;
-
-
-
+use Illuminate\Support\Facades\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,6 +25,13 @@ Route::get('/editemp', [AdminController::class, 'EditEmpData']);
 Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas']);
 Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator']);
 Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser']);
+
+
+Route::get('/ipaddress', function () {
+    $ipAddress = Request::ip();
+
+    return response()->json("IP : $ipAddress");
+});
 
 
 
