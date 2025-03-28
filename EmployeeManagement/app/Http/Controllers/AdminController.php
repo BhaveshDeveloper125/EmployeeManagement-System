@@ -30,7 +30,8 @@ class AdminController extends Controller
         $todayAttendance = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->count();
         $lateEmployees = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->whereTime('entry', '>', '10:10:00')->count();
         $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
-        return view('AdminPanel', ['data' => $MergedData, 'userData' => $user, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance]);
+        $earlyLeave = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->whereTime('leave', '<', '19:00')->count();
+        return view('AdminPanel', ['data' => $MergedData, 'userData' => $user, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance, 'earlyLeave' => $earlyLeave]);
     }
 
     public function AddUsers(Request $request)
