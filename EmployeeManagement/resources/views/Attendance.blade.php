@@ -16,6 +16,78 @@
             --table-highlight: rgba(228, 58, 25, 0.1);
         }
 
+        .cardcontainer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .cards {
+            background: linear-gradient(135deg, var(--navy-blue), #1a2b6d);
+            border-radius: 12px;
+            padding: 25px;
+            color: var(--soft-white);
+            box-shadow: 0 6px 15px rgba(17, 31, 77, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cards:nth-child(2) {
+            background: linear-gradient(135deg, var(--vibrant-red), #f05a3a);
+        }
+
+        .cards:nth-child(3) {
+            background: linear-gradient(135deg, #10B981, #0d9f6e);
+        }
+
+        .cards:nth-child(4) {
+            background: linear-gradient(135deg, var(--gold-accent), #e6c200);
+        }
+
+        .cards::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.3s ease;
+        }
+
+        .cards:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(17, 31, 77, 0.3);
+        }
+
+        .cards:hover::before {
+            transform: rotate(30deg) translate(20px, 20px);
+        }
+
+        .cards h1 {
+            color: var(--soft-white);
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cards h1:last-child {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--light-gray);
@@ -172,6 +244,28 @@
 
 <body>
     <div class="attendance-container">
+        <div class="cardcontainer">
+            <div class="cards">
+                <h1>Attendance/Month</h1>
+                <h1>{{ $attendance }}</h1>
+            </div>
+            <div class="cards">
+                <h1>Late Attendance/Month</h1>
+                <h1>{{ $lateattendance }}</h1>
+            </div>
+            <!-- <div class="cards">
+                <h1>Leave Today</h1>
+                <h1></h1>
+            </div> -->
+            <div class="cards">
+                <h1>Absent/Month</h1>
+                <h1></h1>
+            </div>
+            <div class="cards">
+                <h1>Early Leave/Month</h1>
+                <h1></h1>
+            </div>
+        </div>
         <h1>Attendance Records</h1>
 
         <table>

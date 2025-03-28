@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmployeeTimeWatcher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,6 +47,13 @@ class EmployeeAttendance extends Controller
     public function EmployeeAttendance($id)
     {
         $getattendance = EmployeeTimeWatcher::where('user_id', $id)->get();
-        return view('Attendance', ['data' => $getattendance]);
+
+        $attendance = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('entry', Carbon::now()->month)->whereYear('entry', Carbon::now()->year)->count();
+
+        $lateattendance = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->where('entry', '>', '10:10')->count();
+
+        $absent = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->where()->count();
+
+        return view('Attendance', ['data' => $getattendance, 'attendance' => $attendance, 'lateattendance' => $lateattendance]);
     }
 }
