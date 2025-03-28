@@ -253,10 +253,6 @@
                 <h1>Late Attendance/Month</h1>
                 <h1>{{ $lateattendance }}</h1>
             </div>
-            <!-- <div class="cards">
-                <h1>Leave Today</h1>
-                <h1></h1>
-            </div> -->
             <div class="cards">
                 <h1>Absent/Month</h1>
                 <h1>{{ $absent }}</h1>
@@ -264,6 +260,14 @@
             <div class="cards">
                 <h1>Early Leave/Month</h1>
                 <h1>{{ $earlyLeave }}</h1>
+            </div>
+            <div class="cards">
+                <h1>OverTime</h1>
+                <h1>{{ $overtime }}</h1>
+            </div>
+            <div class="cards">
+                <h1>Complete Time/Month</h1>
+                <h1>{{ $leavingtime }}</h1>
             </div>
         </div>
         <h1>Attendance Records</h1>
