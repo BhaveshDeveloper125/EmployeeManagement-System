@@ -483,7 +483,8 @@
                         <td>{{ $i->address }}</td>
                         <td>{{ $i->qualificatio }}</td>
                         <td class="edit">
-                            <a href="{{ $i->id }}" style="height: 100%; width: 100%;">
+                            <a href={{ "/editemps/".$i->user_id }}>
+                                Edit
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
                         </td>
@@ -550,7 +551,6 @@
         </div>
         @endif
     </div>
-
 </body>
 
 </html>

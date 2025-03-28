@@ -111,6 +111,13 @@ class AdminController extends Controller
 
     public function EditEmpDatas($id)
     {
-        return response()->json($id);
+        $extraUserData = ExtraUserData::where('user_id', $id)->get();
+        // return response()->json($extraUserData);
+        return view('EditEmpData', ['data' => $extraUserData]);
+    }
+
+    public function SaveEditEmpDatas(Request $request)
+    {
+        return response()->json([$request->all()]);
     }
 }
