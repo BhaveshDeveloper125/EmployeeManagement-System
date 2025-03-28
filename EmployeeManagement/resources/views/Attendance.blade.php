@@ -259,7 +259,7 @@
             </div> -->
             <div class="cards">
                 <h1>Absent/Month</h1>
-                <h1></h1>
+                <h1>{{ $absent }}</h1>
             </div>
             <div class="cards">
                 <h1>Early Leave/Month</h1>
