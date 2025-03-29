@@ -26,7 +26,8 @@
     @endif
 </header>
 
-<form action="/ipaddress" class="ipform">
+<form action="/ipaddress" class="ipform" method="post">
+    @csrf
     <input type="text" name="ip" class="ip" readonly required>
 </form>
 
@@ -37,7 +38,6 @@
         .then(data => {
             console.log(`IP address : ${data.ip}`)
             const IP = data.ip;
-
             document.querySelector('.ip').value = IP;
             document.querySelector('.ipform').submit();
 

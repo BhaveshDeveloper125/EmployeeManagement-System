@@ -15,7 +15,9 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    @if (auth()->user())
                     <a href="/homepage?">Home Page</a>
+                    @endif
                 </div>
             </div>
         </div>

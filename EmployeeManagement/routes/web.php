@@ -27,10 +27,10 @@ Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator']);
 Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser']);
 
 
-Route::get('/ipaddress', function (\Illuminate\Http\Request $request) {
-    $officeip = '103.161.99.182';
+Route::post('/ipaddress', function (\Illuminate\Http\Request $request) {
+    $officeip = ''; //enter your ip here 
     if ($request->ip == $officeip) {
-        return response()->json('IP is Matching');
+        return view('home');
     } else {
         return response()->json('IP is not Matching');
     }
