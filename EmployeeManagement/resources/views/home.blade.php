@@ -15,9 +15,13 @@
                     @endif
 
                     {{ __('You are logged in!') }}
-                    @if (auth()->user())
+                    @auth
                     <a href="/homepage?">Home Page</a>
-                    @endif
+                    @endauth
+
+                    @guest
+                    <p style="color: red;">Please Login for the further Process</p>
+                    @endguest
                 </div>
             </div>
         </div>

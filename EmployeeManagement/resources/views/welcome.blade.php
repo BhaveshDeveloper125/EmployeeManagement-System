@@ -26,9 +26,10 @@
     @endif
 </header>
 
+
 <form action="/ipaddress" class="ipform" method="post">
     @csrf
-    <input type="text" name="ip" class="ip" readonly required>
+    <input type="hidden" name="ip" class="ip" readonly required>
 </form>
 
 
