@@ -27,10 +27,13 @@ Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator']);
 Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser']);
 
 
-Route::get('/ipaddress', function () {
-    // $ipAddress = Request::ip();
-    $ipAddress = $_SERVER['REMOTE_ADDR'];
-    return response()->json("PHP : $ipAddress");
+Route::get('/ipaddress', function (\Illuminate\Http\Request $request) {
+    $officeip = '103.161.99.182';
+    if ($request->ip == $officeip) {
+        return response()->json('IP is Matching');
+    } else {
+        return response()->json('IP is not Matching');
+    }
 });
 
 

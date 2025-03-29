@@ -25,3 +25,21 @@
     </nav>
     @endif
 </header>
+
+<form action="/ipaddress" class="ipform">
+    <input type="text" name="ip" class="ip" readonly required>
+</form>
+
+
+<script>
+    fetch('https://api.ipify.org/?format=json')
+        .then(res => res.json())
+        .then(data => {
+            console.log(`IP address : ${data.ip}`)
+            const IP = data.ip;
+
+            document.querySelector('.ip').value = IP;
+            document.querySelector('.ipform').submit();
+
+        })
+</script>
