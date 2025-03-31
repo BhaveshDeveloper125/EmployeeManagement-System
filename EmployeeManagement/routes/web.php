@@ -10,6 +10,7 @@ use App\Http\Middleware\AddUserDetailsCheck;
 // use App\Models\ExtraUserData;
 use App\Http\Middleware\AdminCheck;
 use App\Http\Middleware\LoginCheck;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Request;
 
 Route::get('/', function () {
@@ -29,13 +30,17 @@ Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middl
 
 
 Route::post('/ipaddress', function (\Illuminate\Http\Request $request) {
-    $officeip = '103.161.99.182';
+    // 150.129.206.0
+    $apiData = Http::get('https://api.ipify.org/?format=json');
+    $jsonapi = $apiData->json();
+    $api = $jsonapi['ip'];
+
+
+    $officeip = $api;
     if ($request->ip == $officeip) {
-        echo " IP :  " . $request->ip;
         return view('home');
     } else {
-        echo " IP :  " . $request->ip;
-        return response()->json('IP is not Matching');
+        return response()->json("IP is not Matching  , UserIP : $request->ip OffceIP : $officeip");
     }
 })->middleware(LoginCheck::class);
 
