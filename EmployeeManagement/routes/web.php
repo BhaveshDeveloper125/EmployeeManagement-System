@@ -56,3 +56,8 @@ Route::post('/editedData', [AdminController::class, 'SaveEditEmpDatas'])->middle
 
 Route::view('/homepage', 'EmployeeAttendance')->middleware(LoginCheck::class);
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
+Route::view('/adminPanel', 'Admin');
+Route::view('/records', 'EmployeeRecord');
+Route::view('/generate_user', 'GenerateUser');
+Route::view('/downloadData', 'Download');
+Route::view('/search_user', 'SearchEmployee');

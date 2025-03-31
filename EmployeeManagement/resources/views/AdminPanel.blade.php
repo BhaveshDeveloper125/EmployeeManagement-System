@@ -402,6 +402,23 @@
     .cards h1 {
         color: white;
     }
+
+    .three_line_container {
+        height: 10%;
+        width: 10%;
+        background-color: black;
+    }
+
+    .three_lines {
+        height: 10px;
+        width: 100%;
+        background-color: black;
+        display: flex;
+        gap: 80px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -410,6 +427,8 @@
 
 <body>
     <div class="container">
+
+
 
         <div class="cardcontainer">
             <div class="cards">
