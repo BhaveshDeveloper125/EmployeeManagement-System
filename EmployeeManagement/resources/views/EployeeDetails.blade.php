@@ -151,7 +151,7 @@
 </head>
 
 <body>
-    <form action="user_details" method="post">
+    <form action="/user_details/" method="post">
         <h1>Enter Employee Details</h1>
 
         <pre>

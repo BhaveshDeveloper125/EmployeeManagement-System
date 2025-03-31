@@ -211,6 +211,69 @@
             margin-top: 15px;
         }
     </style>
+    <style>
+        .action-links {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .action-links a {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: var(--navy-blue);
+            color: var(--soft-white);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(17, 31, 77, 0.2);
+        }
+
+        .action-links a:hover {
+            background-color: var(--vibrant-red);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(228, 58, 25, 0.3);
+        }
+
+        .action-links a::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .action-links a:nth-child(1)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM6 20V4h7v5h5v11H6zm8-6v5h5v-5h-5z'/%3E%3C/svg%3E");
+        }
+
+        .action-links a:nth-child(2)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM6 20V4h7v5h5v11H6zm5-11H9v2h2v-2zm0 3H9v2h2v-2zm0 3H9v2h2v-2zm4-6h-4v2h4v-2zm0 3h-4v2h4v-2zm0 3h-4v2h4v-2z'/%3E%3C/svg%3E");
+        }
+
+        .action-links a:nth-child(3)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z'/%3E%3C/svg%3E");
+        }
+
+        @media (max-width: 768px) {
+
+            .action-links {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .action-links a {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -277,6 +340,11 @@
                     <h1>Early Leave Today</h1>
                     <h1>{{ $earlyLeave }}</h1>
                 </div>
+            </div>
+            <div class="action-links">
+                <a href="/pdfdatas">Download Records As PDF</a>
+                <a href="/pdfdatas">Download Records As Excel</a>
+                <a href="/pdfdatas">Print Records</a>
             </div>
         </div>
     </div>

@@ -34,6 +34,24 @@ class AdminController extends Controller
         return view('Admin', ['data' => $MergedData, 'userData' => $user, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance, 'earlyLeave' => $earlyLeave, 'absent' => $user - $todayAttendance]);
     }
 
+    public function getData()
+    {
+        $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
+            ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+            ->select(
+                'employee_time_watchers.user_id',
+                'employee_time_watchers.entry',
+                'employee_time_watchers.leave',
+                'extra_user_data.post',
+                'extra_user_data.mobile',
+                'extra_user_data.address',
+                'extra_user_data.qualificatio',
+                'users.name',
+            )
+            ->get();
+        return view('EmployeeRecord', ['data' => $MergedData]);
+    }
+
     public function AddUsers(Request $request)
     {
         $request->validate([
@@ -101,7 +119,7 @@ class AdminController extends Controller
         $lateEmployees = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->whereTime('entry', '>', '10:10:00')->count();
         $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
 
-        return view('AdminPanel', ['alldata' => $alldata, 'userData' => $user, 'EployeeTime' => $EmployeeTime, 'data' => $MergedData, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance]);
+        return view('Download', ['alldata' => $alldata, 'userData' => $user, 'EployeeTime' => $EmployeeTime, 'data' => $MergedData, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance]);
     }
 
     public function EditEmpData()

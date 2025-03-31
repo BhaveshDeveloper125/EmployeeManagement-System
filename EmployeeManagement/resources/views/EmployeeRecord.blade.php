@@ -125,14 +125,65 @@
         }
     </style>
     <style>
-        h1 {
-            color: red;
+        .table-container {
+            background-color: var(--soft-white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(1, 31, 77, 0.2);
+            padding: 30px;
+            margin: 40px 0;
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            font-size: 15px;
+        }
+
+        th {
+            background-color: var(--navy-blue);
+            color: var(--soft-white);
+            padding: 16px 12px;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 14px 12px;
+            text-align: center;
+            border-bottom: 1px solid var(--light-gray);
+            transition: all 0.2s ease;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(242, 244, 247, 0.5);
+        }
+
+        tr:hover {
+            background-color: var(--table-highlight);
+        }
+
+        :root {
+            --navy-blue: #111F4D;
+            --light-gray: #F2F4F7;
+            --vibrant-red: #E43A19;
+            --deep-black: #020205;
+            --gold-accent: #FFD700;
+            --soft-white: #FFFFFF;
+            --table-highlight: rgba(228, 58, 25, 0.1);
         }
     </style>
 </head>
 
 <body>
-    <div style="display: flex; background-color: orange;">
+    <div style="display: flex;">
         <div class="admin_panel2" id="panel">
             <button class="three_line_container" onclick="ExpandMenu()">
                 <div class="three_line"></div>
@@ -141,25 +192,23 @@
             </button>
 
             <ul class="panel_ul">
-                <a href="/records">
-                    <li>
-                        <img src="{{ URL('Images/directory.png') }}" alt="Records">
-                        <span>Records</span>
-                    </li>
-                </a>
-                <a href="generate_user">
+                <li style="background-color: gray;">
+                    <img src="{{ URL('Images/directory.png') }}" alt="Records">
+                    <span>Records</span>
+                </li>
+                <a href="/adminPanel/generate_user">
                     <li>
                         <img src="{{ URL('Images/working.png') }}" alt="Generate User">
                         <span>Generate User</span>
                     </li>
                 </a>
-                <a href="downloadData">
+                <a href="/adminPanel/downloadData">
                     <li>
                         <img src="{{ URL('Images/download.png') }}" alt="Download Data">
                         <span>Download Data</span>
                     </li>
                 </a>
-                <a href="search_user">
+                <a href="/adminPanel/search_user">
                     <li>
                         <img src="{{ URL('Images/cv.png') }}" alt="Search User">
                         <span>Search User</span>
@@ -169,7 +218,44 @@
         </div>
 
         <div style="flex: 1;">
-
+            <div class="table-container">
+                <h2>Employee Records</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Name</th>
+                            <th>CheckIn</th>
+                            <th>CheckOut</th>
+                            <th>Post</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Qualification</th>
+                            <th>Edit User Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data as $i)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $i->name }}</td>
+                            <td>{{ $i->entry }}</td>
+                            <td>{{ $i->leave }}</td>
+                            <td>{{ $i->post }}</td>
+                            <td>{{ $i->mobile }}</td>
+                            <td>{{ $i->address }}</td>
+                            <td>{{ $i->qualificatio }}</td>
+                            <td class="edit">
+                                <a href={{ "/editemps/".$i->user_id }}>
+                                    Edit
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

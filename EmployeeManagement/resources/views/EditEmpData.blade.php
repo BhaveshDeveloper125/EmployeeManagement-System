@@ -1,7 +1,7 @@
 @foreach ($data as $i)
 <form action="/editedData" method="post">
     @csrf
-    Potion : <input type="text" name="post" value={{ $i->post }} placeholder="Enter Post" required> <br><br>
+    Position : <input type="text" name="post" value={{ $i->post }} placeholder="Enter Post" required> <br><br>
     Mobile : <input type="text" name="mobile" value={{ $i->mobile }} placeholder="Enter Mobile" required> <br><br>
     Address : <input type="text" name="address" value={{ $i->address }} placeholder="Enter Address" required> <br><br>
     Qualification : <input type="text" name="qualificatio" value={{ $i->qualificatio }} placeholder="Enter Qualification" required> <br><br>
