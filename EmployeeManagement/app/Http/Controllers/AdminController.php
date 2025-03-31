@@ -138,4 +138,41 @@ class AdminController extends Controller
     {
         return response()->json([$request->all()]);
     }
+
+    public function APIhello()
+    {
+        $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
+            ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+            ->select(
+                'employee_time_watchers.user_id',
+                'employee_time_watchers.entry',
+                'employee_time_watchers.leave',
+                'extra_user_data.post',
+                'extra_user_data.mobile',
+                'extra_user_data.address',
+                'extra_user_data.qualificatio',
+                'users.name',
+            )
+            ->get();
+        $user = User::count();
+        $todayAttendance = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->count();
+        $lateEmployees = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->whereTime('entry', '>', '10:10:00')->count();
+        $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
+        $earlyLeave = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->whereTime('leave', '<', '19:00')->count();
+        return response()->json(['data' => $MergedData, 'userData' => $user, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance, 'earlyLeave' => $earlyLeave, 'absent' => $user - $todayAttendance]);
+    }
+
+    public function APIAddUserDetails(Request $request)
+    {
+
+        $userData = new ExtraUserData();
+
+        $userData->fill($request->all());
+
+        if ($userData->save()) {
+            return response()->json(["message" => "User created Successfuly"]);
+        } else {
+            return response()->json(["message" => "User not created"]);
+        }
+    }
 }

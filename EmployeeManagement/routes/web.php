@@ -25,7 +25,7 @@ Route::get('/adminPanel', [AdminController::class, 'hello'])->middleware(AdminCh
 Route::get('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(LoginCheck::class);
 Route::get('/editemp', [AdminController::class, 'EditEmpData'])->middleware(LoginCheck::class);
 Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas'])->middleware(LoginCheck::class);
-// Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator'])->middleware(LoginCheck::class);
+Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator'])->middleware(LoginCheck::class);
 Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class);
 
 
