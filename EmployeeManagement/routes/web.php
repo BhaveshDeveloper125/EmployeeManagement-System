@@ -21,7 +21,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware(LoginCheck::class);
 Route::get('/attendance/{id}', [EmployeeAttendance::class, 'EmployeeAttendance'])->middleware(LoginCheck::class);
-Route::get('/admin', [AdminController::class, 'hello'])->middleware(AdminCheck::class);
+Route::get('/adminPanel', [AdminController::class, 'hello'])->middleware(AdminCheck::class);
 Route::get('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(LoginCheck::class);
 Route::get('/editemp', [AdminController::class, 'EditEmpData'])->middleware(LoginCheck::class);
 Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas'])->middleware(LoginCheck::class);
@@ -56,8 +56,13 @@ Route::post('/editedData', [AdminController::class, 'SaveEditEmpDatas'])->middle
 
 Route::view('/homepage', 'EmployeeAttendance')->middleware(LoginCheck::class);
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
-Route::view('/adminPanel', 'Admin');
-Route::view('/records', 'EmployeeRecord');
-Route::view('/generate_user', 'GenerateUser');
-Route::view('/downloadData', 'Download');
-Route::view('/search_user', 'SearchEmployee');
+
+
+
+
+Route::prefix('/adminPanel')->group(function () {
+    Route::view('/records', 'EmployeeRecord');
+    Route::view('/generate_user', 'GenerateUser');
+    Route::view('/downloadData', 'Download');
+    Route::view('/search_user', 'SearchEmployee');
+});

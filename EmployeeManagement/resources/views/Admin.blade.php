@@ -125,12 +125,96 @@
         }
     </style>
     <style>
+        :root {
+            --navy-blue: #111F4D;
+            --light-gray: #F2F4F7;
+            --vibrant-red: #E43A19;
+            --deep-black: #020205;
+            --gold-accent: #FFD700;
+            --soft-white: #FFFFFF;
+            --table-highlight: rgba(228, 58, 25, 0.1);
+        }
 
+
+        .cardcontainer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+
+        .cards {
+            background: linear-gradient(135deg, var(--navy-blue), #1a2b6d);
+            border-radius: 12px;
+            padding: 25px;
+            color: var(--soft-white);
+            box-shadow: 0 6px 15px rgba(17, 31, 77, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cards:nth-child(2) {
+            background: linear-gradient(135deg, var(--vibrant-red), #f05a3a);
+        }
+
+        .cards:nth-child(3) {
+            background: linear-gradient(135deg, #10B981, #0d9f6e);
+        }
+
+        .cards:nth-child(4) {
+            background: linear-gradient(135deg, var(--gold-accent), #e6c200);
+        }
+
+        .cards::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.3s ease;
+        }
+
+        .cards:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(17, 31, 77, 0.3);
+        }
+
+        .cards:hover::before {
+            transform: rotate(30deg) translate(20px, 20px);
+        }
+
+        .cards h1 {
+            color: var(--soft-white);
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cards h1:last-child {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 15px;
+        }
     </style>
 </head>
 
 <body>
-    <div style="display: flex; background-color: red;">
+    <div style="display: flex;">
         <div class="admin_panel2" id="panel">
             <button class="three_line_container" onclick="ExpandMenu()">
                 <div class="three_line"></div>
@@ -139,25 +223,25 @@
             </button>
 
             <ul class="panel_ul">
-                <a href="/records">
+                <a href="/adminPanel/records">
                     <li>
                         <img src="{{ URL('Images/directory.png') }}" alt="Records">
                         <span>Records</span>
                     </li>
                 </a>
-                <a href="generate_user">
+                <a href="/adminPanel/generate_user">
                     <li>
                         <img src="{{ URL('Images/working.png') }}" alt="Generate User">
                         <span>Generate User</span>
                     </li>
                 </a>
-                <a href="downloadData">
+                <a href="/adminPanel/downloadData">
                     <li>
                         <img src="{{ URL('Images/download.png') }}" alt="Download Data">
                         <span>Download Data</span>
                     </li>
                 </a>
-                <a href="search_user">
+                <a href="/adminPanel/search_user">
                     <li>
                         <img src="{{ URL('Images/cv.png') }}" alt="Search User">
                         <span>Search User</span>
@@ -167,7 +251,33 @@
         </div>
 
         <div style="flex: 1;">
-
+            <br><br>
+            <div class="cardcontainer">
+                <div class="cards">
+                    <h1>Total Employees</h1>
+                    <h1>{{ $userData }}</h1>
+                </div>
+                <div class="cards">
+                    <h1>Late Today</h1>
+                    <h1>{{ $lateEmp }}</h1>
+                </div>
+                <div class="cards">
+                    <h1>Present Today</h1>
+                    <h1>{{ $presentToday }}</h1>
+                </div>
+                <div class="cards">
+                    <h1>Leave Today</h1>
+                    <h1>{{ $leaveToday }}</h1>
+                </div>
+                <div class="cards">
+                    <h1>Absent Today</h1>
+                    <h1>{{ $absent }}</h1>
+                </div>
+                <div class="cards">
+                    <h1>Early Leave Today</h1>
+                    <h1>{{ $earlyLeave }}</h1>
+                </div>
+            </div>
         </div>
     </div>
 
