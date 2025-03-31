@@ -285,12 +285,10 @@
                         <span>Download Data</span>
                     </li>
                 </a>
-                <a href="search_user">
-                    <li>
-                        <img src="{{ URL('Images/cv.png') }}" alt="Search User">
-                        <span>Search User</span>
-                    </li>
-                </a>
+                <li style="background-color: gray;">
+                    <img src="{{ URL('Images/cv.png') }}" alt="Search User">
+                    <span>Search User</span>
+                </li>
             </ul>
         </div>
 

@@ -119,7 +119,7 @@ class AdminController extends Controller
         $lateEmployees = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->whereTime('entry', '>', '10:10:00')->count();
         $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
 
-        return view('Download', ['alldata' => $alldata, 'userData' => $user, 'EployeeTime' => $EmployeeTime, 'data' => $MergedData, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance]);
+        return view('Download', ['alldata' => $alldata]);
     }
 
     public function EditEmpData()
