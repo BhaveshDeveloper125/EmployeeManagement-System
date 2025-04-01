@@ -134,9 +134,16 @@ class AdminController extends Controller
         return view('EditEmpData', ['data' => $extraUserData]);
     }
 
-    public function SaveEditEmpDatas(Request $request)
+    public function SaveEditEmpDatas(Request $request, $id)
     {
-        return response()->json([$request->all()]);
+        $user = ExtraUserData::find($id);
+        $user->post = $request->post;
+        $user->mobile = $request->mobile;
+        $user->address = $request->address;
+        $user->qualificatio = $request->qualificatio;
+        $user->exp = $request->exp;
+        $user->isAdmin = $request->isAdmin;
+        return response()->json($request->all());
     }
 
     public function APIhello()

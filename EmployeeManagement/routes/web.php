@@ -51,7 +51,7 @@ Route::post('/leave', [EmployeeAttendance::class, 'WorkEnd'])->middleware(LoginC
 Route::post('/user_register', [AdminController::class, 'AddUsers'])->middleware(LoginCheck::class);
 Route::post('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(LoginCheck::class);
 Route::post('/get_user_info', [AdminController::class, 'SearchUser'])->middleware(LoginCheck::class);
-Route::post('/editedData', [AdminController::class, 'SaveEditEmpDatas'])->middleware(LoginCheck::class);
+Route::put('/editedData/{id}', [AdminController::class, 'SaveEditEmpDatas'])->middleware(LoginCheck::class);
 
 
 Route::view('/homepage', 'EmployeeAttendance')->middleware(LoginCheck::class);

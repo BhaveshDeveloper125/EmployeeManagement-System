@@ -24,7 +24,7 @@ Route::get('/user', function (Request $request) {
 
 Auth::routes();
 
-Route::get('/apilogins', [APIController::class, 'aa']);
+// Route::get('/apilogins', [APIController::class, 'aa']);
 Route::post('/apilogin', [APIController::class, 'login']);
 
 Route::group(["middleware" => "auth:sanctum"], function () {
