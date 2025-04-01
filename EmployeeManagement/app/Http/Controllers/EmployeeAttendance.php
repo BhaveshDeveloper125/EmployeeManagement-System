@@ -36,7 +36,6 @@ class EmployeeAttendance extends Controller
 
             if ($gettingLeaveRow->save()) {
                 return response()->json(["message" => "Employee has taken a Leave"]);
-                // return view('EmployeeAttendance', ['work_end' => "Employees has taken a Leave..."]);
             }
         }
 
