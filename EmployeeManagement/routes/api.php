@@ -28,7 +28,6 @@ Route::get('/apilogins', [APIController::class, 'aa']);
 Route::post('/apilogin', [APIController::class, 'login']);
 
 Route::group(["middleware" => "auth:sanctum"], function () {
-
     Route::post('/Entery/', [EmployeeAttendance::class, 'WorkStart']);
     Route::post('/leave/', [EmployeeAttendance::class, 'WorkEnd']);
 });
