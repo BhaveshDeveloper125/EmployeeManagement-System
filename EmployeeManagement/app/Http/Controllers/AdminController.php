@@ -143,7 +143,13 @@ class AdminController extends Controller
         $user->qualificatio = $request->qualificatio;
         $user->exp = $request->exp;
         $user->isAdmin = $request->isAdmin;
-        return response()->json($request->all());
+
+        if ($user->save()) {
+            return response()->json("User Datas are Updated...");
+        } else {
+            return response()->json("Fails : User Datas are not Updated...");
+        }
+        // return response()->json($request->all());
     }
 
     public function APIhello()
