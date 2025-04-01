@@ -17,7 +17,7 @@ class LoginCheck
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
-            return response()->json(['message' => 'Please Login to Access this Page']);
+            return response()->view('auth/login');
         }
 
         return $next($request);
