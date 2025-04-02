@@ -27,7 +27,7 @@
 </header>
 
 
-<form action="/ipaddress" class="ipform" method="post">
+<!-- <form action="/ipaddress" class="ipform" method="post">
     @csrf
     <input type="hidden" name="ip" class="ip" readonly required>
 </form>
@@ -43,4 +43,4 @@
             document.querySelector('.ipform').submit();
 
         })
-</script>
+</script> -->
