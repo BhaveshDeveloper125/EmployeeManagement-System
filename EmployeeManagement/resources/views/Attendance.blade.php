@@ -239,10 +239,29 @@
             background: var(--vibrant-red);
         }
     </style>
+    <style>
+        .three-line-contianer {
+            height: 5%;
+            width: 5%;
+            background-color: red;
+            display: flex;
+            gap: 1;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .three-lines {
+            height: 1%;
+            width: 50%;
+            background-color: black;
+        }
+    </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
     <div class="attendance-container">
         <div class="cardcontainer">
             <div class="cards">
@@ -302,6 +321,11 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="three-line-contianer">
+            <div class="three-lines">.</div>
+            <div class="three-lines">.</div>
+            <div class="three-lines">.</div>
+        </div>
     </div>
 </body>
 
