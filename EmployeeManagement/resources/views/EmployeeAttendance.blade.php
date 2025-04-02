@@ -172,11 +172,9 @@
         <button type="submit">Check Out</button>
     </form>
 
-    @foreach ($user as $i)
-    @if ($i->created_at == Carbon\Carbon::today())
-    {{ $i->created_at }} <br><br>
-    @endif
-    @endforeach
+
+
+
 
     <hr>
 
