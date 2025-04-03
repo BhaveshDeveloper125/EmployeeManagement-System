@@ -19,8 +19,7 @@ class EmployeeAttendance extends Controller
         $Entry->user_id = $user->id;
 
         if ($Entry->save()) {
-            return response()->json(["message" => "Employee Started Working"]);
-            // return view('EmployeeTakenLeave', ['work_start' => "Employee Started Working"]);
+            return redirect()->back()->with('Message', 'Employee Started Working');
         }
     }
 
@@ -35,7 +34,7 @@ class EmployeeAttendance extends Controller
             $gettingLeaveRow->leave = $request->end;
 
             if ($gettingLeaveRow->save()) {
-                return response()->json(["message" => "Employee has taken a Leave"]);
+                return redirect()->back()->with('Message', 'Employee has taken a leave');
             }
         }
 
@@ -107,11 +106,22 @@ class EmployeeAttendance extends Controller
 
         $leavingtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '<', Carbon::createFromTime(19, 15, 0))->count();
 
-        $checkin = EmployeeTimeWatcher::where('user_id', Auth::user()->id)
-            ->whereDate('entry', Carbon::today()->toDateString())
-            ->get(); // or get() depending on your needs
-        $checkout = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->where('leave', Carbon::today());
+        $today = Carbon::today()->toDateString();
 
-        return view('EmployeeAttendance', ['data' => $getattendance, 'attendance' => $attendance, 'lateattendance' => $lateattendance, 'earlyLeave' => $earlyLeave, 'absent' => $absent, 'overtime' => $overtime, 'leavingtime' => $leavingtime, 'checkin' => $checkin, 'checkout' => $checkout]);
+        $timeEntry = EmployeeTimeWatcher::where('user_id', Auth::user()->id)
+            ->whereDate('entry', $today)
+            ->first();
+
+        return view('EmployeeAttendance', [
+            'data' => $getattendance,
+            'attendance' => $attendance,
+            'lateattendance' => $lateattendance,
+            'earlyLeave' => $earlyLeave,
+            'absent' => $absent,
+            'overtime' => $overtime,
+            'leavingtime' => $leavingtime,
+            'hasCheckedIn' => !is_null($timeEntry),
+            'hasCheckedOut' => !is_null($timeEntry) && !is_null($timeEntry->leave),
+        ]);
     }
 }

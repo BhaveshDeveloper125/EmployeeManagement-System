@@ -414,22 +414,31 @@
 
                 <hr>
 
+                <div class="time-watcher-forms">
+                    @if(!$hasCheckedIn && !$hasCheckedOut)
+                    <form action="/Entery" method="post" class="checkIn">
+                        @csrf
+                        <label for="EntryTime">Check In</label>
+                        <input type="datetime-local" name="start" id="EntryTime" required
+                            value="{{ now()->format('Y-m-d\TH:i') }}">
+                        <button type="submit">Check In</button>
+                    </form>
 
+                    @elseif($hasCheckedIn && !$hasCheckedOut)
+                    <form action="/leave" method="post" class="checkOut">
+                        @csrf
+                        <label for="EndTime">Check Out</label>
+                        <input type="datetime-local" name="end" id="EndTime" required
+                            value="{{ now()->format('Y-m-d\TH:i') }}">
+                        <button type="submit">Check Out</button>
+                    </form>
 
-                <form action="/Entery" method="post" class="checkIn">
-                    @csrf
-                    <label for="EntryTime">Check In</label>
-                    <input type="datetime-local" name="start" id="EntryTime" required>
-                    <button type="submit">Check In</button>
-                </form>
-
-
-                <form action="/leave" method="post" class="checkOut">
-                    @csrf
-                    <label for="EndTime">Check Out</label>
-                    <input type="datetime-local" name="end" id="EndTime" required>
-                    <button type="submit">Check Out</button>
-                </form>
+                    @elseif($hasCheckedOut)
+                    <div class="thank-you-message">
+                        <p>Thanks for working today!</p>
+                    </div>
+                    @endif
+                </div>
 
             </div>
 
@@ -456,7 +465,6 @@
     </script>
 
     <script>
-        // Set default datetime-local values to current time
         document.addEventListener('DOMContentLoaded', function() {
             const updateTime = () => {
                 const now = new Date();
@@ -472,24 +480,19 @@
             setInterval(updateTime, 1000);
         });
 
-        // Toggle check-in/check-out forms
         // document.querySelector('.checkOut').style.display = "none";
 
         // document.querySelector('.checkIn').addEventListener('submit', (e) => {
-        //     e.preventDefault();
+
+
         //     document.querySelector('.checkIn').style.display = "none";
         //     document.querySelector('.checkOut').style.display = "flex";
-        //     // Submit form programmatically
-        //     e.target.submit();
         // });
 
-        document.querySelector('.checkOut').addEventListener('submit', (e) => {
-            e.preventDefault();
-            document.querySelector('.checkIn').style.display = "flex";
-            document.querySelector('.checkOut').style.display = "none";
-            // Submit form programmatically
-            e.target.submit();
-        });
+        // document.querySelector('.checkOut').addEventListener('submit', (e) => {
+        //     document.querySelector('.checkIn').style.display = "flex";
+        //     document.querySelector('.checkOut').style.display = "none";
+        // });
     </script>
 </body>
 

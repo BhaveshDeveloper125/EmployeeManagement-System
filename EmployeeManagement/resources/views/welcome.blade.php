@@ -14,6 +14,10 @@
             Log in
         </a>
 
+        <script>
+            window.location.href = "{{ route('login') }}"
+        </script>
+
         <!-- @if (Route::has('register'))
         <a
             href="{{ route('register') }}"

@@ -263,7 +263,7 @@
 <body>
 
     <div class="attendance-container">
-        <div class="cardcontainer">
+        <!-- <div class="cardcontainer">
             <div class="cards">
                 <h1>Attendance/Month</h1>
                 <h1>{{ $attendance }}</h1>
@@ -288,7 +288,7 @@
                 <h1>Complete Time/Month</h1>
                 <h1>{{ $leavingtime }}</h1>
             </div>
-        </div>
+        </div> -->
         <h1>Attendance Records</h1>
 
         <table>
@@ -321,11 +321,6 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="three-line-contianer">
-            <div class="three-lines">.</div>
-            <div class="three-lines">.</div>
-            <div class="three-lines">.</div>
-        </div>
     </div>
 </body>
 
