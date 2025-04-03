@@ -1,3 +1,15 @@
+@auth
+<script>
+    window.location.href = "/homepage/{{ Auth::user()->id }}";
+</script>
+<!-- <a href="/homepage/{{ Auth::user()->id }}">Home Page</a> -->
+@endauth
+
+
+@guest
+
+
+
 @extends('layouts.app')
 
 @section('content')
@@ -14,17 +26,16 @@
                     </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
-                    @auth
-                    <a href="/homepage?">Home Page</a>
-                    @endauth
+                    <!--  -->
 
-                    @guest
+
                     <p style="color: red;">Please Login for the further Process</p>
-                    @endguest
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+
+@endguest

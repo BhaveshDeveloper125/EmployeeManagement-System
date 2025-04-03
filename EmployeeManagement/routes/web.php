@@ -29,26 +29,8 @@ Route::get('/editemp', [AdminController::class, 'EditEmpData'])->middleware(Logi
 Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas'])->middleware(LoginCheck::class);
 // Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator'])->middleware(LoginCheck::class);
 Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class);
-Route::get('/homepage', function () {
-    $user = EmployeeTimeWatcher::where('user_id', auth::user()->id)->whereDate('leave', Carbon\Carbon::today())->get();
-    return view('EmployeeAttendance', ['user' => $user]);
-});
+Route::get('/homepage/{id}', [EmployeeAttendance::class, 'homepage']);
 
-
-// Route::post('/ipaddress', function (\Illuminate\Http\Request $request) {
-//     // 150.129.206.0
-//     $apiData = Http::get('https://api.ipify.org/?format=json');
-//     $jsonapi = $apiData->json();
-//     $api = $jsonapi['ip'];
-
-
-//     $officeip = $api;
-//     if ($request->ip == $officeip) {
-//         return view('home');
-//     } else {
-//         return response()->json("IP is not Matching  , UserIP : $request->ip OffceIP : $officeip");
-//     }
-// })->middleware(LoginCheck::class);
 
 
 
