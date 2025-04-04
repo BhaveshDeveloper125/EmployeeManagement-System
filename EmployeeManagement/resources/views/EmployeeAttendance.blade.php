@@ -419,8 +419,7 @@
                     <form action="/Entery" method="post" class="checkIn">
                         @csrf
                         <label for="EntryTime">Check In</label>
-                        <input type="datetime-local" name="start" id="EntryTime" required
-                            value="{{ now()->format('Y-m-d\TH:i') }}">
+                        <input type="datetime-local" name="start" id="EntryTime" required>
                         <button type="submit">Check In</button>
                     </form>
 
@@ -428,8 +427,7 @@
                     <form action="/leave" method="post" class="checkOut">
                         @csrf
                         <label for="EndTime">Check Out</label>
-                        <input type="datetime-local" name="end" id="EndTime" required
-                            value="{{ now()->format('Y-m-d\TH:i') }}">
+                        <input type="datetime-local" name="end" id="EndTime" required>
                         <button type="submit">Check Out</button>
                     </form>
 
@@ -468,31 +466,30 @@
         document.addEventListener('DOMContentLoaded', function() {
             const updateTime = () => {
                 const now = new Date();
-                const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-                    .toISOString()
-                    .slice(0, 16);
 
-                document.getElementById('EntryTime').value = localDateTime;
-                document.getElementById('EndTime').value = localDateTime;
+                // Format the time for datetime-local input (YYYY-MM-DDTHH:MM)
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+
+                const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+                // Only update if elements exist
+                const entryInput = document.getElementById('EntryTime');
+                const endInput = document.getElementById('EndTime');
+
+                if (entryInput) entryInput.value = localDateTime;
+                if (endInput) endInput.value = localDateTime;
             };
 
+            // Initial update
             updateTime();
+
+            // Update every minute (no need for seconds in datetime-local)
             setInterval(updateTime, 1000);
         });
-
-        // document.querySelector('.checkOut').style.display = "none";
-
-        // document.querySelector('.checkIn').addEventListener('submit', (e) => {
-
-
-        //     document.querySelector('.checkIn').style.display = "none";
-        //     document.querySelector('.checkOut').style.display = "flex";
-        // });
-
-        // document.querySelector('.checkOut').addEventListener('submit', (e) => {
-        //     document.querySelector('.checkIn').style.display = "flex";
-        //     document.querySelector('.checkOut').style.display = "none";
-        // });
     </script>
 </body>
 

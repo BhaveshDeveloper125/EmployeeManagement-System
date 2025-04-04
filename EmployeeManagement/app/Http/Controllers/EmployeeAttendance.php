@@ -124,4 +124,23 @@ class EmployeeAttendance extends Controller
             'hasCheckedOut' => !is_null($timeEntry) && !is_null($timeEntry->leave),
         ]);
     }
+
+    public function APILogout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'You are loggedout Successfully...']);
+        // return response()->json([$request->all()]);
+    }
+
+    public function APILoggedUserData()
+    {
+        $userData = Auth::user();
+        return response()->json(["Current Logged In User Data" => $userData]);
+    }
+
+    public function IPDatas(Request $request)
+    {
+        $ipAddress = $_SERVER['REMOTE_ADDR'];
+        return response()->json(["Ip Address : $ipAddress"]);
+    }
 }
