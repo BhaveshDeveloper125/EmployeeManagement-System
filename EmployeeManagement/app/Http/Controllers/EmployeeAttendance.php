@@ -138,9 +138,16 @@ class EmployeeAttendance extends Controller
         return response()->json(["Current Logged In User Data" => $userData]);
     }
 
+
     public function IPDatas(Request $request)
     {
-        $ipAddress = $_SERVER['REMOTE_ADDR'];
-        return response()->json(["Ip Address : $ipAddress"]);
+        $output = [];
+        exec('ipconfig /all', $output);
+        exec('netsh wlan show interfaces | findstr "BSSID"', $output);
+
+        // For Linux/Mac systems
+        // exec('ifconfig', $output);
+        $data = implode("\n", $output);
+        return response()->json([$data]);
     }
 }
