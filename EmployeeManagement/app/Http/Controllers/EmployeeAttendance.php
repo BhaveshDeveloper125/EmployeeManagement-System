@@ -6,6 +6,8 @@ use App\Models\EmployeeTimeWatcher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Stevebauman\Location\Facades\Location;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -143,11 +145,21 @@ class EmployeeAttendance extends Controller
     {
         $output = [];
         exec('ipconfig /all', $output);
-        exec('netsh wlan show interfaces | findstr "BSSID"', $output);
+        exec('netsh wlan show interfaces ', $output);
 
-        // For Linux/Mac systems
-        // exec('ifconfig', $output);
+        exec('ifconfig', $output);
         $data = implode("\n", $output);
         return response()->json([$data]);
+    }
+
+    public function Location()
+    {
+        $ip = Http::get('https://api.ipify.org/');
+
+        if ($ip->successful()) {
+            $currentlocationInfo = Location::get($ip);
+
+            return response()->json([compact('currentlocationInfo')]);
+        }
     }
 }

@@ -450,10 +450,6 @@
         </div>
     </div>
 
-    <pre>
-
-    </pre>
-
     <script>
         function ShowSideBar() {
             let sideMenu = document.querySelector('#sideMenu');
@@ -467,7 +463,6 @@
             const updateTime = () => {
                 const now = new Date();
 
-                // Format the time for datetime-local input (YYYY-MM-DDTHH:MM)
                 const year = now.getFullYear();
                 const month = String(now.getMonth() + 1).padStart(2, '0');
                 const day = String(now.getDate()).padStart(2, '0');
@@ -476,7 +471,6 @@
 
                 const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
-                // Only update if elements exist
                 const entryInput = document.getElementById('EntryTime');
                 const endInput = document.getElementById('EndTime');
 
@@ -484,10 +478,8 @@
                 if (endInput) endInput.value = localDateTime;
             };
 
-            // Initial update
             updateTime();
 
-            // Update every minute (no need for seconds in datetime-local)
             setInterval(updateTime, 1000);
         });
     </script>

@@ -27,10 +27,11 @@ Auth::routes();
 Route::post('/apilogin', [APIController::class, 'login']);
 
 Route::group(["middleware" => "auth:sanctum"], function () {
-    Route::post('/logdata', [EmployeeAttendance::class, 'APILoggedUserData']); //Gives the Data of Current logged in user
-    Route::post('/Entery/', [EmployeeAttendance::class, 'WorkStart']); //Checkin 
-    Route::post('/leave/', [EmployeeAttendance::class, 'WorkEnd']); //Checkout
     Route::get('/attendance/{id}', [EmployeeAttendance::class, 'APIEmployeeAttendance']); //History
+    Route::post('/logdata', [EmployeeAttendance::class, 'APILoggedUserData']); //Gives the Data of Current logged in user
+    Route::post('/entry/', [EmployeeAttendance::class, 'WorkStart']); //Checkin 
+    Route::post('/leave/', [EmployeeAttendance::class, 'WorkEnd']); //Checkout
     Route::post('/logout', [EmployeeAttendance::class, 'APILogout']); //logout
     Route::post('/ipaddress', [EmployeeAttendance::class, 'IPDatas']); //Get Ipaddress
+    Route::post('/getuserlocation', [EmployeeAttendance::class, 'Location']); //Get User Location Data
 });
