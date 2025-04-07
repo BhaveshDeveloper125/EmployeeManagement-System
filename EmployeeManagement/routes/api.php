@@ -34,4 +34,5 @@ Route::group(["middleware" => "auth:sanctum"], function () {
     Route::post('/logout', [EmployeeAttendance::class, 'APILogout']); //logout
     Route::post('/ipaddress', [EmployeeAttendance::class, 'IPDatas']); //Get Ipaddress
     Route::post('/getuserlocation', [EmployeeAttendance::class, 'Location']); //Get User Location Data
+    Route::post('/addwifi', [EmployeeAttendance::class, 'AddWifiData']); //Add the wifi Data
 });
