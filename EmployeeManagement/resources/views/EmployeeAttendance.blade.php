@@ -374,7 +374,7 @@
                 </li>
                 @endauth
                 <li class="logout-form">
-                    <form action="/logout/" method="post">
+                    <form action="/logout/">
                         @csrf
                         <input type="submit" value="Logout">
                     </form>
@@ -419,7 +419,7 @@
                     <form action="/Entery" method="post" class="checkIn">
                         @csrf
                         <label for="EntryTime">Check In</label>
-                        <input type="datetime-local" name="start" id="EntryTime" required>
+                        <input type="datetime-local" name="start" id="EntryTime" readonly required>
                         <button type="submit">Check In</button>
                     </form>
 
@@ -427,7 +427,7 @@
                     <form action="/leave" method="post" class="checkOut">
                         @csrf
                         <label for="EndTime">Check Out</label>
-                        <input type="datetime-local" name="end" id="EndTime" required>
+                        <input type="datetime-local" name="end" id="EndTime" readonly required>
                         <button type="submit">Check Out</button>
                     </form>
 
