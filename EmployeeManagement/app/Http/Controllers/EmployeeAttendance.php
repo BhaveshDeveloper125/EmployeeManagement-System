@@ -182,6 +182,13 @@ class EmployeeAttendance extends Controller
         }
     }
 
+    public function GetNetworkData()
+    {
+        $data =  UserWifiData::all();
+
+        return response()->json([$data]);
+    }
+
     public function getMacaddress(Request $request)
     {
         $ipaddress = $request->ip;
@@ -195,17 +202,5 @@ class EmployeeAttendance extends Controller
             }
         }
         return 'MAC NOT FOUND';
-    }
-
-    public function AddNetwork(Request $request)
-    {
-        // 
-    }
-
-    public function GetNetworkData()
-    {
-        $data =  UserWifiData::all();
-
-        return response()->json([$data]);
     }
 }

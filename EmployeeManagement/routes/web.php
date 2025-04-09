@@ -42,7 +42,6 @@ Route::post('/get_user_info', [AdminController::class, 'SearchUser'])->middlewar
 Route::put('/editedData/{id}', [AdminController::class, 'SaveEditEmpDatas'])->middleware(LoginCheck::class);
 
 
-// Route::view('/homepage', 'EmployeeAttendance')->middleware(LoginCheck::class);
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
 
 
