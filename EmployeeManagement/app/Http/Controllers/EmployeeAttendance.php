@@ -178,7 +178,34 @@ class EmployeeAttendance extends Controller
         if ($wifi->save()) {
             return response()->json(["Message: Data saved successfully"]);
         } else {
-            return response()->json(["Message: oops Data is not saved..."]);
+            return response()->json(["Message: oops something went wrong  Data is not saved..."]);
         }
+    }
+
+    public function getMacaddress(Request $request)
+    {
+        $ipaddress = $request->ip;
+        $arp = `arp -a $ipaddress`;
+        $lines = explode("\n", $arp);
+
+        foreach ($lines as $i) {
+            if (strpos($i, $ipaddress)) {
+                $parts = preg_split('/\s+/', trim($i));
+                return $parts[1] ?? 'MAC NOT FOUND';
+            }
+        }
+        return 'MAC NOT FOUND';
+    }
+
+    public function AddNetwork(Request $request)
+    {
+        // 
+    }
+
+    public function GetNetworkData()
+    {
+        $data =  UserWifiData::all();
+
+        return response()->json([$data]);
     }
 }
