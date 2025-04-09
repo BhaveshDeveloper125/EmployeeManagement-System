@@ -29,9 +29,10 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            position: relative;
+            margin: 0;
         }
 
-        /* Header Styles */
         .header {
             display: flex;
             justify-content: space-between;
@@ -40,6 +41,10 @@
             background-color: var(--navy-blue);
             color: var(--soft-white);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
         }
 
         .three_line_container {
@@ -54,6 +59,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             background-color: rgba(255, 255, 255, 0.1);
+            z-index: 101;
         }
 
         .three_line_container:hover {
@@ -69,10 +75,10 @@
             transition: all 0.3s ease;
         }
 
-        /* Sidebar Styles */
         .container {
             display: flex;
             flex: 1;
+            overflow-y: auto;
         }
 
         .side_bar {
@@ -82,10 +88,16 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 99;
         }
 
         .side_bar_shrink {
-            width: 70px;
+            width: 0;
+            overflow: hidden;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -135,16 +147,32 @@
             cursor: pointer;
             padding: 0;
             font-family: 'Poppins', sans-serif;
+            width: 100%;
+            text-align: left;
         }
 
-        /* Main Content Styles */
         .content_container {
             flex: 1;
             padding: 2rem;
             background-color: var(--light-gray);
+            transition: margin-left 0.3s;
         }
 
-        /* Dashboard Cards */
+        @media (max-width: 768px) {
+            .side_bar {
+                transform: translateX(-100%);
+            }
+
+            .side_bar.active {
+                transform: translateX(0);
+                width: 250px;
+            }
+
+            .side_bar_shrink {
+                width: 0;
+            }
+        }
+
         .cardcontainer {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -191,7 +219,6 @@
             color: var(--deep-black);
         }
 
-        /* Attendance Form Styles */
         .attendance-section {
             max-width: 600px;
             margin: 2rem auto;
@@ -277,7 +304,6 @@
             margin: 1.5rem 0;
         }
 
-        /* Auth Links */
         .auth-links {
             text-align: center;
             margin-top: 2rem;
@@ -307,25 +333,18 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* Responsive Design */
+        .thank-you-message {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--success-green);
+            color: var(--soft-white);
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
         @media (max-width: 768px) {
             .cardcontainer {
                 grid-template-columns: 1fr 1fr;
-            }
-
-            .side_bar {
-                position: absolute;
-                z-index: 100;
-                height: 100%;
-                transform: translateX(-100%);
-            }
-
-            .side_bar.active {
-                transform: translateX(0);
-            }
-
-            .side_bar_shrink {
-                transform: translateX(-100%);
             }
 
             .content_container {
@@ -337,11 +356,20 @@
             .cardcontainer {
                 grid-template-columns: 1fr;
             }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .three_line_container {
+                width: 40px;
+                height: 40px;
+            }
         }
-    </style>
-    <style>
+
         a {
             text-decoration: none;
+            color: inherit;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -349,7 +377,7 @@
 
 <body>
     <div class="header">
-        <div class="three_line_container" onclick="ShowSideBar()">
+        <div class="three_line_container" onclick="toggleSidebar()">
             <div class="therr_lines"></div>
             <div class="therr_lines"></div>
             <div class="therr_lines"></div>
@@ -359,6 +387,7 @@
     </div>
 
     <div class="container">
+        <br><br><br><br><br><br><br><br>
         <div id="sideMenu" class="side_bar">
             <ul>
                 <li>
@@ -366,19 +395,19 @@
                 </li>
                 @auth
                 <li>
-                    <span>
-                        <a href="/attendance/{{ Auth::id() }}" class="attendance-link">Attendance History</a>
-                        @else
-                        <a href="/login" class="login-link">Login to Track Attendance</a>
-                    </span>
+                    <a href="/attendance/{{ Auth::id() }}">Attendance History</a>
                 </li>
-                @endauth
                 <li class="logout-form">
-                    <form action="/logout/">
+                    <form action="/logout/" method="post">
                         @csrf
                         <input type="submit" value="Logout">
                     </form>
                 </li>
+                @else
+                <li>
+                    <a href="/login">Login to Track Attendance</a>
+                </li>
+                @endauth
             </ul>
         </div>
         <div class="content_container">
@@ -437,7 +466,6 @@
                     </div>
                     @endif
                 </div>
-
             </div>
 
             <div class="auth-links">
@@ -451,11 +479,52 @@
     </div>
 
     <script>
-        function ShowSideBar() {
-            let sideMenu = document.querySelector('#sideMenu');
-            sideMenu.classList.toggle('side_bar');
-            sideMenu.classList.toggle('side_bar_shrink');
+        function toggleSidebar() {
+            const sideMenu = document.getElementById('sideMenu');
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+                sideMenu.classList.toggle('active');
+                if (sideMenu.classList.contains('active')) {
+                    createOverlay();
+                } else {
+                    removeOverlay();
+                }
+            } else {
+                sideMenu.classList.toggle('side_bar_shrink');
+            }
         }
+
+        function createOverlay() {
+            const overlay = document.createElement('div');
+            overlay.id = 'sidebar-overlay';
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(0,0,0,0.5)';
+            overlay.style.zIndex = '98';
+            overlay.onclick = function() {
+                toggleSidebar();
+            };
+            document.body.appendChild(overlay);
+        }
+
+        function removeOverlay() {
+            const overlay = document.getElementById('sidebar-overlay');
+            if (overlay) {
+                document.body.removeChild(overlay);
+            }
+        }
+
+        document.querySelectorAll('#sideMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+            });
+        });
     </script>
 
     <script>
@@ -479,7 +548,6 @@
             };
 
             updateTime();
-
             setInterval(updateTime, 1000);
         });
     </script>
