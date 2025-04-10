@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('user_wifi_data', function (Blueprint $table) {
             $table->id();
-            $table->string('wifiName')->nullable();
-            $table->string('BSSID')->nullable();
-            $table->string('ipv4')->nullable();
-            $table->string('ipv6')->nullable();
-            $table->string('broadcast')->nullable();
+            $table->string('wifi_name')->nullable();
+            $table->string('ssid')->nullable();
+            $table->string('ip')->nullable();
             $table->string('gateway')->nullable();
-            $table->string('submask')->nullable();
             $table->timestamps();
         });
     }

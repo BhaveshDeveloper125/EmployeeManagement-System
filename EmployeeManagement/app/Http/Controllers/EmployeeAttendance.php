@@ -167,16 +167,13 @@ class EmployeeAttendance extends Controller
     public function AddWifiData(Request $request)
     {
         $wifi = new UserWifiData();
-        $wifi->wifiName = $request->wifiName;
-        $wifi->BSSID = $request->BSSID;
-        $wifi->ipv4 = $request->ipv4;
-        $wifi->ipv6 = $request->ipv6;
-        $wifi->broadcast = $request->broadcast;
+        $wifi->wifi_name = $request->wifi_name;
+        $wifi->ip = $request->ip;
+        $wifi->ssid = $request->ssid;
         $wifi->gateway = $request->gateway;
-        $wifi->submask = $request->submask;
 
         if ($wifi->save()) {
-            return response()->json(["Message: Data saved successfully"]);
+            return response()->json(["Success: Data saved successfully"]);
         } else {
             return response()->json(["Message: oops something went wrong  Data is not saved..."]);
         }
