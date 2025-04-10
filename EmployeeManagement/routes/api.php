@@ -35,6 +35,6 @@ Route::group(["middleware" => "auth:sanctum"], function () {
     Route::post('/ipaddress', [EmployeeAttendance::class, 'IPDatas']); //Get Ipaddress
     Route::post('/getuserlocation', [EmployeeAttendance::class, 'Location']); //Get User Location Data
     Route::post('/addwifi', [EmployeeAttendance::class, 'AddWifiData']); //Add the wifi Data
-    Route::post('/getwifi', [EmployeeAttendance::class, 'GetNetworkData']); //get wifi data
+    Route::get('/getwifi', [EmployeeAttendance::class, 'GetNetworkData']); //get wifi data
     Route::post('/getmac', [EmployeeAttendance::class, 'getMacaddress']); //Get Macaddress
 });
