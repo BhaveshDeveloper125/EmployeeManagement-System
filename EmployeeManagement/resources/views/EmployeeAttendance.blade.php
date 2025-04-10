@@ -422,7 +422,7 @@
                 </div>
                 <div class="cards">
                     <h1>Absent/Month</h1>
-                    <h1>{{ $absent }}</h1>
+                    <h1>{{ $leavingtime }}</h1>
                 </div>
                 <div class="cards">
                     <h1>Early Leave/Month</h1>
@@ -434,7 +434,11 @@
                 </div>
                 <div class="cards">
                     <h1>Complete Time/Month</h1>
-                    <h1>{{ $leavingtime }}</h1>
+                    <h1>{{ $absent }}</h1>
+                </div>
+                <div class="cards">
+                    <h1>Remain Days/Month</h1>
+                    <h1>{{ floor(Carbon\Carbon::today()->diffInDays(Carbon\Carbon::today()->endOfMonth())) }}</h1>
                 </div>
             </div>
 

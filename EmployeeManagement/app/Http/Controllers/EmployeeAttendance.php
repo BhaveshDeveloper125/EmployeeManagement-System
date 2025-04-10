@@ -61,8 +61,12 @@ class EmployeeAttendance extends Controller
 
         $overtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '>', Carbon::createFromTime(19, 15, 0))->count();
 
+        $leavingtime = Carbon::today() - EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', Carbon::today()->month)->count();
 
-        $leavingtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '<', Carbon::createFromTime(19, 15, 0))->count();
+
+
+
+        // $leavingtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '<', Carbon::createFromTime(19, 15, 0))->count();
 
         return view('Attendance', ['data' => $getattendance, 'attendance' => $attendance, 'lateattendance' => $lateattendance, 'earlyLeave' => $earlyLeave, 'absent' => $absent, 'overtime' => $overtime, 'leavingtime' => $leavingtime]);
     }
@@ -107,7 +111,14 @@ class EmployeeAttendance extends Controller
         $overtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '>', Carbon::createFromTime(19, 15, 0))->count();
 
 
-        $leavingtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '<', Carbon::createFromTime(19, 15, 0))->count();
+        // $leavingtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '<', Carbon::createFromTime(19, 15, 0))->count();
+
+        $currentmonth = Carbon::today()->day;
+
+        $presetnemp = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', Carbon::today()->month)->count();
+
+        $leavingtime = $currentmonth - $presetnemp;
+
 
         $today = Carbon::today()->toDateString();
 
@@ -122,7 +133,7 @@ class EmployeeAttendance extends Controller
             'earlyLeave' => $earlyLeave,
             'absent' => $absent,
             'overtime' => $overtime,
-            'leavingtime' => $leavingtime,
+            'leavingtime' => $currentmonth - $presetnemp,
             'hasCheckedIn' => !is_null($timeEntry),
             'hasCheckedOut' => !is_null($timeEntry) && !is_null($timeEntry->leave),
         ]);
