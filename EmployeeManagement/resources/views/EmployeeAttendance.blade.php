@@ -432,12 +432,12 @@
                     <h1>OverTime</h1>
                     <h1>{{ $overtime }}</h1>
                 </div>
-                <div class="cards">
+                <!-- <div class="cards">
                     <h1>Complete Time/Month</h1>
                     <h1>{{ $absent }}</h1>
-                </div>
+                </div> -->
                 <div class="cards">
-                    <h1>Remain Days/Month</h1>
+                    <h1>Remain Days</h1>
                     <h1>{{ floor(Carbon\Carbon::today()->diffInDays(Carbon\Carbon::today()->endOfMonth())) }}</h1>
                 </div>
             </div>
