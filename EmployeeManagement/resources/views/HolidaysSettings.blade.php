@@ -128,7 +128,7 @@
         .holidaySection {
             display: flex;
             flex: 1;
-            background-color: red;
+            /* background-color: red; */
         }
     </style>
 </head>
@@ -188,7 +188,7 @@
                     <option value="thurs">Thursday</option>
                     <option value="fri">Friday</option>
                     <option value="satur">Saturday</option>
-                    <option value="">No Holiday</option>
+                    <option value="no">No Holiday</option>
                 </select>
                 <input type="submit" value="Set">
             </form>
