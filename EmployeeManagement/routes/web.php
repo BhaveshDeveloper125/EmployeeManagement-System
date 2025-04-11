@@ -52,4 +52,5 @@ Route::prefix('/adminPanel')->group(function () {
     Route::view('/generate_user', 'GenerateUser');
     Route::get('/downloadData', [MediaController::class, 'PDFGenerator']);
     Route::view('/search_user', 'SearchEmployee');
+    Route::view('/holiday', 'HolidaysSettings');
 });

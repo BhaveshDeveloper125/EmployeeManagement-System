@@ -417,7 +417,7 @@
                 <a href="/records">
                     <li>
                         <img src="{{ URL('Images/directory.png') }}" alt="Records">
-                        <span>Records</span>
+                        <span>Recordssss</span>
                     </li>
                 </a>
                 <a href="generate_user">
