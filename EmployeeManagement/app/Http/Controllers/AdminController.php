@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\EmployeeTimeWatcher;
 use App\Models\ExtraUserData;
+use App\Models\Holidays;
 use App\Models\User;
+use Cron\HoursField;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -187,5 +189,12 @@ class AdminController extends Controller
         } else {
             return response()->json(["message" => "User not created"]);
         }
+    }
+
+    public function Holidays(Request $request)
+    {
+        $HoliDay = new Holidays();
+
+        return response()->json([$request->dates]);
     }
 }

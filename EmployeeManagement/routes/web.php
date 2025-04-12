@@ -40,6 +40,7 @@ Route::post('/user_register', [AdminController::class, 'AddUsers'])->middleware(
 Route::post('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(LoginCheck::class);
 Route::post('/get_user_info', [AdminController::class, 'SearchUser'])->middleware(LoginCheck::class);
 Route::put('/editedData/{id}', [AdminController::class, 'SaveEditEmpDatas'])->middleware(LoginCheck::class);
+Route::post('/setholiday', [AdminController::class, 'Holidays']);
 
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);

@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background: #f0f2f5;
+            background: #F2F4F7;
             font-family: 'Segoe UI', Arial, sans-serif;
         }
 
@@ -89,10 +89,6 @@
             width: 32px;
             filter: brightness(0) invert(1);
             transition: all 0.3s ease;
-
-            &:hover {
-                filter: brightness(1) invert(0);
-            }
         }
 
         .panel_ul li span {
@@ -123,12 +119,83 @@
         .admin_panel .three_line_container:hover .three_line:nth-child(3) {
             transform: translateY(2px);
         }
-    </style>
-    <style>
+
         .holidaySection {
             display: flex;
             flex: 1;
-            /* background-color: red; */
+        }
+
+        form,
+        .holidaySection>div:not(.admin_panel2) {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        form h1 {
+            color: #111F4D;
+            margin-bottom: 20px;
+        }
+
+        select,
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        select:focus,
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #E43A19;
+            box-shadow: 0 0 8px rgba(228, 58, 25, 0.4);
+        }
+
+        input[type="submit"],
+        button[type="submit"],
+        button[type="button"] {
+            background-color: #111F4D;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        input[type="submit"]:hover,
+        button[type="submit"]:hover,
+        button[type="button"]:hover {
+            background-color: #E43A19;
+        }
+
+        .date-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            background-color: #F2F4F7;
+        }
+
+        .remove-btn {
+            background-color: #E43A19;
+            color: white;
+            align-self: flex-end;
         }
     </style>
 </head>
@@ -169,13 +236,12 @@
                 </a>
                 <a href="/adminPanel/holiday">
                     <li>
-                        <img src="{{ URL('Images/cv.png') }}" alt="Search User">
+                        <img src="{{ URL('Images/cv.png') }}" alt="Holiday Settings">
                         <span>Holiday Settings</span>
                     </li>
                 </a>
             </ul>
         </div>
-
 
         <div>
             <form action="" method="post">
@@ -192,12 +258,39 @@
                 </select>
                 <input type="submit" value="Set">
             </form>
+        </div>
 
+        <div>
+            <h1>Set Other Holidays</h1>
+            <form action="/setholiday" method="post">
+                @csrf
+                <div id="dateInputs">
+                    <div class="date-group">
+                        <input type="date" name="dates[]" required>
+                        <input type="text" name="titles[]" placeholder="Enter holiday title" required>
+                        <textarea name="reasons[]" placeholder="Reason for holiday" required></textarea>
+                    </div>
+                </div>
+                <button type="button" onclick="addDateInput()">Add Another Date</button>
+                <button type="submit">Submit</button>
+            </form>
 
+            <script>
+                function addDateInput() {
+                    const dateInputs = document.getElementById('dateInputs');
+                    const newGroup = document.createElement('div');
+                    newGroup.className = 'date-group';
+                    newGroup.innerHTML = `
+                        <input type="date" name="dates[]" required>
+                        <input type="text" name="titles[]" placeholder="Enter holiday title" required>
+                        <textarea name="reasons[]" placeholder="Reason for holiday" required></textarea>
+                        <button type="button" class="remove-btn" onclick="this.parentNode.remove()">Remove</button>
+                    `;
+                    dateInputs.appendChild(newGroup);
+                }
+            </script>
         </div>
     </div>
-
-
 
     <script>
         function ExpandMenu() {
