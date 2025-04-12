@@ -10,17 +10,27 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background: #F2F4F7;
+            background: #f0f2f5;
             font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+        }
+
+        .holidaySection {
+            display: flex;
+            flex: 1;
         }
 
         .admin_panel {
             height: 100vh;
-            width: 20vw;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            background: linear-gradient(135deg, #111F4D, #020205);
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.4);
             transition: all 0.5s ease;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
         }
 
         .admin_panel2 {
@@ -60,9 +70,16 @@
             transition: all 0.3s ease;
         }
 
+        .admin_panel .three_line_container {
+            align-self: flex-start;
+            margin-left: 10px;
+        }
+
         .panel_ul {
             list-style: none;
             padding: 20px 0;
+            margin: 0;
+            width: 100%;
         }
 
         .panel_ul li {
@@ -80,24 +97,24 @@
             transform: translateX(5px);
         }
 
-        .panel_ul li:hover img {
-            filter: brightness(1) invert(0);
-        }
-
         .panel_ul li img {
             height: 32px;
             width: 32px;
             filter: brightness(0) invert(1);
-            transition: all 0.3s ease;
+            transition: filter 0.3s ease;
+        }
+
+        .panel_ul li:hover img {
+            filter: brightness(1) invert(0);
         }
 
         .panel_ul li span {
-            color: #fff;
+            color: #F2F4F7;
             font-size: 16px;
             font-weight: 500;
             padding-left: 15px;
             opacity: 0.9;
-            transition: all 0.3s ease;
+            transition: opacity 0.3s ease;
         }
 
         .panel_ul li:hover span {
@@ -112,90 +129,61 @@
             display: none;
         }
 
-        .admin_panel .three_line_container:hover .three_line:nth-child(1) {
-            transform: translateY(-2px);
-        }
-
-        .admin_panel .three_line_container:hover .three_line:nth-child(3) {
-            transform: translateY(2px);
-        }
-
-        .holidaySection {
-            display: flex;
+        .content {
             flex: 1;
-        }
-
-        form,
-        .holidaySection>div:not(.admin_panel2) {
-            background: white;
-            border-radius: 16px;
             padding: 30px;
-            margin: 40px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            flex: 1;
+        }
+
+        form {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            max-width: 600px;
         }
 
         form h1 {
-            color: #111F4D;
-            margin-bottom: 20px;
-        }
-
-        select,
-        input[type="text"],
-        input[type="date"],
-        textarea {
-            width: 100%;
-            padding: 12px;
+            font-size: 22px;
             margin-bottom: 15px;
+            color: #111F4D;
+        }
+
+        form select,
+        form input[type="text"],
+        form input[type="date"],
+        form textarea {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 6px;
             border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: 0.3s;
+            font-size: 14px;
         }
 
-        select:focus,
-        input:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #E43A19;
-            box-shadow: 0 0 8px rgba(228, 58, 25, 0.4);
-        }
-
-        input[type="submit"],
-        button[type="submit"],
-        button[type="button"] {
-            background-color: #111F4D;
-            color: white;
+        form input[type="submit"],
+        form button {
             padding: 10px 20px;
+            background-color: #E43A19;
+            color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
+            font-weight: bold;
+            margin-right: 10px;
         }
 
-        input[type="submit"]:hover,
-        button[type="submit"]:hover,
-        button[type="button"]:hover {
-            background-color: #E43A19;
+        form button.remove-btn {
+            background-color: #888;
+            margin-top: 10px;
         }
 
         .date-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
+            background: #F2F4F7;
             padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
             border: 1px solid #ccc;
-            border-radius: 12px;
-            background-color: #F2F4F7;
-        }
-
-        .remove-btn {
-            background-color: #E43A19;
-            color: white;
-            align-self: flex-end;
         }
     </style>
 </head>
@@ -243,10 +231,10 @@
             </ul>
         </div>
 
-        <div>
+        <div class="content">
             <form action="" method="post">
                 <h1>Set Weekly Holiday</h1>
-                <select name="" id="">
+                <select name="weekly_holiday" id="">
                     <option value="sun">Sunday</option>
                     <option value="mon">Monday</option>
                     <option value="tue">Tuesday</option>
@@ -258,12 +246,10 @@
                 </select>
                 <input type="submit" value="Set">
             </form>
-        </div>
 
-        <div>
-            <h1>Set Other Holidays</h1>
             <form action="/setholiday" method="post">
                 @csrf
+                <h1>Set Other Holidays</h1>
                 <div id="dateInputs">
                     <div class="date-group">
                         <input type="date" name="dates[]" required>
@@ -274,21 +260,6 @@
                 <button type="button" onclick="addDateInput()">Add Another Date</button>
                 <button type="submit">Submit</button>
             </form>
-
-            <script>
-                function addDateInput() {
-                    const dateInputs = document.getElementById('dateInputs');
-                    const newGroup = document.createElement('div');
-                    newGroup.className = 'date-group';
-                    newGroup.innerHTML = `
-                        <input type="date" name="dates[]" required>
-                        <input type="text" name="titles[]" placeholder="Enter holiday title" required>
-                        <textarea name="reasons[]" placeholder="Reason for holiday" required></textarea>
-                        <button type="button" class="remove-btn" onclick="this.parentNode.remove()">Remove</button>
-                    `;
-                    dateInputs.appendChild(newGroup);
-                }
-            </script>
         </div>
     </div>
 
@@ -306,6 +277,19 @@
             } else {
                 console.error('Element with ID #panel not found!');
             }
+        }
+
+        function addDateInput() {
+            const dateInputs = document.getElementById('dateInputs');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'date-group';
+            newGroup.innerHTML = `
+                <input type="date" name="dates[]" required>
+                <input type="text" name="titles[]" placeholder="Enter holiday title" required>
+                <textarea name="reasons[]" placeholder="Reason for holiday" required></textarea>
+                <button type="button" class="remove-btn" onclick="this.parentNode.remove()">Remove</button>
+            `;
+            dateInputs.appendChild(newGroup);
         }
     </script>
 </body>

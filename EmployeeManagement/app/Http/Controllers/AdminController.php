@@ -195,6 +195,6 @@ class AdminController extends Controller
     {
         $HoliDay = new Holidays();
 
-        return response()->json([$request->dates]);
+        return response()->json([$request->all()]);
     }
 }

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             // $table->string('weekly');
             $table->date('leaves');
+            $table->string('title');
+            $table->string('reason');
             $table->timestamps();
         });
     }
