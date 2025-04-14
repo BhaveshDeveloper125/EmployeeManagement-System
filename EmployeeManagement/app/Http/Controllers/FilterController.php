@@ -13,21 +13,21 @@ class FilterController extends Controller
     {
         switch ($request->filters) {
             case 'late':
-                $late = EmployeeTimeWatcher::where('entry', '>', Carbon::today()->setTime(10, 0, 0))->get();
-                // return response()->json(['message' => ]);
-                // dd($late);
+                $late = EmployeeTimeWatcher::whereDate('entry', Carbon::today())
+                    ->whereDate('entry', '>', '10:00:00')
+                    ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+                    ->select('employee_time_watchers.*', 'users.name')
+                    ->get();
                 return view('Filter', ['late' => $late]);
 
             case 'employeelist':
                 $emplist = User::all();
-                // return response()->json(['message' => ]);
-                // dd($emplist);
                 return view('Filter', ['emplist' => $emplist]);
 
             case 'present':
-                $present = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->get();
-                // return response()->json(['message' => ]);
-                // dd($present);
+                $present = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+                    ->select('employee_time_watchers.*', 'users.name')
+                    ->get();;
                 return view('Filter', ['present' => $present]);
 
             default:

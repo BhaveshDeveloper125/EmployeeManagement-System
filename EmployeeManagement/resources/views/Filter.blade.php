@@ -1,264 +1,507 @@
 <style>
-    body {
+    :root {
+        --navy: #111F4D;
+        --light: #F2F4F7;
+        --accent: #E43A19;
+        --dark: #020205;
+        --navy-light: #2A3A6D;
+        --accent-light: #FF5C3A;
+    }
+
+    * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        background: #f0f2f5;
-        font-family: 'Segoe UI', Arial, sans-serif;
     }
 
-    .admin_panel {
-        height: 100vh;
-        width: 20vw;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
-        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.5s ease;
-        overflow: hidden;
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--light);
+        color: var(--dark);
+        line-height: 1.6;
     }
 
-    .admin_panel2 {
-        height: 100vh;
+    .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* Sidebar Styles */
+    .admin-panel {
+        width: 280px;
+        background: var(--navy);
+        color: var(--light);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        z-index: 100;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .admin-panel.collapsed {
         width: 80px;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
-        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.5s ease;
-        overflow: hidden;
     }
 
-    .three_line_container {
-        height: 60px;
-        width: 60px;
+    .panel-header {
+        padding: 24px 20px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+        font-size: 22px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+
+    .logo-icon {
+        font-size: 28px;
+        color: var(--accent);
+    }
+
+    .menu-toggle {
+        margin-left: auto;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        margin: 10px;
         transition: all 0.3s ease;
     }
 
-    .three_line_container:hover {
+    .menu-toggle:hover {
         background: rgba(255, 255, 255, 0.2);
-        transform: scale(1.05);
     }
 
-    .three_line {
-        height: 3px;
-        width: 30px;
-        background: #fff;
+    .menu-toggle span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: white;
         margin: 3px 0;
-        border-radius: 2px;
         transition: all 0.3s ease;
+        border-radius: 2px;
     }
 
-    .panel_ul {
-        list-style: none;
+    /* Changed these selectors to show cross when expanded */
+    .admin-panel:not(.collapsed) .menu-toggle span:nth-child(1) {
+        transform: translateY(5px) rotate(45deg);
+    }
+
+    .admin-panel:not(.collapsed) .menu-toggle span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .admin-panel:not(.collapsed) .menu-toggle span:nth-child(3) {
+        transform: translateY(-5px) rotate(-45deg);
+    }
+
+    .panel-nav {
         padding: 20px 0;
     }
 
-    .panel_ul li {
+    .nav-item {
         display: flex;
         align-items: center;
-        padding: 12px 20px;
-        margin: 8px 10px;
+        padding: 14px 24px;
+        margin: 4px 12px;
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.3s ease;
-    }
-
-    .panel_ul li:hover {
-        background: rgba(255, 255, 255, 0.15);
-        transform: translateX(5px);
-    }
-
-    .panel_ul li:hover img {
-        filter: brightness(1) invert(0);
-    }
-
-    .panel_ul li img {
-        height: 32px;
-        width: 32px;
-        filter: brightness(0) invert(1);
-        transition: all 0.3s ease;
-
-        &:hover {
-            filter: brightness(1) invert(0);
-        }
-    }
-
-    .panel_ul li span {
-        color: #fff;
-        font-size: 16px;
-        font-weight: 500;
-        padding-left: 15px;
+        text-decoration: none;
+        color: var(--light);
         opacity: 0.9;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nav-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        opacity: 1;
+        transform: translateX(4px);
+    }
+
+    .nav-item.active {
+        background: var(--accent);
+        box-shadow: 0 4px 12px rgba(228, 58, 25, 0.3);
+    }
+
+    .nav-item.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 4px;
+        background: white;
+    }
+
+    .nav-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-text {
+        font-size: 15px;
+        font-weight: 500;
+        transition: opacity 0.3s ease;
+    }
+
+    .admin-panel.collapsed .nav-text {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    .logout-btn {
+        display: flex;
+        align-items: center;
+        width: calc(100% - 24px);
+        margin: 20px 12px 0;
+        padding: 14px 24px;
+        background: rgba(228, 58, 25, 0.2);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .logout-btn:hover {
+        background: var(--accent);
+        box-shadow: 0 4px 12px rgba(228, 58, 25, 0.3);
+    }
+
+    .logout-icon {
+        margin-right: 16px;
+    }
+
+    .admin-panel.collapsed .logout-btn span {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+        flex: 1;
+        padding: 30px;
+        background: var(--light);
+    }
+
+    .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .filter-container {
+        position: relative;
+    }
+
+    .filter-select {
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 1px solid rgba(2, 2, 5, 0.1);
+        background: white;
+        font-size: 14px;
+        color: var(--dark);
+        cursor: pointer;
+        appearance: none;
+        padding-right: 40px;
+        min-width: 200px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
     }
 
-    .panel_ul li:hover span {
-        opacity: 1;
+    .filter-select:hover {
+        border-color: rgba(2, 2, 5, 0.2);
     }
 
-    .admin_panel .panel_ul li span {
-        display: block;
+    .filter-select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(228, 58, 25, 0.2);
     }
 
-    .admin_panel2 .panel_ul li span {
-        display: none;
+    .filter-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
     }
 
-    .admin_panel .three_line_container:hover .three_line:nth-child(1) {
-        transform: translateY(-2px);
+    /* Data Table Styles */
+    .data-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
     }
 
-    .admin_panel .three_line_container:hover .three_line:nth-child(3) {
-        transform: translateY(2px);
+    .data-header {
+        padding: 20px;
+        border-bottom: 1px solid rgba(2, 2, 5, 0.05);
+    }
+
+    .data-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--navy);
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .data-table th {
+        background: rgba(17, 31, 77, 0.05);
+        padding: 14px 20px;
+        text-align: left;
+        font-weight: 600;
+        color: var(--navy);
+        font-size: 14px;
+    }
+
+    .data-table td {
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(2, 2, 5, 0.05);
+        font-size: 14px;
+    }
+
+    .data-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .data-table tr:hover td {
+        background: rgba(228, 58, 25, 0.03);
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .status-present {
+        background: rgba(46, 204, 113, 0.1);
+        color: #2ecc71;
+    }
+
+    .status-late {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .admin-panel {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 1000;
+            transform: translateX(-100%);
+        }
+
+        .admin-panel.open {
+            transform: translateX(0);
+        }
+
+        .main-content {
+            padding: 20px;
+        }
     }
 </style>
-<div style="display: flex;">
-    <div class="admin_panel2" id="panel">
-        <button class="three_line_container" onclick="ExpandMenu()">
-            <div class="three_line"></div>
-            <div class="three_line"></div>
-            <div class="three_line"></div>
-        </button>
 
-        <ul class="panel_ul">
-            <a href="/adminPanel/records">
-                <li>
-                    <img src="{{ URL('Images/directory.png') }}" alt="Records">
-                    <span>Records</span>
-                </li>
+<div class="dashboard-container">
+    <div class="admin-panel" id="panel">
+        <div class="panel-header">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+            </div>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <nav class="panel-nav">
+            <a href="/adminPanel/records" class="nav-item active">
+                <div class="nav-icon">📁</div>
+                <span class="nav-text">Records</span>
             </a>
-            <a href="/adminPanel/generate_user">
-                <li>
-                    <img src="{{ URL('Images/working.png') }}" alt="Generate User">
-                    <span>Generate User</span>
-                </li>
+            <a href="/adminPanel/generate_user" class="nav-item">
+                <div class="nav-icon">👥</div>
+                <span class="nav-text">Generate User</span>
             </a>
-            <a href="/adminPanel/downloadData">
-                <li>
-                    <img src="{{ URL('Images/download.png') }}" alt="Download Data">
-                    <span>Download Data</span>
-                </li>
+            <a href="/adminPanel/downloadData" class="nav-item">
+                <div class="nav-icon">⏬</div>
+                <span class="nav-text">Download Data</span>
             </a>
-            <a href="/adminPanel/search_user">
-                <li>
-                    <img src="{{ URL('Images/cv.png') }}" alt="Search User">
-                    <span>Search User</span>
-                </li>
+            <a href="/adminPanel/search_user" class="nav-item">
+                <div class="nav-icon">🔍</div>
+                <span class="nav-text">Search User</span>
             </a>
-            <a href="/adminPanel/holiday">
-                <li>
-                    <img src="{{ URL('Images/cv.png') }}" alt="Search User">
-                    <span>Holiday Settings</span>
-                </li>
+            <a href="/adminPanel/holiday" class="nav-item">
+                <div class="nav-icon">🌴</div>
+                <span class="nav-text">Holiday Settings</span>
             </a>
-            <li style="background-color: red; color:white; display: flex; justify-content: center; align-items: center;cursor: pointer;">
-                <!-- <img src="{{ URL('Images/cv.png') }}" alt="Search User"> -->
-                <form action="/logout" method="post">
-                    @csrf
-                    <button id="logout" style="display: flex; flex: 1; background-color: transparent; color: white; border: none;" type="submit">Logout</button>
-                </form>
-            </li>
-        </ul>
-    </div>
-    <div style="flex: 1;">
-        <form action="/filter" method="post">
+        </nav>
+
+        <button class="logout-btn" onclick="document.querySelector('form').submit()">
+            <div class="nav-icon logout-icon">🚪</div>
+            <span>Logout</span>
+        </button>
+        <form action="/logout" method="post" style="display: none;">
             @csrf
-            <select name="filters" id="" onchange="this.form.submit()">
-                <option value="">--select--</option>
-                <option value="late">Late</option>
-                <option value="employeelist">Employee List</option>
-                <option value="present">Present Today</option>
-            </select>
         </form>
-        <div style="height: fit-content; width: fit-content;border: 1px solid black;">
-            <h1> Late Employee </h1>
-            @if (isset($late))
-            <table border="1">
-                <tr>
-                    <th>
-                        Check In
-                    </th>
-                    <th>
-                        Check Out
-                    </th>
-                </tr>
-                @foreach ($late as $i)
-                <tr>
-                    <td>
-                        {{ $i->entry }}
-                    </td>
-                    <td>
-                        {{ $i->leave }}
-                    </td>
-                </tr>
-                @endforeach
-            </table>
-            @endif
+    </div>
+
+    <div class="main-content">
+        <div class="content-header">
+            <h1 class="page-title">Employee Records</h1>
+            <div class="filter-container">
+                <form action="/filter" method="post">
+                    @csrf
+                    <select name="filters" class="filter-select" onchange="this.form.submit()">
+                        <option value="">-- Select Filter --</option>
+                        <option value="late" <?= isset($late) ? 'selected' : '' ?>>Late Employees</option>
+                        <option value="employeelist" <?= isset($emplist) ? 'selected' : '' ?>>All Employees</option>
+                        <option value="present" <?= isset($present) ? 'selected' : '' ?>>Present Today</option>
+                    </select>
+                    <div class="filter-icon">▼</div>
+                </form>
+            </div>
         </div>
-        <div style="height: fit-content; width: fit-content;border: 1px solid black;">
-            <h1> EMployee List </h1>
-            @if (isset($emplist))
-            <table border="1">
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Join Date</th>
-                </tr>
-                @foreach ($emplist as $i)
-                <tr>
-                    <td>{{ $i->name }}</td>
-                    <td>{{ $i->email }}</td>
-                    <td>{{ $i->created_at }}</td>
-                </tr>
-                @endforeach
-            </table>
-            @endif
-        </div>
-        <div style="height: fit-content; width: fit-content;border: 1px solid black;">
-            <h1> Present Today </h1>
-            @if (isset($present))
-            <table border="1">
-                <tr>
-                    <th>
-                        Entry
-                    </th>
-                    <th>
-                        Leave
-                    </th>
-                </tr>
-                @foreach ($present as $i)
-                <tr>
-                    <th>
-                        {{ $i->entry }}
-                    </th>
-                    <th>
-                        {{ $i->leave }}
-                    </th>
-                </tr>
-                @endforeach
-            </table>
-            @endif
-        </div>
+
+        <?php if (isset($late)): ?>
+            <div class="data-container">
+                <div class="data-header">
+                    <h2 class="data-title">Late Employees Today</h2>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($late as $i): ?>
+                            <tr>
+                                <td><?= $i->name ?></td>
+                                <td><?= $i->entry ?></td>
+                                <td><?= $i->leave ?></td>
+                                <td><span class="status-badge status-late">Late</span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($emplist)): ?>
+            <div class="data-container">
+                <div class="data-header">
+                    <h2 class="data-title">All Employees</h2>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Join Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($emplist as $i): ?>
+                            <tr>
+                                <td><?= $i->name ?></td>
+                                <td><?= $i->email ?></td>
+                                <td><?= date('M d, Y', strtotime($i->created_at)) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($present)): ?>
+            <div class="data-container">
+                <div class="data-header">
+                    <h2 class="data-title">Present Employees Today</h2>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Entry Time</th>
+                            <th>Leave Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($present as $i): ?>
+                            <tr>
+                                <td><?= $i->name ?></td>
+                                <td><?= $i->entry ?></td>
+                                <td><?= $i->leave ?></td>
+                                <td><span class="status-badge status-present">Present</span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
+
 <script>
-    function ExpandMenu() {
-        const panel = document.querySelector('#panel');
-        if (panel) {
-            if (panel.classList.contains('admin_panel2')) {
-                panel.classList.remove('admin_panel2');
-                panel.classList.add('admin_panel');
-            } else {
-                panel.classList.remove('admin_panel');
-                panel.classList.add('admin_panel2');
-            }
-        } else {
-            console.error('Element with ID #panel not found!');
-        }
+    function toggleMenu() {
+        const panel = document.getElementById('panel');
+        panel.classList.toggle('collapsed');
     }
+
+    // Highlight active nav item based on current URL
+    document.addEventListener('DOMContentLoaded', function() {
+        const navItems = document.querySelectorAll('.nav-item');
+        const currentPath = window.location.pathname;
+
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === currentPath) {
+                item.classList.add('active');
+            }
+        });
+    });
 </script>
