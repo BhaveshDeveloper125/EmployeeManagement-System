@@ -165,7 +165,86 @@
             </li>
         </ul>
     </div>
-    <div style="flex: 1;"></div>
+    <div style="flex: 1;">
+        <form action="/filter" method="post">
+            @csrf
+            <select name="filters" id="" onchange="this.form.submit()">
+                <option value="">--select--</option>
+                <option value="late">Late</option>
+                <option value="employeelist">Employee List</option>
+                <option value="present">Present Today</option>
+            </select>
+        </form>
+        <div style="height: fit-content; width: fit-content;border: 1px solid black;">
+            <h1> Late Employee </h1>
+            @if (isset($late))
+            <table border="1">
+                <tr>
+                    <th>
+                        Check In
+                    </th>
+                    <th>
+                        Check Out
+                    </th>
+                </tr>
+                @foreach ($late as $i)
+                <tr>
+                    <td>
+                        {{ $i->entry }}
+                    </td>
+                    <td>
+                        {{ $i->leave }}
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+            @endif
+        </div>
+        <div style="height: fit-content; width: fit-content;border: 1px solid black;">
+            <h1> EMployee List </h1>
+            @if (isset($emplist))
+            <table border="1">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Join Date</th>
+                </tr>
+                @foreach ($emplist as $i)
+                <tr>
+                    <td>{{ $i->name }}</td>
+                    <td>{{ $i->email }}</td>
+                    <td>{{ $i->created_at }}</td>
+                </tr>
+                @endforeach
+            </table>
+            @endif
+        </div>
+        <div style="height: fit-content; width: fit-content;border: 1px solid black;">
+            <h1> Present Today </h1>
+            @if (isset($present))
+            <table border="1">
+                <tr>
+                    <th>
+                        Entry
+                    </th>
+                    <th>
+                        Leave
+                    </th>
+                </tr>
+                @foreach ($present as $i)
+                <tr>
+                    <th>
+                        {{ $i->entry }}
+                    </th>
+                    <th>
+                        {{ $i->leave }}
+                    </th>
+                </tr>
+                @endforeach
+            </table>
+            @endif
+        </div>
+    </div>
 </div>
 <script>
     function ExpandMenu() {

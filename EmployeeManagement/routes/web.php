@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\EmployeeAttendance;
+use App\Http\Controllers\FilterController;
 use App\Http\Controllers\MediaController;
 use App\Http\Middleware\AddUserDetailsCheck;
 // use App\Models\ExtraUserData;
@@ -34,17 +35,18 @@ Route::get('/homepage/{id}', [EmployeeAttendance::class, 'homepage']);
 
 
 
+Route::put('/editedData/{id}', [AdminController::class, 'SaveEditEmpDatas'])->middleware(LoginCheck::class);
 Route::post('/Entery', [EmployeeAttendance::class, 'WorkStart'])->middleware(LoginCheck::class);
 Route::post('/leave', [EmployeeAttendance::class, 'WorkEnd'])->middleware(LoginCheck::class);
 Route::post('/user_register', [AdminController::class, 'AddUsers'])->middleware(LoginCheck::class);
 Route::post('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(LoginCheck::class);
 Route::post('/get_user_info', [AdminController::class, 'SearchUser'])->middleware(LoginCheck::class);
-Route::put('/editedData/{id}', [AdminController::class, 'SaveEditEmpDatas'])->middleware(LoginCheck::class);
 Route::post('/setholiday', [AdminController::class, 'Holidays']);
+Route::post('/filter', [FilterController::class, 'FilterData']);
 
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
-Route::view('/filter', 'Filter');
+Route::view('/filters', 'Filter');
 
 
 
