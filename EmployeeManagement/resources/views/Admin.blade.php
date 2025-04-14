@@ -324,7 +324,7 @@
                 </a>
                 <a href="/adminPanel/holiday">
                     <li>
-                        <img src="{{ URL('Images/cv.png') }}" alt="Search User">
+                        <img src="{{ URL('Images/travel.png') }}" alt="Search User">
                         <span>Holiday Settings</span>
                     </li>
                 </a>
