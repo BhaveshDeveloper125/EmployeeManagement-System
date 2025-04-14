@@ -96,8 +96,13 @@ class EmployeeAttendance extends Controller
 
     public function homepage($id)
     {
+        $isadmin = ExtraUserData::where('user_id', $id)->where('isAdmin', '1')->value('isAdmin');
 
+        // dd(gettype($isadmin));
 
+        if ($isadmin == '1') {
+            return redirect('adminPanel');
+        }
 
         $getattendance = EmployeeTimeWatcher::where('user_id', $id)->get();
 
@@ -129,12 +134,6 @@ class EmployeeAttendance extends Controller
             ->whereDate('entry', $today)
             ->first();
 
-        $isadmin = ExtraUserData::where('user_id', Auth::user()->id)->where('isAdmin', 1)->pluck('isAdmin');
-
-
-        if ($isadmin == '1') {
-            return redirect('adminPanel');
-        }
 
         return view('EmployeeAttendance', [
             'data' => $getattendance,
