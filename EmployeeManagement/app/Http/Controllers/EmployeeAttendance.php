@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmployeeTimeWatcher;
+use App\Models\ExtraUserData;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -95,6 +96,13 @@ class EmployeeAttendance extends Controller
 
     public function homepage($id)
     {
+
+        $isadmin = ExtraUserData::where('user_id', Auth::user()->id)->where('isAdmin', 1)->get();
+
+        if ($isadmin) {
+            return redirect('adminPanel');
+        }
+
         $getattendance = EmployeeTimeWatcher::where('user_id', $id)->get();
 
         $attendance = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('entry', Carbon::now()->month)->whereYear('entry', Carbon::now()->year)->count();

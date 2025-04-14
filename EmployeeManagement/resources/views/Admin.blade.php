@@ -273,6 +273,12 @@
                 justify-content: center;
             }
         }
+
+        #logout {
+            &:hover {
+                cursor: pointer;
+            }
+        }
     </style>
 </head>
 
@@ -316,6 +322,13 @@
                         <span>Holiday Settings</span>
                     </li>
                 </a>
+                <li style="background-color: red; color:white; display: flex; justify-content: center; align-items: center;cursor: pointer;">
+                    <!-- <img src="{{ URL('Images/cv.png') }}" alt="Search User"> -->
+                    <form action="/logout" method="post">
+                        @csrf
+                        <button id="logout" style="display: flex; flex: 1; background-color: transparent; color: white; border: none;" type="submit">Logout</button>
+                    </form>
+                </li>
             </ul>
         </div>
 
