@@ -44,6 +44,7 @@ Route::post('/setholiday', [AdminController::class, 'Holidays']);
 
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
+Route::view('/filter', 'Filter');
 
 
 

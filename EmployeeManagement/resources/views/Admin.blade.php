@@ -212,6 +212,12 @@
         }
     </style>
     <style>
+        a {
+            text-decoration: none;
+        }
+
+
+
         .action-links {
             display: flex;
             gap: 20px;
@@ -336,28 +342,40 @@
             <br><br>
             <div class="cardcontainer">
                 <div class="cards">
-                    <h1>Total Employees</h1>
-                    <h1>{{ $userData }}</h1>
+                    <a href="">
+                        <h1>Total Employees</h1>
+                        <h1>{{ $userData }}</h1>
+                    </a>
                 </div>
                 <div class="cards">
-                    <h1>Late Today</h1>
-                    <h1>{{ $lateEmp }}</h1>
+                    <a href="/filter">
+                        <h1>Late Today</h1>
+                        <h1>{{ $lateEmp }}</h1>
+                    </a>
                 </div>
                 <div class="cards">
-                    <h1>Present Today</h1>
-                    <h1>{{ $presentToday }}</h1>
+                    <a href="">
+                        <h1>Present Today</h1>
+                        <h1>{{ $presentToday }}</h1>
+                    </a>
                 </div>
                 <div class="cards">
-                    <h1>Leave Today</h1>
-                    <h1>{{ $leaveToday }}</h1>
+                    <a href="">
+                        <h1>Leave Today</h1>
+                        <h1>{{ $leaveToday }}</h1>
+                    </a>
                 </div>
                 <div class="cards">
-                    <h1>Absent Today</h1>
-                    <h1>{{ $absent }}</h1>
+                    <a href="">
+                        <h1>Absent Today</h1>
+                        <h1>{{ $absent }}</h1>
+                    </a>
                 </div>
                 <div class="cards">
-                    <h1>Early Leave Today</h1>
-                    <h1>{{ $earlyLeave }}</h1>
+                    <a href="">
+                        <h1>Early Leave Today</h1>
+                        <h1>{{ $earlyLeave }}</h1>
+                    </a>
                 </div>
             </div>
             <div class="action-links">
