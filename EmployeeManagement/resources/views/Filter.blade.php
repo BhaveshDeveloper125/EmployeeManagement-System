@@ -344,7 +344,7 @@
     <div class="admin-panel" id="panel">
         <div class="panel-header">
             <div class="logo">
-                <span class="logo-icon">⚡</span>
+                <!-- <span class="logo-icon">⚡</span> -->
             </div>
             <button class="menu-toggle" onclick="toggleMenu()">
                 <span></span>
