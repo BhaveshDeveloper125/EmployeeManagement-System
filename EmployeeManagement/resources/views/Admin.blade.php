@@ -348,7 +348,7 @@
                     </a>
                 </div>
                 <div class="cards">
-                    <a href="/filters">
+                    <a href="/filters?filter=late">
                         <h1>Late Today</h1>
                         <h1>{{ $lateEmp }}</h1>
                     </a>

@@ -24,16 +24,19 @@
     .dashboard-container {
         display: flex;
         min-height: 100vh;
+        position: relative;
     }
 
+    /* Sidebar Styles */
     .admin-panel {
         width: 280px;
         background: var(--navy);
         color: var(--light);
-        transition: all 0.4s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
-        z-index: 1000;
+        z-index: 100;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        overflow-x: hidden;
     }
 
     .admin-panel.collapsed {
@@ -45,6 +48,7 @@
         display: flex;
         align-items: center;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        min-height: 80px;
     }
 
     .logo {
@@ -73,7 +77,6 @@
         align-items: center;
         cursor: pointer;
         transition: all 0.3s ease;
-        z-index: 1100;
     }
 
     .menu-toggle:hover {
@@ -90,6 +93,7 @@
         border-radius: 2px;
     }
 
+    /* Show cross when expanded */
     .admin-panel:not(.collapsed) .menu-toggle span:nth-child(1) {
         transform: translateY(5px) rotate(45deg);
     }
@@ -119,6 +123,7 @@
         opacity: 0.9;
         position: relative;
         overflow: hidden;
+        white-space: nowrap;
     }
 
     .nav-item:hover {
@@ -145,15 +150,16 @@
     .nav-icon {
         width: 24px;
         height: 24px;
+        min-width: 24px;
         margin-right: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-shrink: 0;
+        transition: margin 0.3s ease;
     }
 
     .admin-panel.collapsed .nav-icon {
-        margin: 0 auto;
+        margin-right: 0;
     }
 
     .nav-icon img {
@@ -161,9 +167,13 @@
         height: 100%;
         object-fit: contain;
         filter: brightness(0) invert(1);
+        transition: filter 0.3s ease;
     }
 
-    .nav-item:hover .nav-icon img,
+    .nav-item:hover .nav-icon img {
+        filter: brightness(1) invert(0);
+    }
+
     .nav-item.active .nav-icon img {
         filter: brightness(1) invert(0);
     }
@@ -171,7 +181,11 @@
     .nav-text {
         font-size: 15px;
         font-weight: 500;
-        transition: opacity 0.3s ease;
+        transition: all 0.3s ease;
+        opacity: 1;
+        width: auto;
+        height: auto;
+        overflow: visible;
     }
 
     .admin-panel.collapsed .nav-text {
@@ -179,6 +193,7 @@
         width: 0;
         height: 0;
         overflow: hidden;
+        margin-left: 0;
     }
 
     .logout-btn {
@@ -195,6 +210,7 @@
         transition: all 0.3s ease;
         font-size: 15px;
         font-weight: 500;
+        white-space: nowrap;
     }
 
     .logout-btn:hover {
@@ -204,6 +220,12 @@
 
     .logout-icon {
         margin-right: 16px;
+        min-width: 24px;
+        transition: margin 0.3s ease;
+    }
+
+    .admin-panel.collapsed .logout-icon {
+        margin-right: 0;
     }
 
     .logout-icon img {
@@ -217,12 +239,15 @@
         width: 0;
         height: 0;
         overflow: hidden;
+        margin-left: 0;
     }
 
+    /* Main Content Styles */
     .main-content {
         flex: 1;
         padding: 30px;
         background: var(--light);
+        transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .content-header {
@@ -230,16 +255,20 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
     }
 
     .page-title {
         font-size: 28px;
         font-weight: 700;
         color: var(--navy);
+        margin-right: auto;
     }
 
     .filter-container {
         position: relative;
+        min-width: 200px;
     }
 
     .filter-select {
@@ -252,7 +281,7 @@
         cursor: pointer;
         appearance: none;
         padding-right: 40px;
-        min-width: 200px;
+        width: 100%;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
     }
@@ -275,11 +304,14 @@
         pointer-events: none;
     }
 
+    /* Data Table Styles */
     .data-container {
         background: white;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         overflow: hidden;
+        width: 100%;
+        overflow-x: auto;
     }
 
     .data-header {
@@ -296,6 +328,7 @@
     .data-table {
         width: 100%;
         border-collapse: collapse;
+        min-width: 600px;
     }
 
     .data-table th {
@@ -339,12 +372,43 @@
         color: #e74c3c;
     }
 
-    @media (max-width: 768px) {
+    /* Mobile menu button */
+    .mobile-menu-btn {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 999;
+        background: var(--accent);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .mobile-menu-btn span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: white;
+        margin: 3px 0;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
         .admin-panel {
             position: fixed;
             left: 0;
             top: 0;
             bottom: 0;
+            z-index: 900;
             transform: translateX(-100%);
         }
 
@@ -352,42 +416,60 @@
             transform: translateX(0);
         }
 
+        .admin-panel.collapsed {
+            width: 280px;
+        }
+
         .main-content {
+            margin-left: 0 !important;
             padding: 20px;
+            padding-top: 80px;
         }
 
-        .menu-toggle {
-            position: absolute;
-            right: -50px;
-            top: 24px;
-            z-index: 1101;
+        .mobile-menu-btn {
+            display: flex;
+        }
+
+        .content-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .filter-container {
+            width: 100%;
         }
     }
 
-    .panel-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.3);
-        z-index: 999;
-    }
+    @media (max-width: 576px) {
+        .page-title {
+            font-size: 24px;
+        }
 
-    .panel-overlay.active {
-        display: block;
+        .data-header,
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+        }
     }
 </style>
 
-<div class="panel-overlay" id="overlay" onclick="closeMenu()"></div>
+<!-- Mobile menu button (visible only on small screens) -->
+<button class="mobile-menu-btn" id="mobileMenuBtn">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
 
 <div class="dashboard-container">
     <div class="admin-panel" id="panel">
         <div class="panel-header">
-            <div class="logo"></div>
+            <div class="logo">
+                <!-- Logo can be added here if needed -->
+            </div>
             <button class="menu-toggle" onclick="toggleMenu()">
-                <span></span><span></span><span></span>
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
         </div>
 
@@ -418,15 +500,18 @@
             <div class="logout-icon"><img src="{{ URL('Images/logout.png') }}" alt="Logout"></div>
             <span>Logout</span>
         </button>
-        <form action="/logout" method="post" style="display: none;">@csrf</form>
+        <form action="/logout" method="post" style="display: none;">
+            @csrf
+        </form>
     </div>
 
     <div class="main-content">
         <div class="content-header">
             <h1 class="page-title">Employee Records</h1>
             <div class="filter-container">
-                <form action="/filter" method="post">@csrf
-                    <select name="filters" class="filter-select" onchange="this.form.submit()">
+                <form action="/filter" method="post" id="filterForm">
+                    @csrf
+                    <select name="filters" class="filter-select" id="filterSelect" onchange="this.form.submit()">
                         <option value="">-- Select Filter --</option>
                         <option value="late" <?= isset($late) ? 'selected' : '' ?>>Late Employees</option>
                         <option value="employeelist" <?= isset($emplist) ? 'selected' : '' ?>>All Employees</option>
@@ -524,24 +609,26 @@
 <script>
     function toggleMenu() {
         const panel = document.getElementById('panel');
-        const overlay = document.getElementById('overlay');
+        panel.classList.toggle('collapsed');
 
-        if (window.innerWidth <= 768) {
-            panel.classList.toggle('open');
-            overlay.classList.toggle('active');
-        } else {
-            panel.classList.toggle('collapsed');
-        }
+        const isCollapsed = panel.classList.contains('collapsed');
+        localStorage.setItem('adminPanelCollapsed', isCollapsed);
     }
 
-    function closeMenu() {
-        document.getElementById('panel').classList.remove('open');
-        document.getElementById('overlay').classList.remove('active');
-    }
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+        const panel = document.getElementById('panel');
+        panel.classList.toggle('open');
+    });
 
     document.addEventListener('DOMContentLoaded', function() {
+        const panel = document.getElementById('panel');
         const navItems = document.querySelectorAll('.nav-item');
         const currentPath = window.location.pathname;
+
+        const savedState = localStorage.getItem('adminPanelCollapsed');
+        if (savedState === 'true') {
+            panel.classList.add('collapsed');
+        }
 
         navItems.forEach(item => {
             item.classList.remove('active');
@@ -549,5 +636,39 @@
                 item.classList.add('active');
             }
         });
+
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('panel');
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+
+            if (window.innerWidth <= 992 &&
+                !panel.contains(e.target) &&
+                e.target !== mobileBtn &&
+                !mobileBtn.contains(e.target)) {
+                panel.classList.remove('open');
+            }
+        });
+    });
+
+    window.addEventListener('resize', function() {
+        const panel = document.getElementById('panel');
+        if (window.innerWidth > 992) {
+            panel.classList.remove('open');
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const filterParam = urlParams.get('filter');
+
+        if (filterParam) {
+            const selectElement = document.getElementById('filterSelect');
+            // Only auto-submit if the current value doesn't match the parameter
+            if (selectElement.value !== filterParam) {
+                selectElement.value = filterParam;
+                selectElement.dispatchEvent(new Event('change'));
+            }
+        }
     });
 </script>
