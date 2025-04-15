@@ -31,6 +31,10 @@ Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas'])->middlewa
 // Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator'])->middleware(LoginCheck::class);
 Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class);
 Route::get('/homepage/{id}', [EmployeeAttendance::class, 'homepage']);
+Route::get('/filter', function () {
+    return view('Filter');
+});
+
 
 
 

@@ -26,14 +26,13 @@
         min-height: 100vh;
     }
 
-    /* Sidebar Styles */
     .admin-panel {
         width: 280px;
         background: var(--navy);
         color: var(--light);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.4s ease;
         position: relative;
-        z-index: 100;
+        z-index: 1000;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
     }
 
@@ -74,6 +73,7 @@
         align-items: center;
         cursor: pointer;
         transition: all 0.3s ease;
+        z-index: 1100;
     }
 
     .menu-toggle:hover {
@@ -90,7 +90,6 @@
         border-radius: 2px;
     }
 
-    /* Changed these selectors to show cross when expanded */
     .admin-panel:not(.collapsed) .menu-toggle span:nth-child(1) {
         transform: translateY(5px) rotate(45deg);
     }
@@ -150,6 +149,23 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .admin-panel.collapsed .nav-icon {
+        margin: 0 auto;
+    }
+
+    .nav-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: brightness(0) invert(1);
+    }
+
+    .nav-item:hover .nav-icon img,
+    .nav-item.active .nav-icon img {
+        filter: brightness(1) invert(0);
     }
 
     .nav-text {
@@ -190,6 +206,12 @@
         margin-right: 16px;
     }
 
+    .logout-icon img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1);
+    }
+
     .admin-panel.collapsed .logout-btn span {
         opacity: 0;
         width: 0;
@@ -197,7 +219,6 @@
         overflow: hidden;
     }
 
-    /* Main Content Styles */
     .main-content {
         flex: 1;
         padding: 30px;
@@ -254,7 +275,6 @@
         pointer-events: none;
     }
 
-    /* Data Table Styles */
     .data-container {
         background: white;
         border-radius: 12px;
@@ -319,14 +339,12 @@
         color: #e74c3c;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
         .admin-panel {
             position: fixed;
             left: 0;
             top: 0;
             bottom: 0;
-            z-index: 1000;
             transform: translateX(-100%);
         }
 
@@ -337,60 +355,77 @@
         .main-content {
             padding: 20px;
         }
+
+        .menu-toggle {
+            position: absolute;
+            right: -50px;
+            top: 24px;
+            z-index: 1101;
+        }
+    }
+
+    .panel-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 999;
+    }
+
+    .panel-overlay.active {
+        display: block;
     }
 </style>
+
+<div class="panel-overlay" id="overlay" onclick="closeMenu()"></div>
 
 <div class="dashboard-container">
     <div class="admin-panel" id="panel">
         <div class="panel-header">
-            <div class="logo">
-                <!-- <span class="logo-icon">⚡</span> -->
-            </div>
+            <div class="logo"></div>
             <button class="menu-toggle" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </button>
         </div>
 
         <nav class="panel-nav">
             <a href="/adminPanel/records" class="nav-item active">
-                <div class="nav-icon">📁</div>
+                <div class="nav-icon"><img src="{{ URL('Images/directory.png') }}" alt="Records"></div>
                 <span class="nav-text">Records</span>
             </a>
             <a href="/adminPanel/generate_user" class="nav-item">
-                <div class="nav-icon">👥</div>
+                <div class="nav-icon"><img src="{{ URL('Images/working.png') }}" alt="Generate User"></div>
                 <span class="nav-text">Generate User</span>
             </a>
             <a href="/adminPanel/downloadData" class="nav-item">
-                <div class="nav-icon">⏬</div>
+                <div class="nav-icon"><img src="{{ URL('Images/download.png') }}" alt="Download Data"></div>
                 <span class="nav-text">Download Data</span>
             </a>
             <a href="/adminPanel/search_user" class="nav-item">
-                <div class="nav-icon">🔍</div>
+                <div class="nav-icon"><img src="{{ URL('Images/cv.png') }}" alt="Search User"></div>
                 <span class="nav-text">Search User</span>
             </a>
             <a href="/adminPanel/holiday" class="nav-item">
-                <div class="nav-icon">🌴</div>
+                <div class="nav-icon"><img src="{{ URL('Images/travel.png') }}" alt="Holiday Settings"></div>
                 <span class="nav-text">Holiday Settings</span>
             </a>
         </nav>
 
         <button class="logout-btn" onclick="document.querySelector('form').submit()">
-            <div class="nav-icon logout-icon">🚪</div>
+            <div class="logout-icon"><img src="{{ URL('Images/cv.png') }}" alt="Logout"></div>
             <span>Logout</span>
         </button>
-        <form action="/logout" method="post" style="display: none;">
-            @csrf
-        </form>
+        <form action="/logout" method="post" style="display: none;">@csrf</form>
     </div>
 
     <div class="main-content">
         <div class="content-header">
             <h1 class="page-title">Employee Records</h1>
             <div class="filter-container">
-                <form action="/filter" method="post">
-                    @csrf
+                <form action="/filter" method="post">@csrf
                     <select name="filters" class="filter-select" onchange="this.form.submit()">
                         <option value="">-- Select Filter --</option>
                         <option value="late" <?= isset($late) ? 'selected' : '' ?>>Late Employees</option>
@@ -489,10 +524,21 @@
 <script>
     function toggleMenu() {
         const panel = document.getElementById('panel');
-        panel.classList.toggle('collapsed');
+        const overlay = document.getElementById('overlay');
+
+        if (window.innerWidth <= 768) {
+            panel.classList.toggle('open');
+            overlay.classList.toggle('active');
+        } else {
+            panel.classList.toggle('collapsed');
+        }
     }
 
-    // Highlight active nav item based on current URL
+    function closeMenu() {
+        document.getElementById('panel').classList.remove('open');
+        document.getElementById('overlay').classList.remove('active');
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const navItems = document.querySelectorAll('.nav-item');
         const currentPath = window.location.pathname;
