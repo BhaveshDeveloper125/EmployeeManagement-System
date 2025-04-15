@@ -415,7 +415,7 @@
         </nav>
 
         <button class="logout-btn" onclick="document.querySelector('form').submit()">
-            <div class="logout-icon"><img src="{{ URL('Images/cv.png') }}" alt="Logout"></div>
+            <div class="logout-icon"><img src="{{ URL('Images/logout.png') }}" alt="Logout"></div>
             <span>Logout</span>
         </button>
         <form action="/logout" method="post" style="display: none;">@csrf</form>
