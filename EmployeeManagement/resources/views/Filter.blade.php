@@ -27,7 +27,6 @@
         position: relative;
     }
 
-    /* Sidebar Styles */
     .admin-panel {
         width: 280px;
         background: var(--navy);
@@ -93,7 +92,6 @@
         border-radius: 2px;
     }
 
-    /* Show cross when expanded */
     .admin-panel:not(.collapsed) .menu-toggle span:nth-child(1) {
         transform: translateY(5px) rotate(45deg);
     }
@@ -242,7 +240,6 @@
         margin-left: 0;
     }
 
-    /* Main Content Styles */
     .main-content {
         flex: 1;
         padding: 30px;
@@ -304,7 +301,6 @@
         pointer-events: none;
     }
 
-    /* Data Table Styles */
     .data-container {
         background: white;
         border-radius: 12px;
@@ -372,7 +368,6 @@
         color: #e74c3c;
     }
 
-    /* Mobile menu button */
     .mobile-menu-btn {
         display: none;
         position: fixed;
@@ -401,7 +396,6 @@
         border-radius: 2px;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 992px) {
         .admin-panel {
             position: fixed;
@@ -453,7 +447,6 @@
     }
 </style>
 
-<!-- Mobile menu button (visible only on small screens) -->
 <button class="mobile-menu-btn" id="mobileMenuBtn">
     <span></span>
     <span></span>
@@ -513,10 +506,11 @@
                     @csrf
                     <select name="filters" class="filter-select" id="filterSelect" onchange="this.form.submit()">
                         <option value="">-- Select Filter --</option>
-                        <option value="late" <?= isset($late) ? 'selected' : '' ?>>Late Employees</option>
                         <option value="employeelist" <?= isset($emplist) ? 'selected' : '' ?>>All Employees</option>
+                        <option value="late" <?= isset($late) ? 'selected' : '' ?>>Late Employees</option>
                         <option value="present" <?= isset($present) ? 'selected' : '' ?>>Present Today</option>
-                        <option value="leave" <?= isset($present) ? 'selected' : '' ?>>Leave Today</option>
+                        <option value="leave" <?= isset($leave) ? 'selected' : '' ?>>Leave Today</option>
+                        <option value="early_leave" <?= isset($early_leave) ? 'selected' : '' ?>>Early eave Today</option>
                     </select>
                     <div class="filter-icon">▼</div>
                 </form>
@@ -604,6 +598,62 @@
                 </table>
             </div>
         <?php endif; ?>
+
+        <?php if (isset($leave)): ?>
+            <div class="data-container">
+                <div class="data-header">
+                    <h2 class="data-title">Todays Leave</h2>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Entry Time</th>
+                            <th>Leave Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($leave as $i): ?>
+                            <tr>
+                                <td><?= $i->name ?></td>
+                                <td><?= $i->entry ?></td>
+                                <td><?= $i->leave ?></td>
+                                <td><span class="status-badge status-present">Leave</span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($early_leave)): ?>
+            <div class="data-container">
+                <div class="data-header">
+                    <h2 class="data-title">Todays Leave</h2>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Entry Time</th>
+                            <th>Leave Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($early_leave as $i): ?>
+                            <tr>
+                                <td><?= $i->name ?></td>
+                                <td><?= $i->entry ?></td>
+                                <td><?= $i->leave ?></td>
+                                <td><span class="status-badge status-late">Early Leave</span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -665,7 +715,6 @@
 
         if (filterParam) {
             const selectElement = document.getElementById('filterSelect');
-            // Only auto-submit if the current value doesn't match the parameter
             if (selectElement.value !== filterParam) {
                 selectElement.value = filterParam;
                 selectElement.dispatchEvent(new Event('change'));

@@ -342,7 +342,7 @@
             <br><br>
             <div class="cardcontainer">
                 <div class="cards">
-                    <a href="">
+                    <a href="/filters?filter=employeelist">
                         <h1>Total Employees</h1>
                         <h1>{{ $userData }}</h1>
                     </a>
@@ -360,7 +360,7 @@
                     </a>
                 </div>
                 <div class="cards">
-                    <a href="">
+                    <a href="/filters?filter=leave">
                         <h1>Leave Today</h1>
                         <h1>{{ $leaveToday }}</h1>
                     </a>
@@ -372,7 +372,7 @@
                     </a>
                 </div>
                 <div class="cards">
-                    <a href="">
+                    <a href="/filters?filter=early_leave">
                         <h1>Early Leave Today</h1>
                         <h1>{{ $earlyLeave }}</h1>
                     </a>
