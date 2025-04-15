@@ -354,7 +354,7 @@
                     </a>
                 </div>
                 <div class="cards">
-                    <a href="">
+                    <a href="/filters?filter=present">
                         <h1>Present Today</h1>
                         <h1>{{ $presentToday }}</h1>
                     </a>

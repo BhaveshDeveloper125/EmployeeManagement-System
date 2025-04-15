@@ -516,6 +516,7 @@
                         <option value="late" <?= isset($late) ? 'selected' : '' ?>>Late Employees</option>
                         <option value="employeelist" <?= isset($emplist) ? 'selected' : '' ?>>All Employees</option>
                         <option value="present" <?= isset($present) ? 'selected' : '' ?>>Present Today</option>
+                        <option value="leave" <?= isset($present) ? 'selected' : '' ?>>Leave Today</option>
                     </select>
                     <div class="filter-icon">▼</div>
                 </form>
