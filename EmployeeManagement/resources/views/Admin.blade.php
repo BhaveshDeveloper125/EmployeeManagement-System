@@ -286,56 +286,345 @@
             }
         }
     </style>
+    <style>
+        :root {
+            --navy: #111F4D;
+            --light: #F2F4F7;
+            --accent: #E43A19;
+            --dark: #020205;
+            --navy-light: #2A3A6D;
+            --accent-light: #FF5C3A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .admin-panel {
+            height: 100vh;
+            width: 280px;
+            background: var(--navy);
+            color: var(--light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 100;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+            overflow-x: hidden;
+        }
+
+        .admin-panel.collapsed {
+            width: 80px;
+        }
+
+        .panel-header {
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 80px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: var(--accent);
+        }
+
+        .menu-toggle {
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .admin-panel:not(.collapsed) .menu-toggle span:nth-child(1) {
+            transform: translateY(5px) rotate(45deg);
+        }
+
+        .admin-panel:not(.collapsed) .menu-toggle span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .admin-panel:not(.collapsed) .menu-toggle span:nth-child(3) {
+            transform: translateY(-5px) rotate(-45deg);
+        }
+
+        .panel-nav {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 24px;
+            margin: 4px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--light);
+            opacity: 0.9;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 1;
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: var(--accent);
+            box-shadow: 0 4px 12px rgba(228, 58, 25, 0.3);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: white;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: margin 0.3s ease;
+        }
+
+        .admin-panel.collapsed .nav-icon {
+            margin-right: 0;
+        }
+
+        .nav-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            transition: filter 0.3s ease;
+        }
+
+        .nav-item:hover .nav-icon img {
+            filter: brightness(1) invert(0);
+        }
+
+        .nav-item.active .nav-icon img {
+            filter: brightness(1) invert(0);
+        }
+
+        .nav-text {
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            opacity: 1;
+            width: auto;
+            height: auto;
+            overflow: visible;
+        }
+
+        .admin-panel.collapsed .nav-text {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            margin-left: 0;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            width: calc(100% - 24px);
+            margin: 20px 12px 0;
+            padding: 14px 24px;
+            background: rgba(228, 58, 25, 0.2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .logout-btn:hover {
+            background: var(--accent);
+            box-shadow: 0 4px 12px rgba(228, 58, 25, 0.3);
+        }
+
+        .logout-icon {
+            margin-right: 16px;
+            min-width: 24px;
+            transition: margin 0.3s ease;
+        }
+
+        .admin-panel.collapsed .logout-icon {
+            margin-right: 0;
+        }
+
+        .logout-icon img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        .admin-panel.collapsed .logout-btn span {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            margin-left: 0;
+        }
+
+        @media (max-width: 992px) {
+            .admin-panel {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 900;
+                transform: translateX(-100%);
+            }
+
+            .admin-panel.open {
+                transform: translateX(0);
+            }
+
+            .admin-panel.collapsed {
+                width: 280px;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+                padding: 20px;
+                padding-top: 80px;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-container {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .page-title {
+                font-size: 24px;
+            }
+
+            .data-header,
+            .data-table th,
+            .data-table td {
+                padding: 12px 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div style="display: flex;">
-        <div class="admin_panel2" id="panel">
-            <button class="three_line_container" onclick="ExpandMenu()">
-                <div class="three_line"></div>
-                <div class="three_line"></div>
-                <div class="three_line"></div>
-            </button>
+        <div class="admin-panel" id="panel">
+            <div class="panel-header">
+                <div class="logo">
+                    <!-- Logo can be added here if needed -->
+                </div>
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
 
-            <ul class="panel_ul">
-                <a href="/adminPanel/records">
-                    <li>
-                        <img src="{{ URL('Images/directory.png') }}" alt="Records">
-                        <span>Records</span>
-                    </li>
+            <nav class="panel-nav">
+                <a href="/adminPanel/records" class="nav-item active">
+                    <div class="nav-icon"><img src="{{ URL('Images/directory.png') }}" alt="Records"></div>
+                    <span class="nav-text">Records</span>
                 </a>
-                <a href="/adminPanel/generate_user">
-                    <li>
-                        <img src="{{ URL('Images/working.png') }}" alt="Generate User">
-                        <span>Generate User</span>
-                    </li>
+                <a href="/adminPanel/generate_user" class="nav-item">
+                    <div class="nav-icon"><img src="{{ URL('Images/working.png') }}" alt="Generate User"></div>
+                    <span class="nav-text">Generate User</span>
                 </a>
-                <a href="/adminPanel/downloadData">
-                    <li>
-                        <img src="{{ URL('Images/download.png') }}" alt="Download Data">
-                        <span>Download Data</span>
-                    </li>
+                <a href="/adminPanel/downloadData" class="nav-item">
+                    <div class="nav-icon"><img src="{{ URL('Images/download.png') }}" alt="Download Data"></div>
+                    <span class="nav-text">Download Data</span>
                 </a>
-                <a href="/adminPanel/search_user">
-                    <li>
-                        <img src="{{ URL('Images/cv.png') }}" alt="Search User">
-                        <span>Search User</span>
-                    </li>
+                <a href="/adminPanel/search_user" class="nav-item">
+                    <div class="nav-icon"><img src="{{ URL('Images/cv.png') }}" alt="Search User"></div>
+                    <span class="nav-text">Search User</span>
                 </a>
-                <a href="/adminPanel/holiday">
-                    <li>
-                        <img src="{{ URL('Images/travel.png') }}" alt="Search User">
-                        <span>Holiday Settings</span>
-                    </li>
+                <a href="/adminPanel/holiday" class="nav-item">
+                    <div class="nav-icon"><img src="{{ URL('Images/travel.png') }}" alt="Holiday Settings"></div>
+                    <span class="nav-text">Holiday Settings</span>
                 </a>
-                <li style="background-color: red; color:white; display: flex; justify-content: center; align-items: center;cursor: pointer;">
-                    <!-- <img src="{{ URL('Images/cv.png') }}" alt="Search User"> -->
-                    <form action="/logout" method="post">
-                        @csrf
-                        <button id="logout" style="display: flex; flex: 1; background-color: transparent; color: white; border: none;" type="submit">Logout</button>
-                    </form>
-                </li>
-            </ul>
+            </nav>
+
+            <button class="logout-btn" onclick="document.querySelector('form').submit()">
+                <div class="logout-icon"><img src="{{ URL('Images/logout.png') }}" alt="Logout"></div>
+                <span>Logout</span>
+            </button>
+            <form action="/logout" method="post" style="display: none;">
+                @csrf
+            </form>
         </div>
 
         <div style="flex: 1;">
@@ -400,6 +689,35 @@
             } else {
                 console.error('Element with ID #panel not found!');
             }
+        }
+    </script>
+    <script>
+        function ExpandMenu() {
+            const panel = document.querySelector('#panel');
+            if (panel) {
+                if (panel.classList.contains('admin_panel2')) {
+                    panel.classList.remove('admin_panel2');
+                    panel.classList.add('admin_panel');
+                } else {
+                    panel.classList.remove('admin_panel');
+                    panel.classList.add('admin_panel2');
+                }
+            } else {
+                console.error('Element with ID #panel not found!');
+            }
+        }
+
+        function addDateInput() {
+            const dateInputs = document.getElementById('dateInputs');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'date-group';
+            newGroup.innerHTML = `
+                <input type="date" name="dates[]" required>
+                <input type="text" name="titles[]" placeholder="Enter holiday title" required>
+                <textarea name="reasons[]" placeholder="Reason for holiday" required></textarea>
+                <button type="button" class="remove-btn" onclick="this.parentNode.remove()">Remove</button>
+            `;
+            dateInputs.appendChild(newGroup);
         }
     </script>
 </body>
