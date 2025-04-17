@@ -47,6 +47,9 @@ Route::post('/user_details', [AdminController::class, 'AddUserDetails'])->middle
 Route::post('/get_user_info', [AdminController::class, 'SearchUser'])->middleware(LoginCheck::class);
 Route::post('/setholiday', [AdminController::class, 'Holidays']);
 Route::post('/filter', [FilterController::class, 'FilterData']);
+Route::post('/setweeklyholiday', function (Request $request) {
+    return response()->json($request::all());
+});
 
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);

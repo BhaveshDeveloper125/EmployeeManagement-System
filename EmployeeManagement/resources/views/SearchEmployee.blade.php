@@ -447,7 +447,7 @@
             </div>
 
             <nav class="panel-nav">
-                <a href="/adminPanel/records" class="nav-item active">
+                <a href="/adminPanel/records" class="nav-item">
                     <div class="nav-icon"><img src="{{ URL('Images/directory.png') }}" alt="Records"></div>
                     <span class="nav-text">Records</span>
                 </a>
@@ -459,7 +459,7 @@
                     <div class="nav-icon"><img src="{{ URL('Images/download.png') }}" alt="Download Data"></div>
                     <span class="nav-text">Download Data</span>
                 </a>
-                <a href="/adminPanel/search_user" class="nav-item">
+                <a href="/adminPanel/search_user" class="nav-item active">
                     <div class="nav-icon"><img src="{{ URL('Images/cv.png') }}" alt="Search User"></div>
                     <span class="nav-text">Search User</span>
                 </a>

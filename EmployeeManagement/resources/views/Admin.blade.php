@@ -573,33 +573,55 @@
         }
     </script>
     <script>
-        function ExpandMenu() {
-            const panel = document.querySelector('#panel');
-            if (panel) {
-                if (panel.classList.contains('admin_panel2')) {
-                    panel.classList.remove('admin_panel2');
-                    panel.classList.add('admin_panel');
-                } else {
-                    panel.classList.remove('admin_panel');
-                    panel.classList.add('admin_panel2');
-                }
-            } else {
-                console.error('Element with ID #panel not found!');
-            }
+        function toggleMenu() {
+            const panel = document.getElementById('panel');
+            panel.classList.toggle('collapsed');
+
+            const isCollapsed = panel.classList.contains('collapsed');
+            localStorage.setItem('adminPanelCollapsed', isCollapsed);
         }
 
-        function addDateInput() {
-            const dateInputs = document.getElementById('dateInputs');
-            const newGroup = document.createElement('div');
-            newGroup.className = 'date-group';
-            newGroup.innerHTML = `
-                <input type="date" name="dates[]" required>
-                <input type="text" name="titles[]" placeholder="Enter holiday title" required>
-                <textarea name="reasons[]" placeholder="Reason for holiday" required></textarea>
-                <button type="button" class="remove-btn" onclick="this.parentNode.remove()">Remove</button>
-            `;
-            dateInputs.appendChild(newGroup);
-        }
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const panel = document.getElementById('panel');
+            panel.classList.toggle('open');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const panel = document.getElementById('panel');
+            const navItems = document.querySelectorAll('.nav-item');
+            const currentPath = window.location.pathname;
+
+            const savedState = localStorage.getItem('adminPanelCollapsed');
+            if (savedState === 'true') {
+                panel.classList.add('collapsed');
+            }
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('active');
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                const panel = document.getElementById('panel');
+                const mobileBtn = document.getElementById('mobileMenuBtn');
+
+                if (window.innerWidth <= 992 &&
+                    !panel.contains(e.target) &&
+                    e.target !== mobileBtn &&
+                    !mobileBtn.contains(e.target)) {
+                    panel.classList.remove('open');
+                }
+            });
+        });
+
+        window.addEventListener('resize', function() {
+            const panel = document.getElementById('panel');
+            if (window.innerWidth > 992) {
+                panel.classList.remove('open');
+            }
+        });
     </script>
 </body>
 

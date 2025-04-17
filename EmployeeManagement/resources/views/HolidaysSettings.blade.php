@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Holidays Settings</title>
-    <style>
+    <!-- <style>
         body {
             margin: 0;
             padding: 0;
@@ -185,7 +185,12 @@
             border-radius: 8px;
             border: 1px solid #ccc;
         }
-    </style>
+    </style> 
+    
+    
+    
+    -->
+
     <style>
         :root {
             --navy: #111F4D;
@@ -496,7 +501,7 @@
             </div>
 
             <nav class="panel-nav">
-                <a href="/adminPanel/records" class="nav-item active">
+                <a href="/adminPanel/records" class="nav-item">
                     <div class="nav-icon"><img src="{{ URL('Images/directory.png') }}" alt="Records"></div>
                     <span class="nav-text">Records</span>
                 </a>
@@ -512,7 +517,7 @@
                     <div class="nav-icon"><img src="{{ URL('Images/cv.png') }}" alt="Search User"></div>
                     <span class="nav-text">Search User</span>
                 </a>
-                <a href="/adminPanel/holiday" class="nav-item">
+                <a href="/adminPanel/holiday" class="nav-item active">
                     <div class="nav-icon"><img src="{{ URL('Images/travel.png') }}" alt="Holiday Settings"></div>
                     <span class="nav-text">Holiday Settings</span>
                 </a>
@@ -528,25 +533,29 @@
         </div>
 
         <div class="content">
-            <form action="" method="post">
-                <h1>Set Weekly Holiday</h1>
-                <select name="weekly_holiday" id="">
-                    <option value="sun">Sunday</option>
-                    <option value="mon">Monday</option>
-                    <option value="tue">Tuesday</option>
-                    <option value="wed">Wednesday</option>
-                    <option value="thurs">Thursday</option>
-                    <option value="fri">Friday</option>
-                    <option value="satur">Saturday</option>
-                    <option value="no">No Holiday</option>
-                </select>
-                <input type="submit" value="Set">
+            <h1>Set Weekly Holiday</h1>
+
+
+            <!-- <select name="weekly_holiday" id="">
+                <option value="sun">Sunday</option>
+                <option value="mon">Monday</option>
+                <option value="tue">Tuesday</option>
+                <option value="wed">Wednesday</option>
+                <option value="thurs">Thursday</option>
+                <option value="fri">Friday</option>
+                <option value="satur">Saturday</option>
+                <option value="no">No Holiday</option>
+            </select> -->
+            <form action="/setweeklyholiday" method="post" id="selctDays">
+                @csrf
+                <button onclick="showDays()" id="daycounter">0 Days</button>
+                <input type="submit" value="Set Holidays">
             </form>
 
             <form action="/setholiday" method="post">
                 @csrf
                 <h1>Set Other Holidays</h1>
-                <div id="dateInputs">
+                <div id="">
                     <div class="date-group">
                         <input type="date" name="dates[]" required>
                         <input type="text" name="titles[]" placeholder="Enter holiday title" required>
@@ -613,34 +622,30 @@
 
 
     <script>
-        function ExpandMenu() {
-            const panel = document.querySelector('#panel');
-            if (panel) {
-                if (panel.classList.contains('admin_panel2')) {
-                    panel.classList.remove('admin_panel2');
-                    panel.classList.add('admin_panel');
-                } else {
-                    panel.classList.remove('admin_panel');
-                    panel.classList.add('admin_panel2');
-                }
-            } else {
-                console.error('Element with ID #panel not found!');
-            }
-        }
+        let weeklyDaysCounter = 0;
 
-        function addDateInput() {
-            const dateInputs = document.getElementById('dateInputs');
-            const newGroup = document.createElement('div');
-            newGroup.className = 'date-group';
-            newGroup.innerHTML = `
-                <input type="date" name="dates[]" required>
-                <input type="text" name="titles[]" placeholder="Enter holiday title" required>
-                <textarea name="reasons[]" placeholder="Reason for holiday" required></textarea>
-                <button type="button" class="remove-btn" onclick="this.parentNode.remove()">Remove</button>
-            `;
-            dateInputs.appendChild(newGroup);
+        function showDays() {
+            weeklyDaysCounter++;
+            if (weeklyDaysCounter == 6) {
+                document.querySelector('#daycounter').disabled = true;
+            }
+            document.querySelector('#daycounter').innerHTML = `${weeklyDaysCounter} Days`;
+            const selector = `<select name="weekly_holiday[]" id="">
+                    <option value="sun">Sunday</option>
+                    <option value="mon">Monday</option>
+                    <option value="tue">Tuesday</option>
+                    <option value="wed">Wednesday</option>
+                    <option value="thurs">Thursday</option>
+                    <option value="fri">Friday</option>
+                    <option value="satur">Saturday</option>
+                    <option value="no">No Holiday</option>
+                </select> `;
+
+            document.querySelector('#selctDays').innerHTML += selector;
         }
     </script>
+
+
 </body>
 
 </html>

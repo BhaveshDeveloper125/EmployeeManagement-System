@@ -427,11 +427,11 @@
             </div>
 
             <nav class="panel-nav">
-                <a href="/adminPanel/records" class="nav-item active">
+                <a href="/adminPanel/records" class="nav-item ">
                     <div class="nav-icon"><img src="{{ URL('Images/directory.png') }}" alt="Records"></div>
                     <span class="nav-text">Records</span>
                 </a>
-                <a href="/adminPanel/generate_user" class="nav-item">
+                <a href="/adminPanel/generate_user" class="nav-item active">
                     <div class="nav-icon"><img src="{{ URL('Images/working.png') }}" alt="Generate User"></div>
                     <span class="nav-text">Generate User</span>
                 </a>
