@@ -20,7 +20,6 @@ return new class extends Migration
             $table->boolean('thurs');
             $table->boolean('fri');
             $table->boolean('satur');
-            $table->boolean('isHoliday');
             $table->timestamps();
         });
     }
