@@ -24,10 +24,10 @@ class AdminCheck
         $isAdminorNot = ExtraUserData::where('user_id', $loggedUser)->first();
 
         if ($isAdminorNot && $isAdminorNot->isAdmin == 1) {
-            return response(app(AdminController::class)->hello());
+            // return response(app(AdminController::class)->hello());
+            return $next($request);
         } else {
             return response()->json(["message" => "You are not Admin and you dont have a permission to access this page2..."]);
         }
-        // return $next($request);
     }
 }
