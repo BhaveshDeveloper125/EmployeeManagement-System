@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\EmployeeAttendance;
 use App\Http\Controllers\FilterController;
+use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\MediaController;
 use App\Http\Middleware\AddUserDetailsCheck;
 // use App\Models\ExtraUserData;
@@ -47,9 +48,7 @@ Route::post('/user_details', [AdminController::class, 'AddUserDetails'])->middle
 Route::post('/get_user_info', [AdminController::class, 'SearchUser'])->middleware(LoginCheck::class);
 Route::post('/setholiday', [AdminController::class, 'Holidays']);
 Route::post('/filter', [FilterController::class, 'FilterData']);
-Route::post('/setweeklyholiday', function (Request $request) {
-    return response()->json($request::all());
-});
+Route::post('/setweeklyholiday', [HolidayController::class, 'SetWeeklyHoliday']);
 
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
