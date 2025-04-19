@@ -17,10 +17,12 @@ class HolidayController extends Controller
             'wed' => false,
             'thurs' => false,
             'fri' => false,
-            'satur => false'
+            'satur' => false,
         ];
-        WeeklyHolidays::firstOrNew([])->fill($updatedata)->save();
-        dd($WeeklyHoliday);
+        $setdefault_first = WeeklyHolidays::firstOrNew([])->fill($updatedata)->save();
+        if ($setdefault_first) {
+            dd($request->all());
+        }
         return response()->json($request->all());
     }
 }

@@ -52,4 +52,47 @@ class FilterController extends Controller
                 return redirect()->back()->with(['message' => 'oops something went wrong...']);
         }
     }
+
+    public function apiFilterData(Request $request)
+    {
+        switch ($request->filters) {
+            case 'late':
+                $late = EmployeeTimeWatcher::whereDate('entry', Carbon::today())
+                    ->whereDate('entry', '>', '10:00:00')
+                    ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+                    ->select('employee_time_watchers.*', 'users.name')
+                    ->get();
+                return response()->json([$late]);
+
+            case 'employeelist':
+                $emplist = User::all();
+                return response()->json([$emplist]);
+
+            case 'present':
+                $present = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+                    ->select('employee_time_watchers.*', 'users.name')
+                    ->get();;
+                return response()->json([$present]);
+
+            case 'leave':
+                $leave = EmployeeTimeWatcher::whereDate('entry', Carbon::today())
+                    ->whereDate('entry', '>', '10:00:00')
+                    ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+                    ->select('employee_time_watchers.*', 'users.name')
+                    ->get();
+                return response()->json(['leave' => $leave]);
+
+            case 'early_leave':
+                $early_leave = EmployeeTimeWatcher::whereDate('entry', Carbon::today())
+                    ->whereTime('leave', '<', '19:00:00')
+                    ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+                    ->select('employee_time_watchers.*', 'users.name')
+                    ->get();
+
+                return response()->json([$early_leave]);
+
+            default:
+                return response()->json(['message' => 'oops something went wrong...']);
+        }
+    }
 }

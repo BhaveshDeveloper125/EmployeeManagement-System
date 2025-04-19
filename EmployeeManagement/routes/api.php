@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\EmployeeAttendance;
+use App\Http\Controllers\FilterController;
 use App\Http\Controllers\MediaController;
 use App\Http\Middleware\AddUserDetailsCheck;
 // use App\Models\ExtraUserData;
@@ -13,6 +14,7 @@ use App\Http\Middleware\AdminCheck;
 use App\Http\Middleware\LoginCheck;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Request;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,4 +39,15 @@ Route::group(["middleware" => "auth:sanctum"], function () {
     Route::post('/addwifi', [EmployeeAttendance::class, 'AddWifiData']); //Add the wifi Data
     Route::get('/getwifi', [EmployeeAttendance::class, 'GetNetworkData']); //get wifi data
     Route::post('/getmac', [EmployeeAttendance::class, 'getMacaddress']); //Get Macaddress
+    Route::post('/filter', [FilterController::class, 'apiFilterData']); //get emp data related to attendance
+
+
+
+    Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
+        Route::get('/records', [AdminController::class, 'apigetData']);
+        // Route::view('/generate_user', 'GenerateUser');
+        // Route::get('/downloadData', [MediaController::class, 'PDFGenerator']); //returns a view 
+        // Route::view('/search_user', 'SearchEmployee');
+        // Route::view('/holiday', 'HolidaysSettings');
+    });
 });

@@ -26,7 +26,7 @@ class AdminCheck
         if ($isAdminorNot && $isAdminorNot->isAdmin == 1) {
             return response(app(AdminController::class)->hello());
         } else {
-            return response()->json(["message" => "You are not Admin and you dont have a permission to access this page..."]);
+            return response()->json(["message" => "You are not Admin and you dont have a permission to access this page2..."]);
         }
         // return $next($request);
     }
