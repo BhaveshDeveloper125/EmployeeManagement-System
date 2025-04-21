@@ -62,10 +62,9 @@ class EmployeeAttendance extends Controller
 
         $overtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '>', Carbon::createFromTime(19, 15, 0))->count();
 
-        $leavingtime = Carbon::today() - EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', Carbon::today()->month)->count();
+        $count =  -EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', Carbon::today()->month)->count();
 
-
-
+        $leavingtime = Carbon::today()->subDays($count);
 
         // $leavingtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '<', Carbon::createFromTime(19, 15, 0))->count();
 
