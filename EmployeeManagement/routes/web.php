@@ -17,11 +17,13 @@ use App\Models\ExtraUserData;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Request;
 
-Route::get('/', function () {
-    return redirect('/login');
-});
 
 Auth::routes();
+
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware(LoginCheck::class);
 Route::get('/attendance/{id}', [EmployeeAttendance::class, 'EmployeeAttendance'])->middleware(LoginCheck::class);
