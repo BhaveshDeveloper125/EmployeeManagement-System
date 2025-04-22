@@ -49,7 +49,7 @@ Route::post('/user_register', [AdminController::class, 'AddUsers'])->middleware(
 Route::post('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(LoginCheck::class);
 Route::post('/get_user_info', [AdminController::class, 'SearchUser'])->middleware(LoginCheck::class);
 Route::post('/setholiday', [AdminController::class, 'Holidays']);
-Route::post('/filter', [FilterController::class, 'apiFilterData']);
+Route::post('/filter', [FilterController::class, 'FilterData']);
 Route::post('/setweeklyholiday', [HolidayController::class, 'SetWeeklyHoliday']);
 
 
