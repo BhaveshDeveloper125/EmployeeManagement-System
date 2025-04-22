@@ -10,6 +10,7 @@ use Cron\HoursField;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Exception;
 
 class AdminController extends Controller
 {
@@ -38,19 +39,40 @@ class AdminController extends Controller
 
     public function getData()
     {
-        $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
-            ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
-            ->select(
-                'employee_time_watchers.user_id',
-                'employee_time_watchers.entry',
-                'employee_time_watchers.leave',
-                'extra_user_data.post',
-                'extra_user_data.mobile',
-                'extra_user_data.address',
-                'extra_user_data.qualificatio',
-                'users.name',
-            )
-            ->get();
+        // $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
+        //     ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+        //     ->select(
+        //         'employee_time_watchers.user_id',
+        //         'employee_time_watchers.entry',
+        //         'employee_time_watchers.leave',
+        //         'extra_user_data.post',
+        //         'extra_user_data.mobile',
+        //         'extra_user_data.address',
+        //         'extra_user_data.qualificatio',
+        //         'users.name',
+        //     )
+        //     ->get();
+
+
+        try {
+            $users = User::with('extraUserData')->get();
+            $MergedData = [];
+            foreach ($users as $i) {
+                foreach ($i->extraUserData as $j) {
+                    $MergedData[] = [
+                        'id' => $i->id,
+                        'name' => $i->name,
+                        'post' => $j->post,
+                        'mobile' => $j->mobile,
+                        'address' => $j->address,
+                        'qualificatio' => $j->qualificatio
+                    ];
+                }
+            }
+        } catch (Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Error fetching employee data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while fetching employee data.');
+        }
         return view('EmployeeRecord', ['data' => $MergedData]);
     }
 
@@ -134,6 +156,17 @@ class AdminController extends Controller
         $extraUserData = ExtraUserData::where('user_id', $id)->get();
         // return response()->json($extraUserData);
         return view('EditEmpData', ['data' => $extraUserData]);
+    }
+
+    public function DeleteEmpDatas($id)
+    {
+        $extra_deleteuser = ExtraUserData::where('user_id', $id)->delete();
+        $deleteuser = User::destroy($id);
+        if ($extra_deleteuser && $deleteuser) {
+            return redirect()->back();
+        } else {
+            return response("<script> alert('User is not deleted please try again later...') </script>");
+        }
     }
 
     public function SaveEditEmpDatas(Request $request, $id)

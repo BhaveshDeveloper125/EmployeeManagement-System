@@ -477,7 +477,11 @@
             </div>
 
             <nav class="panel-nav">
-                <a href="/adminPanel/records" class="nav-item active">
+                <a href="/adminPanel" class="nav-item active">
+                    <div class="nav-icon"><img src="{{ URL('Images/house.svg') }}" alt="Records"></div>
+                    <span class="nav-text">Home</span>
+                </a>
+                <a href="/adminPanel/records" class="nav-item ">
                     <div class="nav-icon"><img src="{{ URL('Images/directory.png') }}" alt="Records"></div>
                     <span class="nav-text">Records</span>
                 </a>
