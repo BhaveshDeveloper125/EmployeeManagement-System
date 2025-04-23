@@ -107,18 +107,29 @@ class AdminController extends Controller
 
         $userData = new ExtraUserData();
 
+        // $request->validate([
+        //     'post' => 'required | ',
+        //     'mobile' => 'required | email',
+        //     'address' => 'required | ',
+        //     'qualificatio' => 'required | ',
+        //     'exp' => 'required | ',
+        // ]);
+        // dd($request->all());
+
+
         $userData->fill($request->all());
 
         if ($userData->save()) {
-            return response()->json(["message" => "User created Successfuly"]);
+            return redirect()->route('generate.user')->with('registration_success', true);
+            // return response()->json(['message', 'User created successfully']);
         } else {
-            return response()->json(["message" => "User not created"]);
+            return redirect()->route('generate.user')->with('unsuccess', true);
+            // return response()->json(['message', 'User creation failed']);
         }
     }
 
     public function SearchUser(Request $request)
     {
-        $alldata = DB::table('combined_user_data')->where('name', 'like', '%' . $request->name . '%')->get();
         $user = User::where('name', 'like', '%' . $request->name . '%')->get();
         $user_id = $user->pluck('id')->toArray();
         $EmployeeTime = EmployeeTimeWatcher::whereIn('user_id', $user_id)->get();
@@ -143,7 +154,10 @@ class AdminController extends Controller
         $lateEmployees = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->whereTime('entry', '>', '10:10:00')->count();
         $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
 
-        return view('Download', ['alldata' => $alldata]);
+
+        $alldata = DB::table('combined_user_data')->where('name', 'like', '%' . $request->name . '%')->get();
+        // return redirect()->route('searchUser')->with('alldata', $alldata);
+        return view('SearchEmployee', ['alldata' => $alldata]);
     }
 
     public function EditEmpData()
@@ -233,19 +247,39 @@ class AdminController extends Controller
 
     public function apigetData()
     {
-        $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
-            ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
-            ->select(
-                'employee_time_watchers.user_id',
-                'employee_time_watchers.entry',
-                'employee_time_watchers.leave',
-                'extra_user_data.post',
-                'extra_user_data.mobile',
-                'extra_user_data.address',
-                'extra_user_data.qualificatio',
-                'users.name',
-            )
-            ->get();
-        return response()->json([$MergedData]);
+        // $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
+        //     ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+        //     ->select(
+        //         'employee_time_watchers.user_id',
+        //         'employee_time_watchers.entry',
+        //         'employee_time_watchers.leave',
+        //         'extra_user_data.post',
+        //         'extra_user_data.mobile',
+        //         'extra_user_data.address',
+        //         'extra_user_data.qualificatio',
+        //         'users.name',
+        //     )
+        //     ->get();
+
+        try {
+            $users = User::with('extraUserData')->get();
+            $MergedData = [];
+            foreach ($users as $i) {
+                foreach ($i->extraUserData as $j) {
+                    $MergedData[] = [
+                        'id' => $i->id,
+                        'name' => $i->name,
+                        'post' => $j->post,
+                        'mobile' => $j->mobile,
+                        'address' => $j->address,
+                        'qualificatio' => $j->qualificatio
+                    ];
+                }
+            }
+            return response()->json([$MergedData]);
+        } catch (Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Error fetching employee data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while fetching employee data.');
+        }
     }
 }

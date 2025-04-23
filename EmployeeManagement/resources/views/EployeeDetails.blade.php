@@ -151,12 +151,12 @@
 </head>
 
 <body>
-    <form action="/user_details/" method="post">
+    <form action="/user_details" method="post">
         <h1>Enter Employee Details</h1>
 
         <pre>
-Name : {{ $data->name }}
-Email : {{ $data->email }}
+            Name : {{ $data->name }}
+            Email : {{ $data->email }}
         </pre>
 
         @csrf
@@ -184,6 +184,17 @@ Email : {{ $data->email }}
 
         <input type="submit" value="Submit Details">
     </form>
+    @if ($errors->any())
+
+    @foreach ($errors->all() as $i)
+    <div style="color: red;">
+        <script>
+            alert("{{ $i }}")
+        </script>
+    </div>
+    @endforeach
+
+    @endif
 </body>
 
 </html>

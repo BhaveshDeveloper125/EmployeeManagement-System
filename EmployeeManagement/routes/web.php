@@ -28,7 +28,7 @@ Route::get('/', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware(LoginCheck::class);
 Route::get('/attendance/{id}', [EmployeeAttendance::class, 'EmployeeAttendance'])->middleware(LoginCheck::class);
 Route::get('/adminPanel', [AdminController::class, 'hello'])->middleware(AdminCheck::class);
-Route::get('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(LoginCheck::class);
+Route::get('/user_details_view', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class);
 Route::get('/editemp', [AdminController::class, 'EditEmpData'])->middleware(LoginCheck::class);
 Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas'])->middleware(LoginCheck::class);
 Route::get('/deleteemps/{id}', [AdminController::class, 'DeleteEmpDatas'])->middleware(LoginCheck::class);
@@ -37,6 +37,9 @@ Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middl
 Route::get('/homepage/{id}', [EmployeeAttendance::class, 'homepage']);
 Route::get('/filter', function () {
     return view('Filter');
+});
+Route::get('get_user_info', function () {
+    return view('SearchEmployee');
 });
 
 
@@ -48,6 +51,9 @@ Route::post('/Entery', [EmployeeAttendance::class, 'WorkStart'])->middleware(Log
 Route::post('/leave', [EmployeeAttendance::class, 'WorkEnd'])->middleware(LoginCheck::class);
 Route::post('/user_register', [AdminController::class, 'AddUsers'])->middleware(LoginCheck::class);
 Route::post('/user_details', [AdminController::class, 'AddUserDetails'])->middleware(LoginCheck::class);
+// Route::post('/user_details', [AdminController::class, function (Request $request) {
+//     dd($request::all());
+// }])->middleware(LoginCheck::class);
 Route::post('/get_user_info', [AdminController::class, 'SearchUser'])->middleware(LoginCheck::class);
 Route::post('/setholiday', [AdminController::class, 'Holidays']);
 Route::post('/filter', [FilterController::class, 'FilterData']);
@@ -56,15 +62,16 @@ Route::post('/setweeklyholiday', [HolidayController::class, 'SetWeeklyHoliday'])
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
 Route::view('/filters', 'Filter');
+// Route::view('/extraDetails', 'EployeeDetails');
 
 
 
 
 Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
     Route::get('/records', [AdminController::class, 'getData']);
-    Route::view('/generate_user', 'GenerateUser');
+    Route::view('/generate_user', 'GenerateUser')->name('generate.user');
     Route::get('/downloadData', [MediaController::class, 'PDFGenerator']);
-    Route::view('/search_user', 'SearchEmployee');
+    Route::view('/search_user', 'SearchEmployee')->name('searchUser');
     Route::view('/holiday', 'HolidaysSettings');
     // Route::get('/home', 'Admin');
 });

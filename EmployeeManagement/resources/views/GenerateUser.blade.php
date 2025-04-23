@@ -751,7 +751,7 @@
         <div style="flex: 1;">
             <div class="form-container">
                 <h1>Generate User</h1>
-                <form action="/user_register/" method="post">
+                <form action="/user_register" method="post">
                     @csrf
                     <input type="text" name="name" placeholder="Enter Name" required>
                     <input type="email" name="email" placeholder="Enter Email" required>
@@ -760,6 +760,17 @@
                     <input type="submit" value="Register User">
                 </form>
             </div>
+            @if ($errors->any())
+
+            @foreach ($errors->all() as $i)
+            <div style="color: red;">
+                <script>
+                    alert("{{ $i }}")
+                </script>
+            </div>
+            @endforeach
+
+            @endif
         </div>
     </div>
 
@@ -831,6 +842,18 @@
             }
         });
     </script>
+
+    @if (session('registration_success'))
+    <script>
+        alert('User registered successfully');
+    </script>
+    @endif
+
+    @if (session('unsuccess'))
+    <script>
+        alert('oops something went wrong and user details is not registered');
+    </script>
+    @endif
 </body>
 
 </html>

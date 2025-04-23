@@ -594,7 +594,6 @@
         <div class="admin-panel" id="panel">
             <div class="panel-header">
                 <div class="logo">
-                    <!-- Logo can be added here if needed -->
                 </div>
                 <button class="menu-toggle" onclick="toggleMenu()">
                     <span></span>
