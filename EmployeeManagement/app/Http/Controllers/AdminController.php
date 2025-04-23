@@ -282,4 +282,37 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'An error occurred while fetching employee data.');
         }
     }
+
+
+    public function apiSearchUser(Request $request)
+    {
+        $user = User::where('name', 'like', '%' . $request->name . '%')->get();
+        $user_id = $user->pluck('id')->toArray();
+        $EmployeeTime = EmployeeTimeWatcher::whereIn('user_id', $user_id)->get();
+
+
+
+        $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
+            ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
+            ->select(
+                'employee_time_watchers.user_id',
+                'employee_time_watchers.entry',
+                'employee_time_watchers.leave',
+                'extra_user_data.post',
+                'extra_user_data.mobile',
+                'extra_user_data.address',
+                'extra_user_data.qualificatio',
+                'users.name',
+            )
+            ->get();
+
+        $todayAttendance = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->count();
+        $lateEmployees = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->whereTime('entry', '>', '10:10:00')->count();
+        $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
+
+
+        $alldata = DB::table('combined_user_data')->where('name', 'like', '%' . $request->name . '%')->get();
+        // return redirect()->route('searchUser')->with('alldata', $alldata);
+        return response()->json(['alldata' => $alldata]);
+    }
 }

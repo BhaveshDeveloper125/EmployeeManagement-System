@@ -29,12 +29,17 @@ Auth::routes();
 Route::post('/apilogin', [APIController::class, 'login']);
 
 Route::group(["middleware" => "auth:sanctum"], function () {
+    Route::post('/logout', [EmployeeAttendance::class, 'APILogout']); //logout
     Route::get('/attendance/{id}', [EmployeeAttendance::class, 'APIEmployeeAttendance']); //History
     Route::post('/logdata', [EmployeeAttendance::class, 'APILoggedUserData']); //Gives the Data of Current logged in user
     Route::post('/entry/', [EmployeeAttendance::class, 'WorkStart']); //Checkin 
     Route::post('/leave/', [EmployeeAttendance::class, 'WorkEnd']); //Checkout
-    Route::post('/logout', [EmployeeAttendance::class, 'APILogout']); //logout
     Route::post('/ipaddress', [EmployeeAttendance::class, 'IPDatas']); //Get Ipaddress
+
+    Route::post('/get_user_info', [AdminController::class, 'apiSearchUser']); //search the user
+
+
+
     Route::post('/getuserlocation', [EmployeeAttendance::class, 'Location']); //Get User Location Data
     Route::post('/addwifi', [EmployeeAttendance::class, 'AddWifiData']); //Add the wifi Data
     Route::get('/getwifi', [EmployeeAttendance::class, 'GetNetworkData']); //get wifi data
@@ -46,7 +51,7 @@ Route::group(["middleware" => "auth:sanctum"], function () {
     Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
         Route::get('/records', [AdminController::class, 'apigetData']);
         // Route::view('/generate_user', 'GenerateUser');
-        // Route::get('/downloadData', [MediaController::class, 'PDFGenerator']); //returns a view 
+        Route::get('/downloadData', [MediaController::class, 'apiPDFGenerator']); //Download Data 
         // Route::view('/search_user', 'SearchEmployee');
         // Route::view('/holiday', 'HolidaysSettings');
     });

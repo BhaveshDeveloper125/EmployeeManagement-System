@@ -665,6 +665,18 @@
         </div>
     </div>
 
+    @if (session('success'))
+    <script>
+        alert('Weeoly Holidays are set');
+    </script>
+    @endif
+
+    @if (session('error'))
+    <script>
+        alert('Weeoly Holidays are set');
+    </script>
+    @endif
+
     <script>
         function toggleMenu() {
             const panel = document.getElementById('panel');
@@ -725,7 +737,7 @@
                 document.querySelector('#daycounter').textContent = 'Maximum days added';
                 return;
             }
-            document.querySelector('#daycounter').textContent = `Add Holiday Day (${weeklyDaysCounter}/7)`;
+            document.querySelector('#daycounter').textContent = `Add Holiday Day (${weeklyDaysCounter}/6)`;
 
             const selectContainer = document.getElementById('selectContainer');
             const newSelect = document.createElement('div');

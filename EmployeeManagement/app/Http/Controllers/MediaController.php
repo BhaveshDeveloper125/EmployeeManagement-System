@@ -14,4 +14,10 @@ class MediaController extends Controller
         $data = DB::table('combined_user_data')->get();
         return view('Download', ['data' => $data]);
     }
+
+    public function apiPDFGenerator()
+    {
+        $data = DB::table('combined_user_data')->get();
+        return response()->json(['data' => $data]);
+    }
 }
