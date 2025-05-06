@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EmployeeTimeWatcher;
 use App\Models\ExtraUserData;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -156,7 +157,7 @@ class EmployeeAttendance extends Controller
 
     public function APILoggedUserData()
     {
-        $userData = Auth::user();
+        $userData = User::where('id', Auth::id())->get();
         return response()->json(["Current Logged In User Data" => $userData]);
     }
 

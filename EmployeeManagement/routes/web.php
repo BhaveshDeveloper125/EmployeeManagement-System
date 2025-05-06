@@ -32,7 +32,7 @@ Route::get('/user_details_view', [AdminController::class, 'GetLatestUser'])->mid
 Route::get('/editemp', [AdminController::class, 'EditEmpData'])->middleware(LoginCheck::class);
 Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas'])->middleware(LoginCheck::class);
 Route::get('/deleteemps/{id}', [AdminController::class, 'DeleteEmpDatas'])->middleware(LoginCheck::class);
-// Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator'])->middleware(LoginCheck::class);
+Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator'])->middleware(LoginCheck::class);
 Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class);
 Route::get('/homepage/{id}', [EmployeeAttendance::class, 'homepage']);
 Route::get('/filter', function () {

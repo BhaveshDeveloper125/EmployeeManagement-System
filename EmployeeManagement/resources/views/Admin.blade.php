@@ -517,7 +517,7 @@
             <div class="cardcontainer">
                 <div class="cards">
                     <a href="/filters?filter=employeelist">
-                        <h1>Total Employees</h1>
+                        <h1>Total Employees </h1>
                         <h1>{{ $userData }}</h1>
                     </a>
                 </div>

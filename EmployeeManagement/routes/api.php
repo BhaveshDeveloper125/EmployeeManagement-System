@@ -34,20 +34,19 @@ Route::group(["middleware" => "auth:sanctum"], function () {
     Route::post('/logdata', [EmployeeAttendance::class, 'APILoggedUserData']); //Gives the Data of Current logged in user
     Route::post('/entry/', [EmployeeAttendance::class, 'WorkStart']); //Checkin 
     Route::post('/leave/', [EmployeeAttendance::class, 'WorkEnd']); //Checkout
-    Route::post('/ipaddress', [EmployeeAttendance::class, 'IPDatas']); //Get Ipaddress
 
     Route::post('/get_user_info', [AdminController::class, 'apiSearchUser']); //search the user
 
 
 
-    Route::post('/getuserlocation', [EmployeeAttendance::class, 'Location']); //Get User Location Data
-    Route::post('/addwifi', [EmployeeAttendance::class, 'AddWifiData']); //Add the wifi Data
-    Route::get('/getwifi', [EmployeeAttendance::class, 'GetNetworkData']); //get wifi data
-    Route::post('/getmac', [EmployeeAttendance::class, 'getMacaddress']); //Get Macaddress
-    Route::post('/filter', [FilterController::class, 'apiFilterData']); //get emp data related to attendance
+    // Route::post('/ipaddress', [EmployeeAttendance::class, 'IPDatas']); //Get Ipaddress
+    // Route::post('/getuserlocation', [EmployeeAttendance::class, 'Location']); //Get User Location Data
+    // Route::post('/addwifi', [EmployeeAttendance::class, 'AddWifiData']); //Add the wifi Data
+    // Route::get('/getwifi', [EmployeeAttendance::class, 'GetNetworkData']); //get wifi data
+    // Route::post('/getmac', [EmployeeAttendance::class, 'getMacaddress']); //Get Macaddress
 
 
-
+    // Route::post('/filter', [FilterController::class, 'apiFilterData']); //get emp data related to attendance
     Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
         Route::get('/get_emp_details', [AdminController::class, 'APIhello']);
         Route::get('/records', [AdminController::class, 'apigetData']); //get the record
