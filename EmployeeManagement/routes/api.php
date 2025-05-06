@@ -49,10 +49,8 @@ Route::group(["middleware" => "auth:sanctum"], function () {
 
 
     Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
-        Route::get('/records', [AdminController::class, 'apigetData']);
-        // Route::view('/generate_user', 'GenerateUser');
+        Route::get('/get_emp_details', [AdminController::class, 'APIhello']);
+        Route::get('/records', [AdminController::class, 'apigetData']); //get the record
         Route::get('/downloadData', [MediaController::class, 'apiPDFGenerator']); //Download Data 
-        // Route::view('/search_user', 'SearchEmployee');
-        // Route::view('/holiday', 'HolidaysSettings');
     });
 });
