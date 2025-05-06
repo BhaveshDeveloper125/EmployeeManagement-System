@@ -398,7 +398,7 @@
                     <a href="/attendance/{{ Auth::id() }}">Attendance History</a>
                 </li>
                 <li class="logout-form">
-                    <form action="/logout/" method="post">
+                    <form action="/logout" method="post">
                         @csrf
                         <input type="submit" value="Logout">
                     </form>

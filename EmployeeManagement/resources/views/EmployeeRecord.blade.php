@@ -728,10 +728,6 @@
                                 <a href={{ "/deleteemps/".$i['id'] }} onclick="return confirm('Are you sure you want to delete this user?')">
                                     Remove
                                 </a>
-                                <br><br>
-                                <a href={{ "/deleteemps/".$i['id'] }} onclick="return confirm('Are you sure you want to delete this user?')">
-                                    Remove
-                                </a>
                             </td>
 
                         </tr>
