@@ -729,7 +729,6 @@
                                     Remove
                                 </a>
                             </td>
-
                         </tr>
                         @endforeach
                     </tbody>

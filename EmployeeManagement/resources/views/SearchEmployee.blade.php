@@ -615,7 +615,6 @@
 </head>
 
 <body>
-    <!-- Mobile menu button (visible only on small screens) -->
     <button class="mobile-menu-btn" id="mobileMenuBtn">
         <span></span>
         <span></span>
@@ -716,7 +715,7 @@
                             <td>{{ $i->qualificatio }}</td>
                             <td>
                                 <!-- <button title="Edit user"><i class="fas fa-pencil-alt"></i></button> -->
-                                <a href={{ "/editemps/".$i->id }}>
+                                <a href={{ "/editemps/".$i->user_id }}>
                                     Edit
                                 </a>
                                 <a href="">Delete</a>

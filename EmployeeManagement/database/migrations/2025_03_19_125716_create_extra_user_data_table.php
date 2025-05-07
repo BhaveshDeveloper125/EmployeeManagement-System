@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('qualificatio');
             $table->string('exp');
+            $table->date('joining_date');
             $table->boolean('isAdmin')->default(false);
             $table->timestamps();
 

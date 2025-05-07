@@ -13,6 +13,7 @@ class ExtraUserData extends Model
         'address',
         'qualificatio',
         'exp',
+        'joining_date',
         'isAdmin'
     ];
 }

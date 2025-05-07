@@ -155,9 +155,9 @@ class AdminController extends Controller
         $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
 
 
-        $alldata = DB::table('combined_user_data')->where('name', 'like', '%' . $request->name . '%')->get();
+        // $alldata = DB::table('combined_user_data')->where('name', 'like', '%' . $request->name . '%')->get();
         // return redirect()->route('searchUser')->with('alldata', $alldata);
-        return view('SearchEmployee', ['alldata' => $alldata]);
+        return view('SearchEmployee', ['alldata' => $MergedData]);
     }
 
     public function EditEmpData()

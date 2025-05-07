@@ -182,6 +182,10 @@
             <input type="text" name="exp" placeholder="Enter Years of Experience" required>
         </div>
 
+        <div class="form-group">
+            <input type="date" name="joining_date" placeholder="Enter Joining Date" required>
+        </div>
+
         <input type="submit" value="Submit Details">
     </form>
     @if ($errors->any())
