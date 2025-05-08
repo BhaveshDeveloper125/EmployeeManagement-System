@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeEmail;
 
 class AdminController extends Controller
 {
@@ -106,25 +108,26 @@ class AdminController extends Controller
     {
 
         $userData = new ExtraUserData();
-
-        // $request->validate([
-        //     'post' => 'required | ',
-        //     'mobile' => 'required | email',
-        //     'address' => 'required | ',
-        //     'qualificatio' => 'required | ',
-        //     'exp' => 'required | ',
-        // ]);
-        // dd($request->all());
-
-
         $userData->fill($request->all());
 
+
+        $user_email = User::latest()->first()->email;
+
+        // dd($user_email);
+
         if ($userData->save()) {
+            try {
+                $to = $user_email;
+                $msg = "new User is added ";
+                $subject = "This Email subject is about adding a new user";
+                Mail::to($to)->send(new WelcomeEmail($msg, $subject));
+            } catch (Exception $e) {
+                print $e;
+                return response()->json('User data is registered but the email is not sent');
+            }
             return redirect()->route('generate.user')->with('registration_success', true);
-            // return response()->json(['message', 'User created successfully']);
         } else {
             return redirect()->route('generate.user')->with('unsuccess', true);
-            // return response()->json(['message', 'User creation failed']);
         }
     }
 
