@@ -112,9 +112,6 @@ class AdminController extends Controller
 
 
         $user_email = User::latest()->first()->email;
-
-        // dd($user_email);
-
         if ($userData->save()) {
             try {
                 $to = $user_email;
