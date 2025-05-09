@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\EmployeeAttendance;
-use App\Http\Controllers\FilterController;
+use App\Http\Controllers\UserWifiData;
 use App\Http\Controllers\MediaController;
 use App\Http\Middleware\AddUserDetailsCheck;
 // use App\Models\ExtraUserData;
@@ -30,12 +30,14 @@ Route::post('/apilogin', [APIController::class, 'login']);
 
 Route::group(["middleware" => "auth:sanctum"], function () {
     Route::post('/logout', [EmployeeAttendance::class, 'APILogout']); //logout
-    Route::get('/attendance/{id}', [EmployeeAttendance::class, 'APIEmployeeAttendance']); //History
     Route::post('/logdata', [EmployeeAttendance::class, 'APILoggedUserData']); //Gives the Data of Current logged in user
     Route::post('/entry/', [EmployeeAttendance::class, 'WorkStart']); //Checkin 
     Route::post('/leave/', [EmployeeAttendance::class, 'WorkEnd']); //Checkout
+    Route::get('/attendance/{id}', [EmployeeAttendance::class, 'APIEmployeeAttendance']); //History
+    Route::get('/get_wifi', [AdminController::class, 'GetWifi']);
 
     Route::post('/get_user_info', [AdminController::class, 'apiSearchUser']); //search the user
+    Route::post('/add_wifi', [AdminController::class, 'AddWifiData']); //Add the user wifi Details
 
 
 

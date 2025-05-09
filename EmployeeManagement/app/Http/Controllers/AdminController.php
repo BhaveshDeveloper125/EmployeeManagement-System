@@ -6,6 +6,7 @@ use App\Models\EmployeeTimeWatcher;
 use App\Models\ExtraUserData;
 use App\Models\Holidays;
 use App\Models\User;
+use App\Models\UserWifiData;
 use Cron\HoursField;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -314,5 +315,36 @@ class AdminController extends Controller
         $alldata = DB::table('combined_user_data')->where('name', 'like', '%' . $request->name . '%')->get();
         // return redirect()->route('searchUser')->with('alldata', $alldata);
         return response()->json(['alldata' => $alldata]);
+    }
+
+    public function AddWifiData(Request $request)
+    {
+        $validation = $request->validate([
+            'wifi_name' => 'required | string | max:255',
+            'ssid' => 'required | string | max:255',
+            'ip' => 'required | string | max:255',
+            'gateway' => 'required | string | max:255',
+        ]);
+
+        try {
+            $UserWifiData_Instance = new UserWifiData();
+            $UserWifiData_Instance->fill($validation);
+
+            $save = $UserWifiData_Instance->save();
+
+            if ($save) {
+                return response()->json('Data Stored Successfully');
+            } else {
+                return response()->json('oops something went wrong , cant store the data');
+            }
+        } catch (Exception $e) {
+            return response()->json('Error : ' . $e->getMessage());
+        }
+    }
+
+    public function GetWifi()
+    {
+        $data = UserWifiData::all();
+        return response()->json($data);
     }
 }
