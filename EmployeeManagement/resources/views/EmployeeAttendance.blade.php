@@ -659,7 +659,8 @@
             </div>
             <div class="dashboard-card">
                 <h3 class="card-title">Remain Days</h3>
-                <div class="card-value">{{ floor(Carbon\Carbon::today()->diffInDays(Carbon\Carbon::today()->endOfMonth())) }}</div>
+                <div class="card-value">{{ $totalWorkingDays }}</div>
+                <div class="card-value">{{ \Carbon\Carbon::now() }}</div>
                 <p class="card-description">Days left in current month</p>
             </div>
         </div>

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Stevebauman\Location\Facades\Location;
 use App\Models\UserWifiData;
+use App\Models\WeeklyHolidays;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -99,6 +100,46 @@ class EmployeeAttendance extends Controller
         if ($isadmin == '1') {
             return redirect('adminPanel');
         }
+        $holidayDays = [];
+        $weeklyHolidays = WeeklyHolidays::first();
+
+        $dayMap = [
+            'mon' => 'mon',
+            'tue' => 'tue',
+            'wed' => 'wed',
+            'thurs' => 'thu',
+            'fri' => 'fri',
+            'satur' => 'sat',
+            'sun' => 'sun'
+        ];
+
+        if ($weeklyHolidays) {
+            foreach ($dayMap as $dbDay => $carbonDay) {
+                if ($weeklyHolidays->$dbDay) {
+                    $holidayDays[] = $carbonDay;
+                }
+            }
+        }
+
+        $totalWorkingDays_for_loop_only = Carbon::now()->daysInMonth();
+        $totalWorkingDays = $totalWorkingDays_for_loop_only;
+
+        for ($i = 1; $i <= $totalWorkingDays_for_loop_only; $i++) { // Change < to <=
+            $today = Carbon::now()->startOfMonth()->addDays($i - 1);
+            $day_name = strtolower(substr($today->format('D'), 0, 3));
+
+            if (in_array($day_name, $holidayDays)) {
+                $totalWorkingDays--;
+            }
+        }
+        $actual_working_days = $totalWorkingDays - Carbon::now()->day;
+        dd($actual_working_days);
+
+
+
+
+
+
 
         $getattendance = EmployeeTimeWatcher::where('user_id', $id)->get();
 
@@ -142,13 +183,13 @@ class EmployeeAttendance extends Controller
             ->whereDate('entry', $today)
             ->first();
 
-
         return view('EmployeeAttendance', [
             'data' => $getattendance,
             'attendance' => $attendance,
             'lateattendance' => $lateattendance,
             'earlyLeave' => $earlyLeave,
             'absent' => $absent,
+            'totalWorkingDays' => $totalWorkingDays,
             'overtime' => $overtime,
             'leavingtime' => $leavingtime,
             'hasCheckedIn' => !is_null($timeEntry),
