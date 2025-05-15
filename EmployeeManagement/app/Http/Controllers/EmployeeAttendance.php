@@ -28,7 +28,6 @@ class EmployeeAttendance extends Controller
         }
     }
 
-
     public function WorkEnd(Request $request)
     {
         $user = Auth::user();
@@ -45,7 +44,6 @@ class EmployeeAttendance extends Controller
 
         return response()->json($request->all());
     }
-
 
     public function EmployeeAttendance($id)
     {
@@ -93,12 +91,10 @@ class EmployeeAttendance extends Controller
         return response()->json(['data' => $getattendance, 'attendance' => $attendance, 'lateattendance' => $lateattendance, 'earlyLeave' => $earlyLeave, 'absent' => $absent, 'overtime' => $overtime, 'leavingtime' => $leavingtime]);
     }
 
-
     public function homepage($id)
     {
         $isadmin = ExtraUserData::where('user_id', $id)->where('isAdmin', '1')->value('isAdmin');
 
-        // dd(gettype($isadmin));
 
         if ($isadmin == '1') {
             return redirect('adminPanel');
@@ -118,15 +114,27 @@ class EmployeeAttendance extends Controller
 
         $overtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '>', Carbon::createFromTime(19, 15, 0))->count();
 
-
         // $leavingtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '<', Carbon::createFromTime(19, 15, 0))->count();
 
         $currentmonth = Carbon::today()->day;
 
         $presetnemp = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', Carbon::today()->month)->count();
 
-        $leavingtime = $currentmonth - $presetnemp;
+        $leavingtime = null;
 
+        $userjoiningDate = ExtraUserData::where('user_id', Auth::id())->value('joining_date');
+        if ($userjoiningDate) {
+            $parseduserjoiningDate = Carbon::parse($userjoiningDate);
+
+            if ($parseduserjoiningDate->isCurrentMonth()) {
+                $day_gap = $parseduserjoiningDate->diffInDays(Carbon::now());
+                $user_absent = (int) floor($day_gap);
+                // dd($user_absent);
+                $leavingtime = $user_absent;
+            }
+        } else {
+            $leavingtime = $currentmonth - $presetnemp;
+        }
 
         $today = Carbon::today()->toDateString();
 
@@ -142,7 +150,7 @@ class EmployeeAttendance extends Controller
             'earlyLeave' => $earlyLeave,
             'absent' => $absent,
             'overtime' => $overtime,
-            'leavingtime' => $currentmonth - $presetnemp,
+            'leavingtime' => $leavingtime,
             'hasCheckedIn' => !is_null($timeEntry),
             'hasCheckedOut' => !is_null($timeEntry) && !is_null($timeEntry->leave),
         ]);
@@ -160,7 +168,6 @@ class EmployeeAttendance extends Controller
         $userData = User::where('id', Auth::id())->get();
         return response()->json(["Current Logged In User Data" => $userData]);
     }
-
 
     public function IPDatas(Request $request)
     {
