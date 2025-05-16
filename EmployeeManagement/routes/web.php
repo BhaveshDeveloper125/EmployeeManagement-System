@@ -25,11 +25,6 @@ Route::get('/', function () {
 });
 
 
-Route::get('/register', function () {
-    return redirect()->route('login');
-});
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware(LoginCheck::class);
 Route::get('/attendance/{id}', [EmployeeAttendance::class, 'EmployeeAttendance'])->middleware(LoginCheck::class);
 Route::get('/adminPanel', [AdminController::class, 'hello'])->middleware(AdminCheck::class);
