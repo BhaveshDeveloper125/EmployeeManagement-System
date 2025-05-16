@@ -124,7 +124,7 @@ class EmployeeAttendance extends Controller
         $totalWorkingDays_for_loop_only = Carbon::now()->daysInMonth();
         $totalWorkingDays = $totalWorkingDays_for_loop_only;
 
-        for ($i = 1; $i <= $totalWorkingDays_for_loop_only; $i++) { // Change < to <=
+        for ($i = 1; $i <= $totalWorkingDays_for_loop_only; $i++) {
             $today = Carbon::now()->startOfMonth()->addDays($i - 1);
             $day_name = strtolower(substr($today->format('D'), 0, 3));
 
@@ -132,13 +132,19 @@ class EmployeeAttendance extends Controller
                 $totalWorkingDays--;
             }
         }
-        $actual_working_days = $totalWorkingDays - Carbon::now()->day;
-        dd($actual_working_days);
 
+        $today = Carbon::now()->startOfMonth()->diffInDays(Carbon::now()->startOfDay());
+        $untill_today = $today;
 
+        for ($i = 1; $i <= $untill_today; $i++) {
+            $today = Carbon::now()->startOfMonth()->addDays($i - 1);
+            $day_name = strtolower(substr($today->format('D'), 0, 3));
+            if (in_array($day_name, $holidayDays)) {
+                $untill_today--;
+            }
+        }
 
-
-
+        $actual_working_days = $totalWorkingDays - $untill_today;
 
 
         $getattendance = EmployeeTimeWatcher::where('user_id', $id)->get();
@@ -190,6 +196,7 @@ class EmployeeAttendance extends Controller
             'earlyLeave' => $earlyLeave,
             'absent' => $absent,
             'totalWorkingDays' => $totalWorkingDays,
+            'actual_working_days' => $actual_working_days,
             'overtime' => $overtime,
             'leavingtime' => $leavingtime,
             'hasCheckedIn' => !is_null($timeEntry),
