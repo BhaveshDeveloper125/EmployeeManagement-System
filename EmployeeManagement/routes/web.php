@@ -24,6 +24,16 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('/register', function () {
+    $isUserEmpty = User::doesntExist();
+
+    if ($isUserEmpty) {
+        return view('auth.register');
+    } else {
+        return redirect()->route('login');
+    }
+})->name('register');
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware(LoginCheck::class);
 Route::get('/attendance/{id}', [EmployeeAttendance::class, 'EmployeeAttendance'])->middleware(LoginCheck::class);
