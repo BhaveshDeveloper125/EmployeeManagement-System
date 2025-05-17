@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeEmail;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -116,8 +117,11 @@ class AdminController extends Controller
         if ($userData->save()) {
             try {
                 $to = $user_email;
-                $msg = "new User is added ";
-                $subject = "This Email subject is about adding a new user";
+                $msg = nl2br("We are thrilled to welcome you to PurvSoft Tech! Your skills and experience make you a valuable addition to our team, and we're excited to see the contributions you'll bring. At PurvSoft Tech, we foster collaboration, innovation, and growth, and we hope you'll find this journey rewarding.\n\n
+                Feel free to explore, ask questions, and connect with your colleagues—we're here to support you every step of the way. Looking forward to achieving great things together!\n\n\n\n
+                Warm regards,\n
+                PurvSoft Tech");
+                $subject = "Welcome to PurvSoft Tech";
                 Mail::to($to)->send(new WelcomeEmail($msg, $subject));
             } catch (Exception $e) {
                 print $e;
@@ -346,5 +350,45 @@ class AdminController extends Controller
     {
         $data = UserWifiData::all();
         return response()->json($data);
+    }
+
+    public function NewSystemInstallation()
+    {
+        $user = User::all()->count();
+
+        if ($user === 1) {
+            $userData = new ExtraUserData();
+            $userData->user_id = Auth::id();
+            $userData->post = "Admin";
+            $userData->mobile = "1234567890";
+            $userData->address = "Default Address";
+            $userData->qualificatio = "Admin";
+            $userData->exp = "1 year";
+            $userData->joining_date = Carbon::now();
+            $userData->isAdmin = 1;
+
+
+            $user_email = User::latest()->first()->email;
+            if ($userData->save()) {
+                try {
+                    $to = $user_email;
+                    $msg = "We are thrilled to welcome you to PurvSoft Tech! Your skills and experience make you a valuable addition to our team, and we're excited to see the contributions you'll bring. At PurvSoft Tech, we foster collaboration, innovation, and growth, and we hope you'll find this journey rewarding.
+                                Feel free to explore, ask questions, and connect with your colleagues—we're here to support you every step of the way. Looking forward to achieving great things together!
+
+                                Warm regards,
+                                PurvSoft Tech ";
+                    $subject = " Welcome to PurvSoft Tech Team ";
+                    Mail::to($to)->send(new WelcomeEmail($msg, $subject));
+                } catch (Exception $e) {
+                    print $e;
+                    return response()->json('User data is registered but the email is not sent');
+                }
+                return redirect()->route('generate.user')->with('registration_success', true);
+            } else {
+                return redirect()->route('generate.user')->with('unsuccess', true);
+            }
+        } else {
+            return response()->json('  your system is new installed please Signup the new user or System is already configured....');
+        }
     }
 }

@@ -8,14 +8,9 @@ use App\Http\Controllers\EmployeeAttendance;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\MediaController;
-use App\Http\Middleware\AddUserDetailsCheck;
 // use App\Models\ExtraUserData;
 use App\Http\Middleware\AdminCheck;
 use App\Http\Middleware\LoginCheck;
-use App\Models\EmployeeTimeWatcher;
-use App\Models\ExtraUserData;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Request;
 
 
 Auth::routes();
@@ -43,8 +38,13 @@ Route::get('/editemp', [AdminController::class, 'EditEmpData'])->middleware(Logi
 Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas'])->middleware(LoginCheck::class);
 Route::get('/deleteemps/{id}', [AdminController::class, 'DeleteEmpDatas'])->middleware(LoginCheck::class);
 Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator'])->middleware(LoginCheck::class);
-Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class);
 Route::get('/homepage/{id}', [EmployeeAttendance::class, 'homepage']);
+
+
+// Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class); 
+Route::get('/new_system_config', [AdminController::class, 'NewSystemInstallation']); //Hit this URL if you newly Installed the System
+
+
 Route::get('/filter', function () {
     return view('Filter');
 });
