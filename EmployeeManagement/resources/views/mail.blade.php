@@ -15,12 +15,6 @@
             -ms-text-size-adjust: 100%;
         }
 
-        table,
-        td {
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-        }
-
         img {
             -ms-interpolation-mode: bicubic;
             border: 0;
