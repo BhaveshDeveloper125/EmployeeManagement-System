@@ -1,3 +1,4 @@
+<title>Attendance Management</title>
 <div id="loader" class="loader_container">
     <img src="{{ URL('Images/loader.gif') }}" alt="Loading...">
 </div>

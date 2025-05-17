@@ -511,7 +511,8 @@
                         <option value="late" <?= isset($late) ? 'selected' : '' ?>>Late Employees</option>
                         <option value="present" <?= isset($present) ? 'selected' : '' ?>>Present Today</option>
                         <option value="leave" <?= isset($leave) ? 'selected' : '' ?>>Leave Today</option>
-                        <option value="early_leave" <?= isset($early_leave) ? 'selected' : '' ?>>Early eave Today</option>
+                        <option value="early_leave" <?= isset($early_leave) ? 'selected' : '' ?>>Early leave Today</option>
+                        <option value="absent" <?= isset($absent) ? 'selected' : '' ?>>Absent Today</option>
                     </select>
                     <div class="filter-icon">▼</div>
                 </form>
@@ -649,6 +650,34 @@
                                 <td><?= $i->entry ?></td>
                                 <td><?= $i->leave ?></td>
                                 <td><span class="status-badge status-late">Early Leave</span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($absent)): ?>
+            <div class="data-container">
+                <div class="data-header">
+                    <h2 class="data-title">Absent Today</h2>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($absent as $i): ?>
+                            <tr>
+                                <td><?= $i->name ?></td>
+                                <td><?= $i->email ?></td>
+                                <td><?= $i->mobile ?></td>
+                                <td><span class="status-badge status-late">Absent Today</span></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

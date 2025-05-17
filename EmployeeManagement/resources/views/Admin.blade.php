@@ -541,7 +541,7 @@
                     </a>
                 </div>
                 <div class="cards">
-                    <a href="">
+                    <a href="/filters?filter=absent">
                         <h1>Absent Today</h1>
                         <h1>{{ $absent }}</h1>
                     </a>

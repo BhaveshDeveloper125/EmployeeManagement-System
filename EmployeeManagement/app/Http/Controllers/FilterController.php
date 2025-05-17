@@ -47,6 +47,27 @@ class FilterController extends Controller
 
                 return view('Filter', ['early_leave' => $early_leave]);
 
+            case 'absent':
+                // $absent = User::leftJoin('employee_time_watchers', function ($join) {
+                //     $join->on('users.id', '=', 'employee_time_watchers.user_id')
+                //         ->whereDate('employee_time_watchers.entry', Carbon::today());
+                // })
+                //     ->whereNull('employee_time_watchers.id') // No entry record for today
+                //     ->select('users.name')
+                //     ->get();
+
+                $absent = User::leftJoin('employee_time_watchers', function ($join) {
+                    $join->on('users.id', '=', 'employee_time_watchers.user_id')
+                        ->whereDate('employee_time_watchers.entry', Carbon::today());
+                })
+                    ->leftJoin('extra_user_data', 'users.id', '=', 'extra_user_data.user_id') // Joining extra_user_data
+                    ->whereNull('employee_time_watchers.id')
+                    ->select('users.name', 'users.email', 'extra_user_data.mobile') // Fetch email & mobile
+                    ->get();
+
+
+                return view('Filter', ['absent' => $absent]);
+
 
             default:
                 return redirect()->back()->with(['message' => 'oops something went wrong...']);
