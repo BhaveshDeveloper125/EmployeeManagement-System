@@ -51,6 +51,7 @@ Route::get('/filter', function () {
 Route::get('get_user_info', function () {
     return view('SearchEmployee');
 });
+Route::get('/restore/{id}', [AdminController::class, 'RestoreUsers']);
 
 
 
@@ -76,9 +77,9 @@ Route::view('/filters', 'Filter');
 
 
 
-
 Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
     Route::get('/records', [AdminController::class, 'getData']);
+    Route::get('/trash_user', [AdminController::class, 'TrashedUserList']);
     Route::view('/generate_user', 'GenerateUser')->name('generate.user');
     Route::get('/downloadData', [MediaController::class, 'PDFGenerator']);
     Route::view('/search_user', 'SearchEmployee')->name('searchUser');

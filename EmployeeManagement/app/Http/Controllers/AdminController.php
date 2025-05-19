@@ -77,6 +77,7 @@ class AdminController extends Controller
             \Illuminate\Support\Facades\Log::error('Error fetching employee data: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while fetching employee data.');
         }
+        // dd($MergedData);
         return view('EmployeeRecord', ['data' => $MergedData]);
     }
 
@@ -180,7 +181,7 @@ class AdminController extends Controller
     public function DeleteEmpDatas($id)
     {
         $extra_deleteuser = ExtraUserData::where('user_id', $id)->delete();
-        $deleteuser = User::destroy($id);
+        $deleteuser = User::find($id)->delete();
         if ($extra_deleteuser && $deleteuser) {
             return redirect()->back();
         } else {
@@ -389,6 +390,27 @@ class AdminController extends Controller
             }
         } else {
             return response()->json('  your system is new installed please Signup the new user or System is already configured....');
+        }
+    }
+
+    public function TrashedUserList()
+    {
+        $users = User::onlyTrashed()->get();
+        return view('TrashedUsers', ['users' => $users]);
+    }
+
+    public function RestoreUsers($id)
+    {
+        $user = User::onlyTrashed()->find($id);
+        $user_detail = ExtraUserData::onlyTrashed()->where('user_id', $id)->restore();
+        if ($user && $user_detail) {
+            $restoring = $user->restore();
+
+            if ($restoring) {
+                return response()->json(['Success', 'User is Restored']);
+            } else {
+                return response()->json(['error', 'oops something went wrong ,  User or User related data are not Restored']);
+            }
         }
     }
 }
