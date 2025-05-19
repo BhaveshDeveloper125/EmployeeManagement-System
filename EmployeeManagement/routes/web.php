@@ -69,6 +69,7 @@ Route::post('/get_user_info', [AdminController::class, 'SearchUser'])->middlewar
 Route::post('/setholiday', [AdminController::class, 'Holidays']);
 Route::post('/filter', [FilterController::class, 'FilterData']);
 Route::post('/setweeklyholiday', [HolidayController::class, 'SetWeeklyHoliday']);
+Route::post('/set_time', [AdminController::class, 'TimeManagement']);
 
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);

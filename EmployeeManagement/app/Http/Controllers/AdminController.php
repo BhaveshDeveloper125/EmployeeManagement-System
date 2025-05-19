@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeEmail;
+use App\Models\SetTime;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -411,6 +412,26 @@ class AdminController extends Controller
             } else {
                 return response()->json(['error', 'oops something went wrong ,  User or User related data are not Restored']);
             }
+        }
+    }
+
+    public function TimeManagement(Request $request)
+    {
+        try {
+            $time = new SetTime();
+
+            if ($time::truncate()) {
+                $save = $time->fill($request->all())->save();
+                if ($save) {
+                    return redirect()->back()->with('success', 'Data saved Successfully....');
+                } else {
+                    return redirect()->back()->with('unsuccess', 'oops Data are not saved please try again....');
+                }
+            } else {
+                return redirect()->back()->with('failure', 'oops previous data are not deleted please try again later....');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }
