@@ -48,14 +48,6 @@ class FilterController extends Controller
                 return view('Filter', ['early_leave' => $early_leave]);
 
             case 'absent':
-                // $absent = User::leftJoin('employee_time_watchers', function ($join) {
-                //     $join->on('users.id', '=', 'employee_time_watchers.user_id')
-                //         ->whereDate('employee_time_watchers.entry', Carbon::today());
-                // })
-                //     ->whereNull('employee_time_watchers.id') // No entry record for today
-                //     ->select('users.name')
-                //     ->get();
-
                 $absent = User::leftJoin('employee_time_watchers', function ($join) {
                     $join->on('users.id', '=', 'employee_time_watchers.user_id')
                         ->whereDate('employee_time_watchers.entry', Carbon::today());
