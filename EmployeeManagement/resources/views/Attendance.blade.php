@@ -404,7 +404,7 @@
             </div>
         </div>
 
-        <div class="stats-container">
+        <!-- <div class="stats-container">
             <div class="stat-card">
                 <h3>Total Days</h3>
                 <div class="value">{{ count($data) }}</div>
@@ -432,7 +432,7 @@
                 </div>
                 <div class="icon material-symbols-outlined">schedule</div>
             </div>
-        </div>
+        </div> -->
 
         <div class="attendance-container">
             <div class="section-header">

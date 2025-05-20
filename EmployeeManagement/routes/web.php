@@ -42,7 +42,7 @@ Route::get('/homepage/{id}', [EmployeeAttendance::class, 'homepage']);
 
 
 // Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class); 
-Route::get('/new_system_config', [AdminController::class, 'NewSystemInstallation']); //Hit this URL if you newly Installed the System
+Route::get('/add_new_system', [AdminController::class, 'NewSystemInstallation']); //Hit this URL if you newly Installed the System
 
 
 Route::get('/filter', function () {

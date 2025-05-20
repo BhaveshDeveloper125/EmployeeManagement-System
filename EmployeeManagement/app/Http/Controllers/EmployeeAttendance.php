@@ -100,6 +100,11 @@ class EmployeeAttendance extends Controller
         if ($isadmin == '1') {
             return redirect('adminPanel');
         }
+
+
+
+
+
         $holidayDays = [];
         $weeklyHolidays = WeeklyHolidays::first();
 
@@ -145,6 +150,78 @@ class EmployeeAttendance extends Controller
         }
 
         $actual_working_days = $totalWorkingDays - $untill_today;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $join_date = ExtraUserData::where('user_id', Auth::id())->value('joining_date');
+        $current_month = Carbon::parse($join_date)->month;
+        // dd($current_month);
+
+        if ($current_month == Carbon::today()->month) {
+            $current_working_day = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::today()->year)->whereMonth('entry', Carbon::today()->month)->count();
+
+            // return response()->json($current_working_day);
+            // return response()->json(Carbon::today()->diffInDays($join_date));
+            // return response()->json([$current_month, Carbon::today()->month]);
+        } else {
+        }
+
+        $current_worked_day = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::today()->year)->whereMonth('entry', Carbon::today()->month)->count();
+
+        $StartOfMonth = Carbon::now()->startOfMonth();
+        $current_date = Carbon::now()->startOfDay();
+
+        $PresentWorkingDays = (int) $StartOfMonth->diffInDays($current_date) + 1;
+
+        $CurrentHolidaySubtracting  = WeeklyHolidays::first();
+
+        for ($i = 0; $i <= $PresentWorkingDays; $i++) {
+            # code...
+        }
+
+
+
+
+
+        dd([$PresentWorkingDays, $current_worked_day]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         $getattendance = EmployeeTimeWatcher::where('user_id', $id)->get();
