@@ -403,21 +403,21 @@
             </div>
         </div>
 
-        <!-- <div class="stats-container">
+        <div class="stats-container">
             <div class="stat-card">
                 <h3>Total Days</h3>
-                <div class="value">{{ count($data) }}</div>
+                <div class="value">{{ $workingDay  }}</div>
                 <div class="icon material-symbols-outlined">calendar_month</div>
             </div>
             <div class="stat-card">
-                <h3>Working Days</h3>
-                <div class="value">{{ $data->filter(fn($i) => !in_array(\Carbon\Carbon::parse($i->entry)->format('D'), ['Sat', 'Sun']))->count() }}</div>
-                <div class="icon material-symbols-outlined">work</div>
+                <h3>Absent Days</h3>
+                <div class="value">{{ $abs }}</div>
+                <div class="icon material-symbols-outlined">check_circle</div>
             </div>
             <div class="stat-card">
-                <h3>Completed Days</h3>
-                <div class="value">{{ $data->filter(fn($i) => $i->leave)->count() }}</div>
-                <div class="icon material-symbols-outlined">check_circle</div>
+                <h3>Completed Working Days</h3>
+                <div class="value">{{ count($data) }}</div>
+                <div class="icon material-symbols-outlined">work</div>
             </div>
             <div class="stat-card">
                 <h3>Avg. Hours</h3>
@@ -431,7 +431,7 @@
                 </div>
                 <div class="icon material-symbols-outlined">schedule</div>
             </div>
-        </div> -->
+        </div>
 
         <div class="attendance-container">
             <div class="section-header">

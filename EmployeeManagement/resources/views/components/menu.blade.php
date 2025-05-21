@@ -1,4 +1,3 @@
-<x-loader />
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,7 +37,7 @@
 
         .dashboard-container {
             display: flex;
-            min-height: 100vh;
+            height: 100vh;
         }
 
         .admin-panel {
@@ -194,7 +193,7 @@
 </head>
 
 <body>
-    <div class="dashboard-container">
+    <div style="position: sticky; left: 0%; top: 0%;" class="dashboard-container">
         <!-- Sidebar -->
         <div class="admin-panel" id="panel">
             <div class="panel-header">
@@ -249,6 +248,8 @@
         </div>
     </div>
 
+    <!-- Loader starts -->
+
     <div id="loader" class="loader_container">
         <img src="{{ URL('Images/loader.gif') }}" alt="Loading...">
     </div>
@@ -258,7 +259,6 @@
             height: 100vh;
             width: 100vw;
             background-color: rgba(0, 0, 0, 0.5);
-            /* Slight transparency */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -279,6 +279,8 @@
             loader.classList.add('hidden');
         });
     </script>
+
+    <!-- Loader ends -->
 
     <script>
         function toggleMenu() {

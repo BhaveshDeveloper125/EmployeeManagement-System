@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EmployeeTimeWatcher;
 use App\Models\ExtraUserData;
+use App\Models\SetTime;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -48,6 +49,97 @@ class EmployeeAttendance extends Controller
 
     public function EmployeeAttendance($id)
     {
+        $holidayDays = [];
+        $weeklyHolidays = WeeklyHolidays::first();
+
+        $dayMap = [
+            'mon' => 'mon',
+            'tue' => 'tue',
+            'wed' => 'wed',
+            'thurs' => 'thu',
+            'fri' => 'fri',
+            'satur' => 'sat',
+            'sun' => 'sun'
+        ];
+
+        if ($weeklyHolidays) {
+            foreach ($dayMap as $dbDay => $carbonDay) {
+                if ($weeklyHolidays->$dbDay) {
+                    $holidayDays[] = $carbonDay;
+                }
+            }
+        }
+
+        $totalWorkingDays_for_loop_only = Carbon::now()->daysInMonth();
+        $totalWorkingDays = $totalWorkingDays_for_loop_only;
+
+        for ($i = 1; $i <= $totalWorkingDays_for_loop_only; $i++) {
+            $today = Carbon::now()->startOfMonth()->addDays($i - 1);
+            $day_name = strtolower(substr($today->format('D'), 0, 3));
+
+            if (in_array($day_name, $holidayDays)) {
+                $totalWorkingDays--;
+            }
+        }
+
+        $today = Carbon::now()->startOfMonth()->diffInDays(Carbon::now()->startOfDay());
+        $untill_today = $today;
+
+        for ($i = 1; $i <= $untill_today; $i++) {
+            $today = Carbon::now()->startOfMonth()->addDays($i - 1);
+            $day_name = strtolower(substr($today->format('D'), 0, 3));
+            if (in_array($day_name, $holidayDays)) {
+                $untill_today--;
+            }
+        }
+
+        $join_date = ExtraUserData::where('user_id', Auth::id())->value('joining_date');
+        $current_month = Carbon::parse($join_date)->month;
+
+        if ($current_month == Carbon::today()->month) {
+            $current_working_day = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::today()->year)->whereMonth('entry', Carbon::today()->month)->count();
+
+            $current_date = Carbon::now()->format('y-m-d');
+            $PresentWorkingDays = Carbon::parse($join_date)->diffInDays($current_date);
+
+            $Extractable_holiday_from_weekend = 0;
+
+            for ($i = 0; $i <= $PresentWorkingDays; $i++) {
+                $day =  Carbon::parse($join_date)->copy()->addDays($i);
+                $dayName = $dayName = strtolower($day->format('D'));
+                // echo $day->format('D') . "<br><br>";
+                if (in_array($dayName, $holidayDays)) {
+                    $Extractable_holiday_from_weekend++;
+                }
+            }
+
+            $CurrentWorkabledDays =  ($PresentWorkingDays + 1) - $Extractable_holiday_from_weekend;
+
+            $absent_days = $CurrentWorkabledDays - $current_working_day;
+        } else {
+
+            $current_worked_day = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::today()->year)->whereMonth('entry', Carbon::today()->month)->count();
+
+            $StartOfMonth = Carbon::now()->startOfMonth();
+            $current_date = Carbon::now()->startOfDay();
+
+            $PresentWorkingDays = (int) $StartOfMonth->diffInDays($current_date);
+
+
+            $Extractable_holiday_from_weekend = 0;
+
+            for ($i = 0; $i <= $PresentWorkingDays; $i++) {
+                $day = $StartOfMonth->copy()->addDays($i);
+                $dayName = $dayName = strtolower($day->format('D'));
+                if (in_array($dayName, $holidayDays)) {
+                    $Extractable_holiday_from_weekend++;
+                }
+            }
+
+            $CurrentWorkabledDays =  ($PresentWorkingDays + 1) - $Extractable_holiday_from_weekend;
+            $absent_days = $CurrentWorkabledDays - $current_worked_day;
+        }
+
         $getattendance = EmployeeTimeWatcher::where('user_id', $id)->get();
 
         $attendance = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('entry', Carbon::now()->month)->whereYear('entry', Carbon::now()->year)->count();
@@ -68,7 +160,7 @@ class EmployeeAttendance extends Controller
 
         // $leavingtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '<', Carbon::createFromTime(19, 15, 0))->count();
 
-        return view('Attendance', ['data' => $getattendance, 'attendance' => $attendance, 'lateattendance' => $lateattendance, 'earlyLeave' => $earlyLeave, 'absent' => $absent, 'overtime' => $overtime, 'leavingtime' => $leavingtime]);
+        return view('Attendance', ['data' => $getattendance, 'attendance' => $attendance, 'lateattendance' => $lateattendance, 'earlyLeave' => $earlyLeave, 'absent' => $absent, 'overtime' => $overtime, 'leavingtime' => $leavingtime, 'workingDay' => $totalWorkingDays, 'abs' => $absent_days]);
     }
 
     public function APIEmployeeAttendance($id)
@@ -151,20 +243,6 @@ class EmployeeAttendance extends Controller
 
         $actual_working_days = $totalWorkingDays - $untill_today;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         $join_date = ExtraUserData::where('user_id', Auth::id())->value('joining_date');
         $current_month = Carbon::parse($join_date)->month;
 
@@ -212,44 +290,24 @@ class EmployeeAttendance extends Controller
             $absent_days = $CurrentWorkabledDays - $current_worked_day;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         $getattendance = EmployeeTimeWatcher::where('user_id', $id)->get();
 
         $attendance = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('entry', Carbon::now()->month)->whereYear('entry', Carbon::now()->year)->count();
 
-        $lateattendance = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('entry', Carbon::now()->month)->where('entry', '>', '10:40')->count();
+
+        $lateattendance = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('entry', Carbon::now()->month)->where('entry', '>', SetTime::value('from'))->count();
 
         $currentMonthTotalDays = Carbon::now()->daysInMonth();
 
         $absent = $currentMonthTotalDays - $attendance;
 
         $earlyLeave = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', Carbon::now()->month)->where('leave', '<', Carbon::createFromTime(19, 25, 0))->count();
+
+        $early_leave = EmployeeTimeWatcher::where('user_id', Auth::id())
+            ->whereMonth('leave', Carbon::now()->month)
+            ->whereYear('leave', Carbon::now()->year)
+            ->where('leave', '>', SetTime::value('to'))
+            ->count();
 
         $overtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '>', Carbon::createFromTime(19, 45, 0))->count();
 
@@ -285,7 +343,7 @@ class EmployeeAttendance extends Controller
             'data' => $getattendance,
             'attendance' => $attendance,
             'lateattendance' => $lateattendance,
-            'earlyLeave' => $earlyLeave,
+            'earlyLeave' => $early_leave,
             'absent' => $absent,
             'totalWorkingDays' => $totalWorkingDays,
             'actual_working_days' => $actual_working_days,

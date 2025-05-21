@@ -517,7 +517,7 @@
             </form>
         </div> -->
 
-        <x-menu></x-menu>
+        <x-menu />
 
 
         <div style="flex: 1;">
