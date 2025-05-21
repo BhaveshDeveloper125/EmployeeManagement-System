@@ -165,7 +165,44 @@ class EmployeeAttendance extends Controller
 
     public function Filteration($id)
     {
-        return response()->json($id);
+
+        switch ($id) {
+            case 'attend':
+                $attend = EmployeeTimeWatcher::where('user_id', Auth::id())->whereMonth('entry', Carbon::now()->month)->get();
+                $user = User::find(Auth::id());
+                $extra = ExtraUserData::where('user_id', Auth::id())->get();
+                $time = SetTime::first();
+                return view('EmployeeAttendanceFilter', ['attend' => $attend, 'user' => $user, 'extra' => $extra, 'time' => $time]);
+                // break;
+
+            case 'late':
+                return view('EmployeeAttendanceFilter', ['id' => 'Late']);
+                // break;
+
+            case 'absent':
+                return view('EmployeeAttendanceFilter', ['id' => 'Absent']);
+                // break;
+
+            case 'early':
+                return view('EmployeeAttendanceFilter', ['id' => 'Early']);
+                // break;
+
+            case 'overtime':
+                return view('EmployeeAttendanceFilter', ['id' => 'Overtime']);
+                // break;
+
+            case 'working_days':
+                return view('EmployeeAttendanceFilter', ['id' => 'Working_Days']);
+                // break;
+
+            case 'remain':
+                return view('EmployeeAttendanceFilter', ['id' => 'Remain']);
+                // break;
+
+            default:
+                # code...
+                break;
+        }
     }
 
     public function APIEmployeeAttendance($id)
