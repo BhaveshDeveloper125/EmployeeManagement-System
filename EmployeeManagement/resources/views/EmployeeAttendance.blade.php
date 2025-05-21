@@ -633,38 +633,52 @@
     <main class="main-content" id="mainContent">
         <div class="dashboard-grid">
             <div class="dashboard-card">
-                <h3 class="card-title">Attendance/Month</h3>
-                <div class="card-value">{{ $attendance }}</div>
+                <a href="">
+                    <h3 class="card-title">Attendance/Month</h3>
+                    <div class="card-value">{{ $attendance }}</div>
+                </a>
                 <p class="card-description">Total days present this month</p>
             </div>
             <div class="dashboard-card">
-                <h3 class="card-title">Late Attendance</h3>
-                <div class="card-value">{{ $lateattendance }}</div>
+                <a href="">
+                    <h3 class="card-title">Late Attendance</h3>
+                    <div class="card-value">{{ $lateattendance }}</div>
+                </a>
                 <p class="card-description">Late arrivals this month</p>
             </div>
             <div class="dashboard-card">
-                <h3 class="card-title">Absent/Month</h3>
-                <div class="card-value">{{ $leavingtime }}</div>
+                <a href="">
+                    <h3 class="card-title">Absent/Month</h3>
+                    <div class="card-value">{{ $leavingtime }}</div>
+                </a>
                 <p class="card-description">Days absent this month</p>
             </div>
             <div class="dashboard-card">
-                <h3 class="card-title">Early Leave</h3>
-                <div class="card-value">{{ $earlyLeave }}</div>
+                <a href="">
+                    <h3 class="card-title">Early Leave</h3>
+                    <div class="card-value">{{ $earlyLeave }}</div>
+                </a>
                 <p class="card-description">Early departures this month</p>
             </div>
             <div class="dashboard-card">
-                <h3 class="card-title">OverTime</h3>
-                <div class="card-value">{{ $overtime }}</div>
+                <a href="">
+                    <h3 class="card-title">OverTime</h3>
+                    <div class="card-value">{{ $overtime }}</div>
+                </a>
                 <p class="card-description">Extra hours worked</p>
             </div>
             <div class="dashboard-card">
-                <h3 class="card-title">Working Days of this month</h3>
-                <div class="card-value">{{ $totalWorkingDays }}</div>
+                <a href="">
+                    <h3 class="card-title">Working Days of this month</h3>
+                    <div class="card-value">{{ $totalWorkingDays }}</div>
+                </a>
                 <p class="card-description">Total working day in current month</p>
             </div>
             <div class="dashboard-card">
-                <h3 class="card-title">Remain Days</h3>
-                <div class="card-value">{{ $actual_working_days }}</div>
+                <a href="">
+                    <h3 class="card-title">Remain Days</h3>
+                    <div class="card-value">{{ $actual_working_days }}</div>
+                </a>
                 <p class="card-description">Days left in current month</p>
             </div>
         </div>
