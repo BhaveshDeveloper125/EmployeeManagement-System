@@ -408,10 +408,26 @@ class AdminController extends Controller
             $restoring = $user->restore();
 
             if ($restoring) {
-                return response()->json(['Success', 'User is Restored']);
+                return redirect()->back()->with('restore', 'User is Restored');
             } else {
-                return response()->json(['error', 'oops something went wrong ,  User or User related data are not Restored']);
+                return redirect()->back()->with('not_restore', 'oops something went wrong ,  User or User related data are not Restored');
             }
+        }
+    }
+
+    public function RemoveUser($id)
+    {
+        $force_delete = User::onlyTrashed()->find($id);
+
+        if ($force_delete) {
+            $delete = $force_delete->forceDelete();
+            if ($delete) {
+                return redirect()->back()->with('Success', 'User is Deleted Permanantly');
+            } else {
+                return redirect()->back()->with('error', 'oops something went wrong User can not deleted');
+            }
+        } else {
+            return redirect()->back()->with('error', 'User can not be found , check if this user exists or not');
         }
     }
 

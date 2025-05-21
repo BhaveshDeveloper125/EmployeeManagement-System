@@ -52,6 +52,7 @@ Route::get('get_user_info', function () {
     return view('SearchEmployee');
 });
 Route::get('/restore/{id}', [AdminController::class, 'RestoreUsers']);
+Route::get('/remove/{id}', [AdminController::class, 'RemoveUser']);
 
 
 

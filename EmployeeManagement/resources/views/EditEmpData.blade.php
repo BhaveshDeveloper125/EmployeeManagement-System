@@ -1,4 +1,3 @@
-<x-loader />
 <!DOCTYPE html>
 <html lang="en">
 

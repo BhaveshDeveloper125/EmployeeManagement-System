@@ -1,4 +1,3 @@
-<x-loader />
 <style>
     :root {
         --navy: #111F4D;

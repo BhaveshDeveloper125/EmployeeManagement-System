@@ -1,4 +1,3 @@
-<x-loader />
 <!DOCTYPE html>
 <html lang="en">
 
@@ -465,10 +464,11 @@
 
 <body>
     <div style="display: flex;">
-        <div class="admin-panel" id="panel">
+
+
+        <!-- <div class="admin-panel" id="panel">
             <div class="panel-header">
                 <div class="logo">
-                    <!-- Logo can be added here if needed -->
                 </div>
                 <button class="menu-toggle" onclick="toggleMenu()">
                     <span></span>
@@ -502,6 +502,10 @@
                     <div class="nav-icon"><img src="{{ URL('Images/travel.png') }}" alt="Holiday Settings"></div>
                     <span class="nav-text">Holiday Settings</span>
                 </a>
+                <a href="/adminPanel/trash_user" class="nav-item">
+                    <div class="nav-icon"><img src="{{ URL('Images/trash.png') }}" alt="Holiday Settings"></div>
+                    <span class="nav-text">Trashed User</span>
+                </a>
             </nav>
 
             <button class="logout-btn" onclick="document.querySelector('form').submit()">
@@ -511,7 +515,10 @@
             <form action="/logout" method="post" style="display: none;">
                 @csrf
             </form>
-        </div>
+        </div> -->
+
+        <x-menu></x-menu>
+
 
         <div style="flex: 1;">
             <br><br>
