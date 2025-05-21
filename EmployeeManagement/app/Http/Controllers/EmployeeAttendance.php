@@ -163,6 +163,11 @@ class EmployeeAttendance extends Controller
         return view('Attendance', ['data' => $getattendance, 'attendance' => $attendance, 'lateattendance' => $lateattendance, 'earlyLeave' => $earlyLeave, 'absent' => $absent, 'overtime' => $overtime, 'leavingtime' => $leavingtime, 'workingDay' => $totalWorkingDays, 'abs' => $absent_days]);
     }
 
+    public function Filteration($id)
+    {
+        return response()->json($id);
+    }
+
     public function APIEmployeeAttendance($id)
     {
         $getattendance = EmployeeTimeWatcher::where('user_id', $id)->get();

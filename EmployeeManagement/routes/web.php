@@ -53,6 +53,7 @@ Route::get('get_user_info', function () {
 });
 Route::get('/restore/{id}', [AdminController::class, 'RestoreUsers']);
 Route::get('/remove/{id}', [AdminController::class, 'RemoveUser']);
+Route::get('/empfilter/{id}', [EmployeeAttendance::class, 'Filteration']);
 
 
 
@@ -75,6 +76,7 @@ Route::post('/set_time', [AdminController::class, 'TimeManagement']);
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
 Route::view('/filters', 'Filter');
+Route::view('/empfilter', 'EmployeeAttendanceFilter');
 // Route::view('/extraDetails', 'EployeeDetails');
 
 
