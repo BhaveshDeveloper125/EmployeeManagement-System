@@ -181,6 +181,7 @@ class EmployeeAttendance extends Controller
                 // break;
 
             case 'absent':
+                $absent = EmployeeTimeWatcher::where('user_id', Auth::id())->whereNotNull('leave')->whereMonth('entry', Carbon::now()->month)->count();
                 return view('EmployeeAttendanceFilter', ['id' => 'Absent']);
                 // break;
 
@@ -194,17 +195,8 @@ class EmployeeAttendance extends Controller
                 return view('EmployeeAttendanceFilter', ['overtime' => $overtime]);
                 // break;
 
-            case 'working_days':
-                return view('EmployeeAttendanceFilter', ['id' => 'Working_Days']);
-                // break;
-
-            case 'remain':
-                return view('EmployeeAttendanceFilter', ['id' => 'Remain']);
-                // break;
-
             default:
-                # code...
-                break;
+                return view('EmployeeAttendanceFilter', ['message' => 'Error while fetching or Receiving Data']);
         }
     }
 

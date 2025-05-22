@@ -123,5 +123,5 @@
 </table>
 
 @else
-<p>Error while fetching or Receiving Data</p>
+<p>{{ $message }}</p>
 @endif
