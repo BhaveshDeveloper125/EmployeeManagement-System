@@ -14,6 +14,7 @@ use Stevebauman\Location\Facades\Location;
 use App\Models\UserWifiData;
 use App\Models\WeeklyHolidays;
 
+use function PHPSTORM_META\type;
 use function PHPUnit\Framework\returnSelf;
 
 class EmployeeAttendance extends Controller
@@ -181,7 +182,53 @@ class EmployeeAttendance extends Controller
                 // break;
 
             case 'absent':
+
+
+                $joiningDate = ExtraUserData::where('user_id', Auth::id())->value('joining_date');
+                $diff = (int) Carbon::parse($joiningDate)->diffInDays(Carbon::now());
                 $absent = EmployeeTimeWatcher::where('user_id', Auth::id())->whereNotNull('leave')->whereMonth('entry', Carbon::now()->month)->count();
+
+                $MonthStart = Carbon::now()->startOfMonth();
+                $DayStart = Carbon::now()->startOfDay();
+
+                $difference = $MonthStart->diffInDays($DayStart);
+
+                $holidayDays = [];
+                $weeklyHolidays = WeeklyHolidays::first();
+
+                $dayMap = [
+                    'mon' => 'mon',
+                    'tue' => 'tue',
+                    'wed' => 'wed',
+                    'thurs' => 'thu',
+                    'fri' => 'fri',
+                    'satur' => 'sat',
+                    'sun' => 'sun'
+                ];
+
+                if ($weeklyHolidays) {
+                    foreach ($dayMap as $dbDay => $carbonDay) {
+                        if ($weeklyHolidays->$dbDay) {
+                            $holidayDays[] = $carbonDay;
+                        }
+                    }
+                }
+
+                for ($i = 0; $i <= $difference; $i++) {
+                    $currentDay = (clone $MonthStart)->modify("+$i days");
+                    echo typeOf($holidayDays[0]);
+                    echo typeOf($currentDay->format('D')) . " <br><br> \n";
+
+                    // if ($holidayDays[0] == $currentDay->format('D')) {
+                    //     echo $currentDay->format('D');
+                    // }
+                }
+
+
+
+                dd($difference);
+
+
                 return view('EmployeeAttendanceFilter', ['id' => 'Absent']);
                 // break;
 
