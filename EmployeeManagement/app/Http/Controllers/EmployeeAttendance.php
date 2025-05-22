@@ -216,8 +216,8 @@ class EmployeeAttendance extends Controller
 
                 for ($i = 0; $i <= $difference; $i++) {
                     $currentDay = (clone $MonthStart)->modify("+$i days");
-                    echo typeOf($holidayDays[0]);
-                    echo typeOf($currentDay->format('D')) . " <br><br> \n";
+                    echo gettype($holidayDays[0]);
+                    echo gettype($currentDay->format('D')) . " <br><br> \n";
 
                     // if ($holidayDays[0] == $currentDay->format('D')) {
                     //     echo $currentDay->format('D');
