@@ -672,17 +672,13 @@
                 <p class="card-description">Extra hours worked</p>
             </div>
             <div class="dashboard-card">
-                <a href="/empfilter/working_days">
-                    <h3 class="card-title">Working Days of this month</h3>
-                    <div class="card-value">{{ $totalWorkingDays }}</div>
-                </a>
+                <h3 class="card-title">Working Days of this month</h3>
+                <div class="card-value">{{ $totalWorkingDays }}</div>
                 <p class="card-description">Total working day in current month</p>
             </div>
             <div class="dashboard-card">
-                <a href="/empfilter/remain">
-                    <h3 class="card-title">Remain Days</h3>
-                    <div class="card-value">{{ $actual_working_days }}</div>
-                </a>
+                <h3 class="card-title">Remain Days</h3>
+                <div class="card-value">{{ $actual_working_days }}</div>
                 <p class="card-description">Days left in current month</p>
             </div>
         </div>

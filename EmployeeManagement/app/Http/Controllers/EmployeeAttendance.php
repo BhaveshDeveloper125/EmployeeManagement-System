@@ -166,17 +166,18 @@ class EmployeeAttendance extends Controller
     public function Filteration($id)
     {
 
+        $time = SetTime::first();
+        $attend = EmployeeTimeWatcher::where('user_id', Auth::id())->whereMonth('entry', Carbon::now()->month)->get();
+        $user = User::find(Auth::id());
+        $extra = ExtraUserData::where('user_id', Auth::id())->get();
         switch ($id) {
             case 'attend':
-                $attend = EmployeeTimeWatcher::where('user_id', Auth::id())->whereMonth('entry', Carbon::now()->month)->get();
-                $user = User::find(Auth::id());
-                $extra = ExtraUserData::where('user_id', Auth::id())->get();
-                $time = SetTime::first();
                 return view('EmployeeAttendanceFilter', ['attend' => $attend, 'user' => $user, 'extra' => $extra, 'time' => $time]);
                 // break;
 
             case 'late':
-                return view('EmployeeAttendanceFilter', ['id' => 'Late']);
+                $late = EmployeeTimeWatcher::where('user_id', Auth::id())->whereMonth('entry', Carbon::now()->month)->whereTime('entry', '>', $time->from)->get();
+                return view('EmployeeAttendanceFilter', ['late' => $late]);
                 // break;
 
             case 'absent':
@@ -184,11 +185,13 @@ class EmployeeAttendance extends Controller
                 // break;
 
             case 'early':
-                return view('EmployeeAttendanceFilter', ['id' => 'Early']);
+                $early = EmployeeTimeWatcher::where('user_id', Auth::id())->whereTime('leave', '<', $time->to)->get();
+                return view('EmployeeAttendanceFilter', ['early' => $early, 'to' => $time->to]);
                 // break;
 
             case 'overtime':
-                return view('EmployeeAttendanceFilter', ['id' => 'Overtime']);
+                $overtime = EmployeeTimeWatcher::where('user_id', Auth::id())->whereTime('leave', '>', $time->to)->get();
+                return view('EmployeeAttendanceFilter', ['overtime' => $overtime]);
                 // break;
 
             case 'working_days':
