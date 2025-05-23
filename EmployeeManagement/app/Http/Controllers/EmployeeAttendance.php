@@ -14,6 +14,7 @@ use Stevebauman\Location\Facades\Location;
 use App\Models\UserWifiData;
 use App\Models\WeeklyHolidays;
 
+use function Illuminate\Filesystem\join_paths;
 use function PHPSTORM_META\type;
 use function PHPUnit\Framework\returnSelf;
 
@@ -174,73 +175,117 @@ class EmployeeAttendance extends Controller
         switch ($id) {
             case 'attend':
                 return view('EmployeeAttendanceFilter', ['attend' => $attend, 'user' => $user, 'extra' => $extra, 'time' => $time]);
-                // break;
 
             case 'late':
                 $late = EmployeeTimeWatcher::where('user_id', Auth::id())->whereMonth('entry', Carbon::now()->month)->whereTime('entry', '>', $time->from)->get();
                 return view('EmployeeAttendanceFilter', ['late' => $late]);
-                // break;
 
             case 'absent':
 
+                $join_date = ExtraUserData::where('user_id', Auth::id())->value('joining_date');
+                $current_month = Carbon::parse($join_date)->month;
 
-                $joiningDate = ExtraUserData::where('user_id', Auth::id())->value('joining_date');
-                $diff = (int) Carbon::parse($joiningDate)->diffInDays(Carbon::now());
-                $absent = EmployeeTimeWatcher::where('user_id', Auth::id())->whereNotNull('leave')->whereMonth('entry', Carbon::now()->month)->count();
+                // if ($current_month == Carbon::today()->month) {
+                if (false) {
+                    // dd('Bhavesh');
+                    $present = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::now()->year)->whereMonth('entry', Carbon::now()->month)->get();
+                    $present_array = [];
 
-                $MonthStart = Carbon::now()->startOfMonth();
-                $DayStart = Carbon::now()->startOfDay();
+                    foreach ($present as $i) {
+                        $present_array[] = Carbon::parse($i->leave)->format('d-m-y , D');
+                    }
 
-                $difference = $MonthStart->diffInDays($DayStart);
-
-                $holidayDays = [];
-                $weeklyHolidays = WeeklyHolidays::first();
-
-                $dayMap = [
-                    'mon' => 'mon',
-                    'tue' => 'tue',
-                    'wed' => 'wed',
-                    'thurs' => 'thu',
-                    'fri' => 'fri',
-                    'satur' => 'sat',
-                    'sun' => 'sun'
-                ];
-
-                if ($weeklyHolidays) {
-                    foreach ($dayMap as $dbDay => $carbonDay) {
-                        if ($weeklyHolidays->$dbDay) {
-                            $holidayDays[] = $carbonDay;
+                    $holidayDays = [];
+                    $weeklyHolidays = WeeklyHolidays::first();
+                    $dayMap = [
+                        'mon' => 'Mon',
+                        'tue' => 'Tue',
+                        'wed' => 'Wed',
+                        'thurs' => 'Thu',
+                        'fri' => 'Fri',
+                        'satur' => 'Sat',
+                        'sun' => 'Sun'
+                    ];
+                    if ($weeklyHolidays) {
+                        foreach ($dayMap as $dbDay => $carbonDay) {
+                            if ($weeklyHolidays->$dbDay) {
+                                $holidayDays[] = $carbonDay;
+                            }
                         }
                     }
+                    $joining = $join_date;
+                    $today = Carbon::today()->day;
+                    $CurrentDays = [];
+                    $TotalWorkings = [];
+
+                    for ($i = 1; $i <= $today; $i++) {
+                        $CurrentDays[] = $joining->format('d-m-y , D');
+                        $joining->addDay();
+                    }
+
+                    foreach ($CurrentDays as $i) {
+                        $day = trim(substr($i, strpos($i, ',') + 1));
+                        if (!in_array($day, $holidayDays)) {
+                            $TotalWorkings[] =   $i;
+                        }
+                    }
+                    $absent = array_diff($TotalWorkings, $present_array);
+                    return view('EmployeeAttendanceFilter', ['absent' => $absent]);
+                } else {
+                    $present = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::now()->year)->whereMonth('entry', Carbon::now()->month)->get();
+                    $present_array = [];
+
+                    foreach ($present as $i) {
+                        $present_array[] = Carbon::parse($i->leave)->format('d-m-y , D');
+                    }
+
+                    $holidayDays = [];
+                    $weeklyHolidays = WeeklyHolidays::first();
+                    $dayMap = [
+                        'mon' => 'Mon',
+                        'tue' => 'Tue',
+                        'wed' => 'Wed',
+                        'thurs' => 'Thu',
+                        'fri' => 'Fri',
+                        'satur' => 'Sat',
+                        'sun' => 'Sun'
+                    ];
+                    if ($weeklyHolidays) {
+                        foreach ($dayMap as $dbDay => $carbonDay) {
+                            if ($weeklyHolidays->$dbDay) {
+                                $holidayDays[] = $carbonDay;
+                            }
+                        }
+                    }
+                    $MonthStart = Carbon::now()->startOfMonth();
+                    $today = Carbon::today()->day;
+                    $CurrentDays = [];
+                    $TotalWorkings = [];
+
+                    for ($i = 1; $i <= $today; $i++) {
+                        $CurrentDays[] = $MonthStart->format('d-m-y , D');
+                        $MonthStart->addDay();
+                    }
+
+                    foreach ($CurrentDays as $i) {
+                        $day = trim(substr($i, strpos($i, ',') + 1));
+                        if (!in_array($day, $holidayDays)) {
+                            $TotalWorkings[] =   $i;
+                        }
+                    }
+                    $absent = array_diff($TotalWorkings, $present_array);
+                    return view('EmployeeAttendanceFilter', ['absent' => $absent]);
                 }
 
-                for ($i = 0; $i <= $difference; $i++) {
-                    $currentDay = (clone $MonthStart)->modify("+$i days");
-                    echo gettype($holidayDays[0]);
-                    echo gettype($currentDay->format('D')) . " <br><br> \n";
 
-                    // if ($holidayDays[0] == $currentDay->format('D')) {
-                    //     echo $currentDay->format('D');
-                    // }
-                }
-
-
-
-                dd($difference);
-
-
-                return view('EmployeeAttendanceFilter', ['id' => 'Absent']);
-                // break;
 
             case 'early':
                 $early = EmployeeTimeWatcher::where('user_id', Auth::id())->whereTime('leave', '<', $time->to)->get();
                 return view('EmployeeAttendanceFilter', ['early' => $early, 'to' => $time->to]);
-                // break;
 
             case 'overtime':
                 $overtime = EmployeeTimeWatcher::where('user_id', Auth::id())->whereTime('leave', '>', $time->to)->get();
                 return view('EmployeeAttendanceFilter', ['overtime' => $overtime]);
-                // break;
 
             default:
                 return view('EmployeeAttendanceFilter', ['message' => 'Error while fetching or Receiving Data']);

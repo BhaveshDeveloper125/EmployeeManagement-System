@@ -376,7 +376,7 @@
                     <option value="wed">Wednesday</option>
                     <option value="thu">Thursday</option>
                     <option value="fri">Friday</option>
-                    <option value="sat">Saturday</option>
+                    <option value="satur">Saturday</option>
                 </select>
                 <button type="button" class="remove-btn" aria-label="Remove day" onclick="removeDay(this)">Remove</button>`;
             selectContainer.appendChild(wrapper);
