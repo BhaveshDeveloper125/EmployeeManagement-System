@@ -38,22 +38,22 @@ Route::get('/editemp', [AdminController::class, 'EditEmpData'])->middleware(Logi
 Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas'])->middleware(LoginCheck::class);
 Route::get('/deleteemps/{id}', [AdminController::class, 'DeleteEmpDatas'])->middleware(LoginCheck::class);
 Route::get('/pdfdatas', [MediaController::class, 'PDFGenerator'])->middleware(LoginCheck::class);
-Route::get('/homepage/{id}', [EmployeeAttendance::class, 'homepage']);
+Route::get('/homepage/{id}', [EmployeeAttendance::class, 'homepage'])->middleware(LoginCheck::class);
 
 
 // Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class); 
-Route::get('/add_new_system', [AdminController::class, 'NewSystemInstallation']); //Hit this URL if you newly Installed the System
+Route::get('/add_new_system', [AdminController::class, 'NewSystemInstallation'])->middleware(LoginCheck::class); //Hit this URL if you newly Installed the System
 
 
 Route::get('/filter', function () {
     return view('Filter');
-});
+})->middleware(LoginCheck::class);
 Route::get('get_user_info', function () {
     return view('SearchEmployee');
-});
-Route::get('/restore/{id}', [AdminController::class, 'RestoreUsers']);
-Route::get('/remove/{id}', [AdminController::class, 'RemoveUser']);
-Route::get('/empfilter/{id}', [EmployeeAttendance::class, 'Filteration']);
+})->middleware(LoginCheck::class);
+Route::get('/restore/{id}', [AdminController::class, 'RestoreUsers'])->middleware(LoginCheck::class);
+Route::get('/remove/{id}', [AdminController::class, 'RemoveUser'])->middleware(LoginCheck::class);
+Route::get('/empfilter/{id}', [EmployeeAttendance::class, 'Filteration'])->middleware(LoginCheck::class);
 
 
 
@@ -68,15 +68,15 @@ Route::post('/user_details', [AdminController::class, 'AddUserDetails'])->middle
 //     dd($request::all());
 // }])->middleware(LoginCheck::class);
 Route::post('/get_user_info', [AdminController::class, 'SearchUser'])->middleware(LoginCheck::class);
-Route::post('/setholiday', [AdminController::class, 'Holidays']);
-Route::post('/filter', [FilterController::class, 'FilterData']);
-Route::post('/setweeklyholiday', [HolidayController::class, 'SetWeeklyHoliday']);
-Route::post('/set_time', [AdminController::class, 'TimeManagement']);
+Route::post('/setholiday', [AdminController::class, 'Holidays'])->middleware(LoginCheck::class);
+Route::post('/filter', [FilterController::class, 'FilterData'])->middleware(LoginCheck::class);
+Route::post('/setweeklyholiday', [HolidayController::class, 'SetWeeklyHoliday'])->middleware(LoginCheck::class);
+Route::post('/set_time', [AdminController::class, 'TimeManagement'])->middleware(LoginCheck::class);
 
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
-Route::view('/filters', 'Filter');
-Route::view('/empfilter', 'EmployeeAttendanceFilter');
+Route::view('/filters', 'Filter')->middleware(LoginCheck::class);
+Route::view('/empfilter', 'EmployeeAttendanceFilter')->middleware(LoginCheck::class);
 // Route::view('/extraDetails', 'EployeeDetails');
 
 

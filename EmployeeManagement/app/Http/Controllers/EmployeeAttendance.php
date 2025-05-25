@@ -14,6 +14,7 @@ use Stevebauman\Location\Facades\Location;
 use App\Models\UserWifiData;
 use App\Models\WeeklyHolidays;
 
+use Symfony\Component\Mime\Test\Constraint\EmailSubjectContains;
 use function Illuminate\Filesystem\join_paths;
 use function PHPSTORM_META\type;
 use function PHPUnit\Framework\returnSelf;
@@ -181,20 +182,19 @@ class EmployeeAttendance extends Controller
                 return view('EmployeeAttendanceFilter', ['late' => $late]);
 
             case 'absent':
-
                 $join_date = ExtraUserData::where('user_id', Auth::id())->value('joining_date');
-                $current_month = Carbon::parse($join_date)->month;
+                $join = Carbon::parse($join_date)->month;
+                $year = Carbon::parse($join_date)->year;
 
-                // if ($current_month == Carbon::today()->month) {
-                if (false) {
-                    // dd('Bhavesh');
-                    $present = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::now()->year)->whereMonth('entry', Carbon::now()->month)->get();
-                    $present_array = [];
-
-                    foreach ($present as $i) {
-                        $present_array[] = Carbon::parse($i->leave)->format('d-m-y , D');
+                if ($join == Carbon::now()->month && $year == Carbon::now()->year) {
+                    $iterator = (int) Carbon::parse($join_date)->diffInDays(Carbon::now());
+                    $totalDays = [];
+                    $date = Carbon::parse($join_date);
+                    for ($i = 0; $i <= $iterator; $i++) {
+                        $totalDays[] = $date->format('d-m-y , D');
+                        // echo $date->format('d-m-y , D') . "<br><br>";
+                        $date->addDay();
                     }
-
                     $holidayDays = [];
                     $weeklyHolidays = WeeklyHolidays::first();
                     $dayMap = [
@@ -213,23 +213,23 @@ class EmployeeAttendance extends Controller
                             }
                         }
                     }
-                    $joining = $join_date;
-                    $today = Carbon::today()->day;
-                    $CurrentDays = [];
-                    $TotalWorkings = [];
 
-                    for ($i = 1; $i <= $today; $i++) {
-                        $CurrentDays[] = $joining->format('d-m-y , D');
-                        $joining->addDay();
-                    }
 
-                    foreach ($CurrentDays as $i) {
-                        $day = trim(substr($i, strpos($i, ',') + 1));
-                        if (!in_array($day, $holidayDays)) {
-                            $TotalWorkings[] =   $i;
+                    $holiday_filter = [];
+
+                    foreach ($totalDays as $i) {
+                        if (!in_array(Carbon::parse($i)->format('D'), $holidayDays)) {
+                            $holiday_filter[] = $i;
                         }
                     }
-                    $absent = array_diff($TotalWorkings, $present_array);
+
+
+                    $present = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::now()->year)->whereMonth('entry', Carbon::now()->month)->get();
+                    $present_array = [];
+                    foreach ($present as $i) {
+                        $present_array[] = Carbon::parse($i->leave)->format('d-m-y , D');
+                    }
+                    $absent = array_diff($holiday_filter, $present_array);
                     return view('EmployeeAttendanceFilter', ['absent' => $absent]);
                 } else {
                     $present = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::now()->year)->whereMonth('entry', Carbon::now()->month)->get();
@@ -276,8 +276,6 @@ class EmployeeAttendance extends Controller
                     $absent = array_diff($TotalWorkings, $present_array);
                     return view('EmployeeAttendanceFilter', ['absent' => $absent]);
                 }
-
-
 
             case 'early':
                 $early = EmployeeTimeWatcher::where('user_id', Auth::id())->whereTime('leave', '<', $time->to)->get();
@@ -438,7 +436,9 @@ class EmployeeAttendance extends Controller
             ->where('leave', '>', SetTime::value('to'))
             ->count();
 
-        $overtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '>', Carbon::createFromTime(19, 45, 0))->count();
+        $to = SetTime::value('to');
+
+        $overtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereTime('leave', '>', $to)->count();
 
         // $leavingtime = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('leave', '<', Carbon::createFromTime(19, 15, 0))->count();
 
