@@ -48,7 +48,6 @@
         /* ===== Main Content ===== */
         main {
             flex: 1;
-            margin-left: 280px;
             padding: 40px;
             transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -276,7 +275,6 @@
             </form>
         </section>
 
-        <!-- Set Other Holidays -->
         <section class="card">
             <form action="/setholiday" method="post" id="otherHolidaysForm">
                 @csrf
@@ -284,14 +282,14 @@
                 <p class="description">Add special holidays with dates and descriptions</p>
                 <div id="dateInputs">
                     <div class="date-group">
-                        <input type="date" name="dates[]" required />
-                        <input type="text" name="titles[]" placeholder="Enter holiday title" required />
-                        <textarea name="reasons[]" placeholder="Reason for holiday" required></textarea>
-                        <button type="button" class="remove-btn" onclick="this.parentNode.remove()">Remove</button>
+                        <input type="date" name="leaves" required />
+                        <input type="text" name="title" placeholder="Enter holiday title" required />
+                        <textarea name="reason" placeholder="Reason for holiday" required></textarea>
+                        <!-- <button type="button" class="remove-btn" onclick="this.parentNode.remove()">Remove</button> -->
                     </div>
                 </div>
                 <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
-                    <button type="button" class="btn-secondary" onclick="addDateInput()">Add Another Date</button>
+                    <!-- <button type="button" class="btn-secondary" onclick="addDateInput()">Add Another Date</button> -->
                     <button type="submit" class="btn-primary">Submit Holidays</button>
                 </div>
             </form>

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Holidays extends Model
+class Holiday extends Model
 {
     protected $fillable = [
-        'weekly',
-        'leaves'
+        'leaves',
+        'title',
+        'reason',
     ];
 }

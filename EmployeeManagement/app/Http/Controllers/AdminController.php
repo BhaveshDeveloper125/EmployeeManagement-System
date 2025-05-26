@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EmployeeTimeWatcher;
 use App\Models\ExtraUserData;
-use App\Models\Holidays;
+use App\Models\Holiday;
 use App\Models\User;
 use App\Models\UserWifiData;
 use Cron\HoursField;
@@ -247,9 +247,17 @@ class AdminController extends Controller
 
     public function Holidays(Request $request)
     {
-        $HoliDay = new Holidays();
+        $HoliDay = new Holiday();
 
-        return response()->json([$request->all()]);
+        $save = $HoliDay->fill($request->all())->save();
+
+        if ($save) {
+            return response()->json('saved success');
+        } else {
+            return response()->json('not success');
+        }
+
+        // return response()->json([$request->all()]);
     }
 
     public function apigetData()
