@@ -672,6 +672,13 @@
                 <p class="card-description">Extra hours worked</p>
             </div>
             <div class="dashboard-card">
+                <a href="/empfilter/holiday">
+                    <h3 class="card-title">Holidays</h3>
+                    <div class="card-value">{{ $HolidayNumbers }}</div>
+                </a>
+                <p class="card-description"> Festival/any other Holidays in current month</p>
+            </div>
+            <div class="dashboard-card">
                 <h3 class="card-title">Working Days of this month</h3>
                 <div class="card-value">{{ $totalWorkingDays }}</div>
                 <p class="card-description">Total working day in current month</p>

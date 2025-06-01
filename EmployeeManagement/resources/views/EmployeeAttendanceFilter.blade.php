@@ -369,6 +369,7 @@
                 <option value="/empfilter/absent">Absent</option>
                 <option value="/empfilter/early">Early Leave</option>
                 <option value="/empfilter/overtime">Over Time</option>
+                <option value="/empfilter/holiday">Holiday </option>
             </select>
         </div>
 
@@ -608,6 +609,35 @@
                             <td data-label="Status">
                                 <span class="status-badge status-overtime">Over Time</span>
                             </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @elseif(isset($holiday))
+        <div class="report-card">
+            <div class="card-header">
+                Holidays This Month
+            </div>
+            <div style="overflow-x: auto; padding: 20px;">
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Date</th>
+                            <th>Title</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($holiday as $i)
+                        <tr>
+                            <td data-label="Sr No">{{ $loop->iteration }}</td>
+                            <td data-label="Date">{{ Carbon\Carbon::parse($i->leaves)->format('d-m-y') }}</td>
+                            <td data-label="Entry Time">{{ $i->title }}</td>
+                            <td data-label="Leave Time">{{ $i->reason }}</td>
                         </tr>
                         @endforeach
                     </tbody>

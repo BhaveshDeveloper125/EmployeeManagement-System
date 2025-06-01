@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EmployeeTimeWatcher;
 use App\Models\ExtraUserData;
+use App\Models\Holiday;
 use App\Models\SetTime;
 use App\Models\User;
 use Carbon\Carbon;
@@ -285,6 +286,10 @@ class EmployeeAttendance extends Controller
                 $overtime = EmployeeTimeWatcher::where('user_id', Auth::id())->whereTime('leave', '>', $time->to)->get();
                 return view('EmployeeAttendanceFilter', ['overtime' => $overtime]);
 
+            case 'holiday':
+                $holiday = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->get();
+                return view('EmployeeAttendanceFilter', ['holiday' => $holiday]);
+
             default:
                 return view('EmployeeAttendanceFilter', ['message' => 'Error while fetching or Receiving Data']);
         }
@@ -468,6 +473,8 @@ class EmployeeAttendance extends Controller
             ->whereDate('entry', $today)
             ->first();
 
+        $HolidayNumbers = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->count();
+
         return view('EmployeeAttendance', [
             'data' => $getattendance,
             'attendance' => $attendance,
@@ -478,6 +485,7 @@ class EmployeeAttendance extends Controller
             'actual_working_days' => $actual_working_days,
             'overtime' => $overtime,
             'leavingtime' => $absent_days,
+            'HolidayNumbers' => $HolidayNumbers,
             'hasCheckedIn' => !is_null($timeEntry),
             'hasCheckedOut' => !is_null($timeEntry) && !is_null($timeEntry->leave),
         ]);
