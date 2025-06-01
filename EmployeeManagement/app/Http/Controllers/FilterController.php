@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmployeeTimeWatcher;
+use App\Models\Holiday;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -57,8 +58,13 @@ class FilterController extends Controller
                     ->select('users.name', 'users.email', 'extra_user_data.mobile') // Fetch email & mobile
                     ->get();
 
-
                 return view('Filter', ['absent' => $absent]);
+
+
+            case 'custome_holiday':
+                $CustomeHoliday = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->get();
+                // dd($CustomeHoliday);
+                return view('Filter', ['CustomeHoliday' => $CustomeHoliday]);
 
 
             default:

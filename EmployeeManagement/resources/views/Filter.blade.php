@@ -512,6 +512,7 @@
                         <option value="leave" <?= isset($leave) ? 'selected' : '' ?>>Leave Today</option>
                         <option value="early_leave" <?= isset($early_leave) ? 'selected' : '' ?>>Early leave Today</option>
                         <option value="absent" <?= isset($absent) ? 'selected' : '' ?>>Absent Today</option>
+                        <option value="custome_holiday" <?= isset($custome_holiday) ? 'selected' : '' ?>>Custome Holiday</option>
                     </select>
                     <div class="filter-icon">▼</div>
                 </form>
@@ -651,6 +652,36 @@
                                 <td><span class="status-badge status-late">Early Leave</span></td>
                             </tr>
                         <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+
+
+
+        <?php if (isset($CustomeHoliday)): ?>
+            <div class="data-container">
+                <div class="data-header">
+                    <h2 class="data-title">Holidays This Month</h2>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Sr no</th>
+                            <th>Date</th>
+                            <th>Holiday Title</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($CustomeHoliday as $i )
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td><?= $i->leaves ?></td>
+                            <td><?= $i->title ?></td>
+                            <td><?= $i->reason ?></td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

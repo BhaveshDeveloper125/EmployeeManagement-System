@@ -559,6 +559,13 @@
                         <h1>{{ $earlyLeave }}</h1>
                     </a>
                 </div>
+                <div class="cards">
+                    <a href="/filters?filter=custome_holiday">
+                        <!-- <a href="/adminPanel/custome_holiday_number"> -->
+                        <h1>Holiday This Month</h1>
+                        <h1>{{ $HolidayNumbers }}</h1>
+                    </a>
+                </div>
             </div>
             <div class="action-links">
                 <a href="/pdfdatas">Download Records As PDF</a>

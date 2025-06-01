@@ -88,5 +88,6 @@ Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
     Route::get('/downloadData', [MediaController::class, 'PDFGenerator']);
     Route::view('/search_user', 'SearchEmployee')->name('searchUser');
     Route::view('/holiday', 'HolidaysSettings');
+    Route::get('/custome_holiday_number', [AdminController::class, 'GetCustomeHolidays']);
     // Route::get('/home', 'Admin');
 });

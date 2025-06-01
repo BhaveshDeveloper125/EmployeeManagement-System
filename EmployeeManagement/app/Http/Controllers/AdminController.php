@@ -39,7 +39,8 @@ class AdminController extends Controller
         $lateEmployees = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->whereTime('entry', '>', '10:10:00')->count();
         $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
         $earlyLeave = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->whereTime('leave', '<', '19:00')->count();
-        return view('Admin', ['data' => $MergedData, 'userData' => $user, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance, 'earlyLeave' => $earlyLeave, 'absent' => $user - $todayAttendance]);
+        $HolidayNumbers = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->count();
+        return view('Admin', ['data' => $MergedData, 'userData' => $user, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance, 'earlyLeave' => $earlyLeave, 'absent' => $user - $todayAttendance, 'HolidayNumbers' => $HolidayNumbers]);
     }
 
     public function getData()
@@ -256,8 +257,13 @@ class AdminController extends Controller
         } else {
             return response()->json('not success');
         }
+    }
 
-        // return response()->json([$request->all()]);
+    public function GetCustomeHolidays()
+    {
+        $HolidayNumbers = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->count();
+
+        dd($HolidayNumbers);
     }
 
     public function apigetData()
