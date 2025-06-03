@@ -680,7 +680,7 @@
             </div>
             <div class="dashboard-card">
                 <h3 class="card-title">Working Days of this month</h3>
-                <div class="card-value">{{ $totalWorkingDays }}</div>
+                <div class="card-value">{{ $totalWorkingDays - $HolidayNumbers }}</div>
                 <p class="card-description">Total working day in current month</p>
             </div>
             <div class="dashboard-card">
