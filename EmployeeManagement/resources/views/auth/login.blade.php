@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('content')
 <div class="login-container">
     <div class="login-wrapper">
         <!-- Left decorative panel -->
@@ -85,7 +82,6 @@
         </div>
     </div>
 </div>
-@endsection
 
 <style>
     :root {
