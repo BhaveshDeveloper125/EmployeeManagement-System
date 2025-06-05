@@ -26,13 +26,14 @@ Route::get('/user', function (Request $request) {
 
 // Auth::routes();
 
+Route::post('/register', [APIController::class, 'Registration']);
 Route::post('/apilogin', [APIController::class, 'login']);
 
 Route::group(["middleware" => "auth:sanctum"], function () {
     Route::post('/logout', [EmployeeAttendance::class, 'APILogout']); //logout
     Route::post('/logdata', [EmployeeAttendance::class, 'APILoggedUserData']); //Gives the Data of Current logged in user
-    Route::post('/entry/', [EmployeeAttendance::class, 'WorkStart']); //Checkin 
-    Route::post('/leave/', [EmployeeAttendance::class, 'WorkEnd']); //Checkout
+    Route::post('/entry', [EmployeeAttendance::class, 'APIWorkStart']); //Checkin 
+    Route::post('/leave', [EmployeeAttendance::class, 'APIWorkEnd']); //Checkout
     Route::get('/attendance/{id}', [EmployeeAttendance::class, 'APIEmployeeAttendance']); //History
     Route::get('/get_wifi', [AdminController::class, 'GetWifi']);
 

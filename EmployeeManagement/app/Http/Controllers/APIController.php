@@ -8,6 +8,24 @@ use Illuminate\Support\Facades\Hash;
 
 class APIController extends Controller
 {
+
+    public function Registration(Request $request)
+    {
+        $SignupData = $request->all();
+        $request['password'] = bcrypt($request['password']);
+        $user = User::create($SignupData);
+
+        if ($user) {
+            // $success['token'] = $user->createToken('MyApp')->plainTextToken;
+            $user['name'] = $user->name;
+            return ['success' => true,  'msg' => "User Registered Successfully...."];
+        } else {
+            return response()->json('oops something went wrong , User Details are not registered');
+        }
+
+        // return response()->json($request->all());
+    }
+
     public function login(Request $request)
     {
         $user = User::where('email', $request->email)->first();
@@ -17,7 +35,7 @@ class APIController extends Controller
             $success['token'] = $user->createToken('MyApp')->plainTextToken;
             $success['name'] = $user->name;
 
-            return ['result' => $success, 'msg' => "User Registered Successfully...."];
+            return ['result' => $success, 'msg' => "User login Successfully...."];
         }
         // return response()->json($user);
     }

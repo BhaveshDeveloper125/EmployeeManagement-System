@@ -659,6 +659,39 @@ class EmployeeAttendance extends Controller
         ]);
     }
 
+
+
+    public function APIWorkStart(Request $request)
+    {
+        $user = Auth::user();
+        $Entry = new EmployeeTimeWatcher();
+        $Entry->entry = $request->start;
+        $Entry->user_id = $user->id;
+
+        if ($Entry->save()) {
+            return  response()->json('Work Start Success');
+        }
+    }
+
+    public function APIWorkEnd(Request $request)
+    {
+        $user = Auth::user();
+
+        $gettingLeaveRow = EmployeeTimeWatcher::where('user_id', $user->id)->whereNull('leave')->latest()->first();
+
+        if ($gettingLeaveRow) {
+            $gettingLeaveRow->leave = $request->end;
+
+            if ($gettingLeaveRow->save()) {
+                return response()->json('Work Ends Success');
+            }
+        }
+
+        return response()->json($request->all());
+    }
+
+
+
     public function APILogout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
