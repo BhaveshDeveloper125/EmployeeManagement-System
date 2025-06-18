@@ -54,7 +54,7 @@ Route::get('get_user_info', function () {
 })->middleware(LoginCheck::class);
 Route::get('/restore/{id}', [AdminController::class, 'RestoreUsers'])->middleware(LoginCheck::class);
 Route::get('/remove/{id}', [AdminController::class, 'RemoveUser'])->middleware(LoginCheck::class);
-Route::get('/empfilter/{id}', [EmployeeAttendance::class, 'Filteration'])->middleware(LoginCheck::class);
+Route::get('/mark_as_read',[LeaveController::class, 'MarkAsRead']);
 
 
 
@@ -92,5 +92,6 @@ Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
     Route::view('/search_user', 'SearchEmployee')->name('searchUser');
     Route::view('/holiday', 'HolidaysSettings');
     Route::get('/custome_holiday_number', [AdminController::class, 'GetCustomeHolidays']);
+    Route::view('/empleave', 'EmployeeLeaveSection')->middleware(LoginCheck::class);
     // Route::get('/home', 'Admin');
 });

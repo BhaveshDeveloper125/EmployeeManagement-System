@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\LeaveNotification;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
@@ -55,5 +56,14 @@ class LeaveController extends Controller
             Log::info("Error While Requesting Leave : $e");
         }
 
+    }
+
+    public function MarkAsRead()
+    {
+
+       if (Auth::check()) {
+            Auth::user()->unreadNotifications->markAsRead();
+        }
+        return redirect()->back();
     }
 }
