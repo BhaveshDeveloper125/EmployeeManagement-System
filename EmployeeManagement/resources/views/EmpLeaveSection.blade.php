@@ -10,12 +10,12 @@
     <form action="/ask_leave" method="post">
     @csrf
     <input type="text" name="name" placeholder="Enter Name" required> <br><br>
-    <input type="hidden" name="id" value="{{ Auth::id() }}" placeholder="Enter Name" readonly required> <br><br>
+    <input type="hidden" name="user_id" value="{{ Auth::id() }}" placeholder="Enter Name" readonly required> <br><br>
     <input type="text" name="department" id="" placeholder="Enter Department Name" required> <br><br>
     
     <select name="type" id="" required>
         <option value="medical_leave">Mediacal Leaves</option>
-        <option value="half_leave">Casual Leaves</option>
+        <option value="casual_leave">Casual Leaves</option>
     </select>
     
     <br><br>
@@ -37,17 +37,28 @@
 
     <input type="submit" value="Submit">
 
-
-
-
+    
     </form>
 
     <div>
         <h1>Leaves This Month</h1>
-    <div>
-        Status : Pending/Approved/Rejected
+        <div>
+            Status : Pending/Approved/Rejected
+        </div>
     </div>
-    </div>
+
+
+    @if(session('leave_send'))
+    <script>
+        alert('Your Request for the Leave is Send, Please wait for the Response');
+    </script>
+    @endif
+
+    @if(session('leave_not_send'))
+    <script>
+        alert('Your Request for the Leave is failed, Please try again later');
+    </script>
+    @endif
 
 </body>
 </html>

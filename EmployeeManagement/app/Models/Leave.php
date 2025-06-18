@@ -14,8 +14,7 @@ class Leave extends Model
         'from',
         'to',
         'duration',
-        'status',
         'reason',
-        'approval date',
+        'status',
     ];
 }
