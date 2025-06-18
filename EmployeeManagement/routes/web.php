@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\EmployeeAttendance;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\MediaController;
 // use App\Models\ExtraUserData;
 use App\Http\Middleware\AdminCheck;
@@ -72,6 +73,7 @@ Route::post('/setholiday', [AdminController::class, 'Holidays'])->middleware(Log
 Route::post('/filter', [FilterController::class, 'FilterData'])->middleware(LoginCheck::class);
 Route::post('/setweeklyholiday', [HolidayController::class, 'SetWeeklyHoliday'])->middleware(LoginCheck::class);
 Route::post('/set_time', [AdminController::class, 'TimeManagement'])->middleware(LoginCheck::class);
+Route::post('/ask_leave', [LeaveController::class, 'GetLeaves'])->middleware(LoginCheck::class);
 
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);

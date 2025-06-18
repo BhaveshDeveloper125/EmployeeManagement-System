@@ -8,9 +8,9 @@
 <body>
     <h1>Leave Management</h1>
     <form action="/ask_leave" method="post">
-
+    @csrf
     <input type="text" name="name" placeholder="Enter Name" required> <br><br>
-    <input type="hidden" name="name" value="{{ Auth::id() }}" placeholder="Enter Name" readonly required> <br><br>
+    <input type="hidden" name="id" value="{{ Auth::id() }}" placeholder="Enter Name" readonly required> <br><br>
     <input type="text" name="department" id="" placeholder="Enter Department Name" required> <br><br>
     
     <select name="type" id="" required>
