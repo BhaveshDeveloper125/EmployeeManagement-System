@@ -77,6 +77,7 @@ Route::post('/set_time', [AdminController::class, 'TimeManagement'])->middleware
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
 Route::view('/filters', 'Filter')->middleware(LoginCheck::class);
 Route::view('/empfilter', 'EmployeeAttendanceFilter')->middleware(LoginCheck::class);
+Route::view('/leave', 'EmpLeaveSection')->middleware(LoginCheck::class);
 // Route::view('/extraDetails', 'EployeeDetails');
 
 
