@@ -62,7 +62,7 @@ class LeaveController extends Controller
 
     public function EmpLeaveList()
     {
-        $list=Leave::where('user_id',Auth::id())->whereMonth('created_at', Carbon::today()->month)->get();
+        $list=Leave::where('user_id',Auth::id())->whereMonth('created_at', Carbon::today()->month)->sortByDesc()->get();
         return view('EmpLeaveSection',['list'=>$list]);
     }
 

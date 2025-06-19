@@ -225,6 +225,21 @@
         .error {
             background-color: var(--vibrant-red);
         }
+
+        .status-rejected {
+        color: #dc2626; /* Red-600 */
+        font-weight: bold;
+    }
+
+    .status-approved {
+        color: #16a34a; /* Green-600 */
+        font-weight: bold;
+    }
+
+    .status-pending {
+        color: #ca8a04; /* Yellow-600 */
+        font-weight: bold;
+    }
     </style>
 </head>
 <body>
@@ -288,6 +303,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Index No</th>
                         <th>Name</th>
                         <th>Leave Type</th>
                         <th>From</th>
@@ -303,13 +319,17 @@
                 <tbody>
                     @forelse($list as $i)
                     <tr>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $i->name }}</td>
                         <td>{{ ucwords(str_replace('_', ' ', $i->type)) }}</td>
                         <td>{{ date('M d, Y', strtotime($i->from)) }}</td>
                         <td>{{ date('M d, Y', strtotime($i->to)) }}</td>
                         <td>{{ \Carbon\Carbon::parse($i->from)->diffInDays($i->to) + 1 }}</td>
                         <td>{{ ucwords(str_replace('_', ' ', $i->duration)) }}</td>
-                        <td class="status-{{ $i->status }}">{{ ucfirst($i->status) }}</td>
+                        <!-- <td class="status-{{ $i->status }}">{{ ucfirst($i->status) }}</td> -->
+                        <td class="@if($i->status == 'Rejected') status-rejected @elseif($i->status == 'Approved') status-approved @else status-pending @endif">
+                            {{ ucfirst($i->status) }}
+                        </td>
                         <td>{{ Str::limit($i->reason, 30) }}</td>
                         <td>{{ date('M d, Y h:i A', strtotime($i->created_at)) }}</td>
                         <td>
