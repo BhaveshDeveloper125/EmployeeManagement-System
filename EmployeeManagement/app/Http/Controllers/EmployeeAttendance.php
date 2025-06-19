@@ -660,7 +660,6 @@ class EmployeeAttendance extends Controller
     }
 
 
-
     public function APIWorkStart(Request $request)
     {
         $user = Auth::user();
@@ -689,8 +688,6 @@ class EmployeeAttendance extends Controller
 
         return response()->json($request->all());
     }
-
-
 
     public function APILogout(Request $request)
     {

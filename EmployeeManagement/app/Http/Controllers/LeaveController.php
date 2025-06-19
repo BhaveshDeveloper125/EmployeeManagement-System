@@ -16,8 +16,7 @@ class LeaveController extends Controller
 {
     public function GetLeaves(Request $request)
     {
-
-        
+  
         try {
             
             $validation = $request->validate([
@@ -33,6 +32,8 @@ class LeaveController extends Controller
 
             $save = Leave::create($validation);
 
+          
+
             if ($save) {
                 $admins=User::whereHas('ExtraUserData',function($i){
                     $i->where('isAdmin',true);
@@ -41,7 +42,7 @@ class LeaveController extends Controller
                 try {
                     Notification::send(
                     $admins,
-                    new LeaveNotification( $validation['name'].' from'.$validation['department'].' department has requested a Leave')
+                    new LeaveNotification( $validation['name'].' from '.$validation['department'].' department has requested a Leave ', $save->id)
                     );
                 } catch (Exception $e) {
                     Log::info("Notification Error: $e");
@@ -56,6 +57,28 @@ class LeaveController extends Controller
             Log::info("Error While Requesting Leave : $e");
         }
 
+    }
+
+    public function Approve($id)
+    {
+        $GetLeave=Leave::where('id',$id)->update(['status'=>'Approved']);
+
+        if ($GetLeave) {
+            return redirect()->back()->with(['Approved'=>true]);
+        }else{
+            dd('Not approved');
+        }
+    }
+
+    public function Reject($id)
+    {
+        $GetLeave=Leave::where('id',$id)->update(['status'=>'Rejected']);
+
+        if ($GetLeave) {
+            dd('Rejected');
+        }else{
+            dd('Not Rejected');
+        }
     }
 
     public function MarkAsRead()

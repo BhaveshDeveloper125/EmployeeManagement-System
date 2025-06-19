@@ -23,9 +23,12 @@
             </li>
             @foreach (auth()->user()->unreadNotifications as $notification)
             <li class="dropdown-item">
-                <a href="{{ $notification->data['url'] ?? '#' }}">{{ $notification->data['message'] }}</a>
+                <a>{{ $notification->data['message'] }}</a>
+                <a href="reject/{{ $notification->data['id'] }}" style="background-color: red;padding: 4px;">Reject</a>
+                <a href="approve/{{ $notification->data['id'] }}" style="background-color: green;padding: 4px;">Approve</a>
             </li>
             @endforeach
+            {{ $notification->data['id'] }}
             @else
             <li class="dropdown-item">No new notifications</li>
             @endif

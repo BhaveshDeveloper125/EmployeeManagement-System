@@ -6,19 +6,22 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Mockery\Undefined;
 
 class LeaveNotification extends Notification
 {
     use Queueable;
 
     public $message;
+    public $id;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(string $message)
+    public function __construct(string $message, int $id)
     {
         $this->message=$message;
+        $this->id=$id;
     }
 
     /**
@@ -35,7 +38,8 @@ class LeaveNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'message'=>$this->message,        
+            'message'=>$this->message, 
+            'id'=>$this->id,       
         ];
     }
 }
