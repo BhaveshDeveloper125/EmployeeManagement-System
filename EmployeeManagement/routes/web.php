@@ -55,6 +55,7 @@ Route::get('get_user_info', function () {
 Route::get('/restore/{id}', [AdminController::class, 'RestoreUsers'])->middleware(LoginCheck::class);
 Route::get('/remove/{id}', [AdminController::class, 'RemoveUser'])->middleware(LoginCheck::class);
 Route::get('/mark_as_read',[LeaveController::class, 'MarkAsRead']);
+Route::get('/leave', [LeaveController::class, 'EmpLeaveList']);
 
 
 
@@ -79,7 +80,7 @@ Route::post('/ask_leave', [LeaveController::class, 'GetLeaves'])->middleware(Log
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
 Route::view('/filters', 'Filter')->middleware(LoginCheck::class);
 Route::view('/empfilter', 'EmployeeAttendanceFilter')->middleware(LoginCheck::class);
-Route::view('/leave', 'EmpLeaveSection')->middleware(LoginCheck::class);
+// Route::view('/leave', 'EmpLeaveSection')->middleware(LoginCheck::class);
 // Route::view('/extraDetails', 'EployeeDetails');
 
 

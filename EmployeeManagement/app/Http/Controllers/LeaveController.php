@@ -6,6 +6,7 @@ use App\Models\ExtraUserData;
 use App\Models\Leave;
 use App\Models\User;
 use App\Notifications\LeaveNotification;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,12 @@ class LeaveController extends Controller
 
     }
 
+    public function EmpLeaveList()
+    {
+        $list=Leave::where('user_id',Auth::id())->whereMonth('created_at', Carbon::today()->month)->get();
+        return view('EmpLeaveSection',['list'=>$list]);
+    }
+
     public function Approve($id)
     {
         $GetLeave=Leave::where('id',$id)->update(['status'=>'Approved']);
@@ -72,9 +79,9 @@ class LeaveController extends Controller
 
     public function Reject($id)
     {
-        $GetLeave=Leave::where('id',$id)->update(['status'=>'Rejected']);
+        $RejectLeave=Leave::where('id',$id)->update(['status'=>'Rejected']);
 
-        if ($GetLeave) {
+        if ($RejectLeave) {
             dd('Rejected');
         }else{
             dd('Not Rejected');
@@ -83,7 +90,6 @@ class LeaveController extends Controller
 
     public function MarkAsRead()
     {
-
         Auth::user()->unreadNotifications->markAsRead();
         return redirect()->back();
     }

@@ -613,6 +613,12 @@
                         <span>Attendance History</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/leave">
+                        <i class="fas fa-bed"></i> 
+                        <span>Leave Management</span>
+                    </a>
+                </li>
                 <li class="logout-form">
                     <form action="/logout" method="post">
                         @csrf
