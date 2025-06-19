@@ -61,9 +61,7 @@ class LeaveController extends Controller
     public function MarkAsRead()
     {
 
-       if (Auth::check()) {
-            Auth::user()->unreadNotifications->markAsRead();
-        }
+        Auth::user()->unreadNotifications->markAsRead();
         return redirect()->back();
     }
 }
