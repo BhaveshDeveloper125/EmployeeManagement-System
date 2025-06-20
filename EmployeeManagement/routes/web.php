@@ -89,11 +89,11 @@ Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
     Route::view('/generate_user', 'GenerateUser')->name('generate.user');
     Route::view('/holiday', 'HolidaysSettings');
     Route::view('/search_user', 'SearchEmployee')->name('searchUser');
-    Route::view('/empleave', 'EmployeeLeaveSection')->middleware(LoginCheck::class);
     Route::get('/records', [AdminController::class, 'getData']);
     Route::get('/trash_user', [AdminController::class, 'TrashedUserList']);
     Route::get('/downloadData', [MediaController::class, 'PDFGenerator']);
     Route::get('/custome_holiday_number', [AdminController::class, 'GetCustomeHolidays']);
+    Route::get('/empleave', [AdminController::class, 'LeveDataCollection']);
     Route::get('/approve/{id}', [LeaveController::class, 'Approve']);
     Route::get('/reject/{id}', [LeaveController::class, 'Reject']);
     // Route::get('/home', 'Admin');

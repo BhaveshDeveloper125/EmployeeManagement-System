@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeEmail;
+use App\Models\Leave;
 use App\Models\SetTime;
 use Illuminate\Support\Facades\Auth;
 
@@ -444,7 +445,6 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'User can not be found , check if this user exists or not');
         }
     }
-
     public function TimeManagement(Request $request)
     {
         try {
@@ -463,5 +463,16 @@ class AdminController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function LeveDataCollection()
+    {
+        $rejected = Leave::whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year)->where('status', 'Rejected')->get();
+
+        $approves = Leave::whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year)->where('status', 'Approved')->get();
+
+        $pending = Leave::whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year)->where('status', 'pending')->get();
+
+        return view('EmployeeLeaveSection', ['rejection' => $rejected, 'approval' => $approves, 'pending' => $pending]);
     }
 }

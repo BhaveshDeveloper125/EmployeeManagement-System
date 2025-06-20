@@ -62,6 +62,7 @@ class LeaveController extends Controller
     {
         $list = Leave::where('user_id', Auth::id())
             ->whereMonth('created_at', Carbon::today()->month)
+            ->whereYear('created_at', Carbon::today()->year)
             ->orderByDesc('created_at')
             ->get();
 
