@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
     <title>Leave Management</title>
     <style>
         :root {
@@ -14,27 +21,27 @@
             --soft-white: #FFFFFF;
             --table-highlight: rgba(228, 58, 25, 0.1);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background-color: var(--light-gray);
             color: var(--navy-blue);
             line-height: 1.6;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
         h1 {
             color: var(--navy-blue);
             text-align: center;
@@ -42,7 +49,7 @@
             position: relative;
             padding-bottom: 15px;
         }
-        
+
         h1::after {
             content: '';
             position: absolute;
@@ -54,7 +61,7 @@
             background: var(--vibrant-red);
             border-radius: 2px;
         }
-        
+
         .form-container {
             background: var(--soft-white);
             border-radius: 10px;
@@ -62,25 +69,27 @@
             padding: 30px;
             margin-bottom: 40px;
         }
-        
+
         form {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
-        
+
         .form-group {
             margin-bottom: 20px;
         }
-        
+
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--navy-blue);
         }
-        
-        input, select, textarea {
+
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #ddd;
@@ -88,22 +97,24 @@
             font-size: 16px;
             transition: all 0.3s;
         }
-        
-        input:focus, select:focus, textarea:focus {
+
+        input:focus,
+        select:focus,
+        textarea:focus {
             border-color: var(--navy-blue);
             outline: none;
             box-shadow: 0 0 0 3px rgba(17, 31, 77, 0.2);
         }
-        
+
         textarea {
             min-height: 120px;
             resize: vertical;
         }
-        
+
         .full-width {
             grid-column: 1 / -1;
         }
-        
+
         .submit-btn {
             grid-column: 1 / -1;
             background-color: var(--vibrant-red);
@@ -118,13 +129,13 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         .submit-btn:hover {
             background-color: #c33116;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(228, 58, 25, 0.3);
         }
-        
+
         .leaves-table {
             background: var(--soft-white);
             border-radius: 10px;
@@ -132,19 +143,20 @@
             padding: 30px;
             overflow-x: auto;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        
-        th, td {
+
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-        
+
         th {
             background-color: var(--navy-blue);
             color: white;
@@ -153,52 +165,54 @@
             font-size: 14px;
             letter-spacing: 0.5px;
         }
-        
+
         tr:nth-child(even) {
             background-color: rgba(242, 244, 247, 0.5);
         }
-        
+
         tr:hover {
             background-color: var(--table-highlight);
         }
-        
+
         .status-pending {
             color: #FFA500;
             font-weight: 600;
         }
-        
+
         .status-approved {
             color: #28a745;
             font-weight: 600;
         }
-        
+
         .status-rejected {
             color: var(--vibrant-red);
             font-weight: 600;
         }
-        
+
         .empty-message {
             text-align: center;
             padding: 30px;
             color: #666;
             font-style: italic;
         }
-        
+
         @media (max-width: 768px) {
             form {
                 grid-template-columns: 1fr;
             }
-            
-            .form-container, .leaves-table {
+
+            .form-container,
+            .leaves-table {
                 padding: 20px;
             }
-            
-            th, td {
+
+            th,
+            td {
                 padding: 10px;
                 font-size: 14px;
             }
         }
-        
+
         /* Notification styles */
         .notification {
             position: fixed;
@@ -213,39 +227,48 @@
             transform: translateX(200%);
             transition: transform 0.3s ease-out;
         }
-        
+
         .notification.show {
             transform: translateX(0);
         }
-        
+
         .success {
             background-color: #28a745;
         }
-        
+
         .error {
             background-color: var(--vibrant-red);
         }
 
         .status-rejected {
-        color: #dc2626; /* Red-600 */
-        font-weight: bold;
-    }
+            color: #dc2626;
+            /* Red-600 */
+            font-weight: bold;
+        }
 
-    .status-approved {
-        color: #16a34a; /* Green-600 */
-        font-weight: bold;
-    }
+        .status-approved {
+            color: #16a34a;
+            /* Green-600 */
+            font-weight: bold;
+        }
 
-    .status-pending {
-        color: #ca8a04; /* Yellow-600 */
-        font-weight: bold;
-    }
+        .status-pending {
+            color: #ca8a04;
+            /* Yellow-600 */
+            font-weight: bold;
+        }
+
+        #toast-container>.toast {
+            width: 100%;
+            box-sizing: border-box;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Leave Management System</h1>
-        
+
         <div class="form-container">
             <form action="/ask_leave" method="post">
                 @csrf
@@ -253,14 +276,14 @@
                     <label for="name">Full Name</label>
                     <input type="text" name="name" id="name" placeholder="Enter your full name" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="department">Department</label>
                     <input type="text" name="department" id="department" placeholder="Enter your department" required>
                 </div>
-                
+
                 <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                
+
                 <div class="form-group">
                     <label for="type">Leave Type</label>
                     <select name="type" id="type" required>
@@ -269,7 +292,7 @@
                         <option value="casual_leave">Casual Leave</option>
                     </select>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="duration">Duration Type</label>
                     <select name="duration" id="duration" required>
@@ -278,26 +301,26 @@
                         <option value="full_day">Full Day</option>
                     </select>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="from">From Date</label>
                     <input type="date" name="from" id="from" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="to">To Date</label>
                     <input type="date" name="to" id="to" required>
                 </div>
-                
+
                 <div class="form-group full-width">
                     <label for="reason">Reason for Leave</label>
                     <textarea name="reason" id="reason" placeholder="Please explain the reason for your leave" required></textarea>
                 </div>
-                
+
                 <button type="submit" class="submit-btn">Submit Leave Request</button>
             </form>
         </div>
-        
+
         <div class="leaves-table">
             <h2>Total Leave in this Month</h2>
             <table>
@@ -350,16 +373,35 @@
         </div>
     </div>
 
-    @if(session('leave_send'))
-    <div id="notification" class="notification success">
+    <!-- <div id="notification"
+        class="notification success">
         Your leave request has been submitted successfully!
-    </div>
+    </div> -->
+    @if(Session::has('leave_send'))
+    <script>
+        toastr.options = {
+            "timeOut": 4000,
+            "extendedTimeOut": 2000,
+            "closeButton": true,
+            "progressBar": true
+        }
+        toastr && toastr.success("{{ session('leave_send') }}");
+    </script>
     @endif
 
     @if(session('leave_not_send'))
-    <div id="notification" class="notification error">
+    <!-- <div id="notification" class="notification error">
         Failed to submit leave request. Please try again.
-    </div>
+    </div> -->
+    <script>
+        toastr.options = {
+            "timeOut": 4000,
+            "extendedTimeOut": 2000,
+            "closeButton": true,
+            "progressBar": true
+        }
+        toastr && toastr.error("{{ session('leave_send') }}");
+    </script>
     @endif
 
     <script>
@@ -368,7 +410,7 @@
             const notification = document.getElementById('notification');
             if (notification) {
                 notification.classList.add('show');
-                
+
                 // Hide after 5 seconds
                 setTimeout(() => {
                     notification.classList.remove('show');
@@ -377,4 +419,5 @@
         });
     </script>
 </body>
+
 </html>

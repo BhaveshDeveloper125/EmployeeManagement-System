@@ -17,73 +17,75 @@ class LeaveController extends Controller
 {
     public function GetLeaves(Request $request)
     {
-  
+
         try {
-            
+
             $validation = $request->validate([
-                'name'=>'required|string|max:255',
-                'user_id'=>'required|numeric',
-                'department'=>'required|string|max:255',
-                'type'=>'required|string|in:medical_leave,casual_leave',
-                'from'=>'required|date',
-                'to'=>'required|date|after_or_equal:from',
-                'duration'=>'required|in:half_day,full_day',
-                'reason'=>'required',
+                'name' => 'required|string|max:255',
+                'user_id' => 'required|numeric',
+                'department' => 'required|string|max:255',
+                'type' => 'required|string|in:medical_leave,casual_leave',
+                'from' => 'required|date',
+                'to' => 'required|date|after_or_equal:from',
+                'duration' => 'required|in:half_day,full_day',
+                'reason' => 'required',
             ]);
 
             $save = Leave::create($validation);
 
-          
+
 
             if ($save) {
-                $admins=User::whereHas('ExtraUserData',function($i){
-                    $i->where('isAdmin',true);
+                $admins = User::whereHas('ExtraUserData', function ($i) {
+                    $i->where('isAdmin', true);
                 })->get();
 
                 try {
                     Notification::send(
-                    $admins,
-                    new LeaveNotification( $validation['name'].' from '.$validation['department'].' department has requested a Leave ', $save->id)
+                        $admins,
+                        new LeaveNotification($validation['name'] . ' from ' . $validation['department'] . ' department has requested a Leave ', $save->id)
                     );
                 } catch (Exception $e) {
                     Log::info("Notification Error: $e");
                 }
 
-                return redirect()->back()->with(['leave_send'=>true]);
-            }else{
-                return redirect()->back()->with(['leave_not_send'=>true]);
+                return redirect()->back()->with(['leave_send' => 'Your leave request has been submitted successfully! please wait for the response']);
+            } else {
+                return redirect()->back()->with(['leave_not_send' => 'oops something went wrong! please try again later']);
             }
-
         } catch (Exception $e) {
             Log::info("Error While Requesting Leave : $e");
         }
-
     }
 
     public function EmpLeaveList()
     {
-        $list=Leave::where('user_id',Auth::id())->whereMonth('created_at', Carbon::today()->month)->sortByDesc()->get();
-        return view('EmpLeaveSection',['list'=>$list]);
+        $list = Leave::where('user_id', Auth::id())
+            ->whereMonth('created_at', Carbon::today()->month)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('EmpLeaveSection', ['list' => $list]);
     }
 
     public function Approve($id)
     {
-        $GetLeave=Leave::where('id',$id)->update(['status'=>'Approved']);
+        $GetLeave = Leave::where('id', $id)->update(['status' => 'Approved']);
 
         if ($GetLeave) {
-            return redirect()->back()->with(['Approved'=>true]);
-        }else{
+            return redirect()->back()->with(['Approved' => true]);
+        } else {
             dd('Not approved');
         }
     }
 
     public function Reject($id)
     {
-        $RejectLeave=Leave::where('id',$id)->update(['status'=>'Rejected']);
+        $RejectLeave = Leave::where('id', $id)->update(['status' => 'Rejected']);
 
         if ($RejectLeave) {
             dd('Rejected');
-        }else{
+        } else {
             dd('Not Rejected');
         }
     }
