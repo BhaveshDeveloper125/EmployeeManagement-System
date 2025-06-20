@@ -272,7 +272,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $i->department }}</td>
                         <td>{{ $i->name }}</td>
-                        <td>{{ $i->type }}</td>
+                        <td>{{ $i->type == 'casual_leave' ? "Casual Leave" : "Medical Leave"}}</td>
                         <td>{{ Carbon\Carbon::parse($i->from)->diffInDays($i->to) }}</td>
                         <td>{{ $i->duration == 'full_day' ? "Full Day" : "Half Day" }}</td>
                         <td>{{ Carbon\Carbon::parse($i->from)->format('d M y') }}</td>

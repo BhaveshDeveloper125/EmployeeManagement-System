@@ -467,11 +467,11 @@ class AdminController extends Controller
 
     public function LeveDataCollection()
     {
-        $rejected = Leave::whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year)->where('status', 'Rejected')->get();
+        $rejected = Leave::whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year)->where('status', 'Rejected')->get()->sortByDesc('created_at');
 
-        $approves = Leave::whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year)->where('status', 'Approved')->get();
+        $approves = Leave::whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year)->where('status', 'Approved')->get()->sortByDesc('created_at');
 
-        $pending = Leave::whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year)->where('status', 'pending')->get();
+        $pending = Leave::whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year)->where('status', 'pending')->get()->sortByDesc('created_at');
 
         return view('EmployeeLeaveSection', ['rejection' => $rejected, 'approval' => $approves, 'pending' => $pending]);
     }

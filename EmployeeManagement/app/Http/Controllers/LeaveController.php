@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ExtraUserData;
 use App\Models\Leave;
-use App\Models\User;
-use App\Notifications\LeaveNotification;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
+
 
 class LeaveController extends Controller
 {
@@ -33,22 +30,7 @@ class LeaveController extends Controller
 
             $save = Leave::create($validation);
 
-
-
             if ($save) {
-                $admins = User::whereHas('ExtraUserData', function ($i) {
-                    $i->where('isAdmin', true);
-                })->get();
-
-                try {
-                    Notification::send(
-                        $admins,
-                        new LeaveNotification($validation['name'] . ' from ' . $validation['department'] . ' department has requested a Leave ', $save->id)
-                    );
-                } catch (Exception $e) {
-                    Log::info("Notification Error: $e");
-                }
-
                 return redirect()->back()->with(['leave_send' => 'Your leave request has been submitted successfully! please wait for the response']);
             } else {
                 return redirect()->back()->with(['leave_not_send' => 'oops something went wrong! please try again later']);
