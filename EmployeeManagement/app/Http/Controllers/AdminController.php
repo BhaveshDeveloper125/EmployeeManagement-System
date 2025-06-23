@@ -114,6 +114,13 @@ class AdminController extends Controller
     {
 
         $userData = new ExtraUserData();
+
+        if (Carbon::parse($request->joining_date)->year == Carbon::today()->year) {
+            $userData->leaves = 12 - Carbon::parse($request->joining_date)->month;
+        } else {
+            $userData->leaves = 12;
+        }
+
         $userData->fill($request->all());
 
 

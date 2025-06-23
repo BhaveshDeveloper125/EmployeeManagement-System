@@ -30,7 +30,7 @@ class APIController extends Controller
     {
         $user = User::where('email', $request->email)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['User Not Found...', "Success" => false]);
+            return response()->json(['User Not Found...', "Success" => false], 401);
         } else {
             $success['token'] = $user->createToken('MyApp')->plainTextToken;
             $success['name'] = $user->name;

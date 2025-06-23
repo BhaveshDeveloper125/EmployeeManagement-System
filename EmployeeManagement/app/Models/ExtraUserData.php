@@ -16,6 +16,8 @@ class ExtraUserData extends Model
         'qualificatio',
         'exp',
         'joining_date',
-        'isAdmin'
+        'isAdmin',
+        'leaves',
+        'unused_leaves'
     ];
 }

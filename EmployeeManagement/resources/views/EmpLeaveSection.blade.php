@@ -274,12 +274,12 @@
                 @csrf
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" name="name" id="name" placeholder="Enter your full name" required>
+                    <input type="text" name="name" id="name" value="{{ Auth::user()->name }}" placeholder="Enter your full name" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="department">Department</label>
-                    <input type="text" name="department" id="department" placeholder="Enter your department" required>
+                    <label for="department">Department/position</label>
+                    <input type="text" name="department" id="department" placeholder=" Finance Department or Manager/HR " required>
                 </div>
 
                 <input type="hidden" name="user_id" value="{{ Auth::id() }}">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ExtraUserData;
 use App\Models\Leave;
 use Carbon\Carbon;
 use Exception;
@@ -28,12 +29,31 @@ class LeaveController extends Controller
                 'reason' => 'required',
             ]);
 
-            $save = Leave::create($validation);
+            $availabel_leave = ExtraUserData::where('user_id', $validation['user_id'])->value('leaves');
+            $diff = Carbon::parse($validation['from'])->diffInDays($validation['to']);
 
-            if ($save) {
-                return redirect()->back()->with(['leave_send' => 'Your leave request has been submitted successfully! please wait for the response']);
-            } else {
-                return redirect()->back()->with(['leave_not_send' => 'oops something went wrong! please try again later']);
+
+            switch ($availabel_leave) {
+                case $availabel_leave == null:
+                    return redirect()->back()->with(['leave_not_send' => 'please contact the HR/Manager you dont have a leaves']);
+                    // break;
+                case $diff > $availabel_leave && $validation['type'] == "casual_leave":
+                    return redirect()->back()->with(['leave_not_send' => ' You dont have Leaves left that much leave...']);
+                    // break;
+                case $diff < $availabel_leave:
+                    $save = Leave::create($validation);
+
+                    if ($save) {
+                        return redirect()->back()->with(['leave_send' => ' Leave Request is sent! Please wait for the Response...']);
+                    } else {
+                        return redirect()->back()->with(['leave_not_send' => ' You dont have Leaves left that much leave...']);
+                    }
+
+
+                    // break;
+                default:
+                    return redirect()->back()->with(['leave_not_send' => 'oops something went wrong! please try again later']);
+                    // break;
             }
         } catch (Exception $e) {
             Log::info("Error While Requesting Leave : $e");
@@ -48,17 +68,28 @@ class LeaveController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
+        $leaveCount = ExtraUserData::where('user_id', Auth::id())->value('leaves');
+
         return view('EmpLeaveSection', ['list' => $list]);
     }
 
     public function Approve($id)
     {
+        $emp_leave_request = Leave::find($id);
+
+        $availabel_leave = ExtraUserData::where('user_id', $emp_leave_request->user_id)->value('leaves');
+        $leave = $availabel_leave - Carbon::parse($emp_leave_request->from)->diffInDays($emp_leave_request->to);
+        $leaveAsString = strval($leave);
+
         $GetLeave = Leave::where('id', $id)->update(['status' => 'Approved']);
 
         if ($GetLeave) {
+            ExtraUserData::where('user_id', $emp_leave_request->user_id)->update([
+                'leaves' => $leaveAsString
+            ]);
             return redirect()->back()->with(['Approved' => true]);
         } else {
-            dd('Not approved');
+            return redirect()->back()->with(['Not Approved' => true]);
         }
     }
 
@@ -67,9 +98,9 @@ class LeaveController extends Controller
         $RejectLeave = Leave::where('id', $id)->update(['status' => 'Rejected']);
 
         if ($RejectLeave) {
-            dd('Rejected');
+            return redirect()->back()->with(['Rejected' => true]);
         } else {
-            dd('Not Rejected');
+            return redirect()->back()->with(['Not Rejected' => true]);
         }
     }
 

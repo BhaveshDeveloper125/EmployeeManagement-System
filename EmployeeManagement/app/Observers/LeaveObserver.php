@@ -39,7 +39,7 @@ class LeaveObserver
      */
     public function updated(Leave $leave): void
     {
-        //
+        Log::info("Updated Dtat : $leave");
     }
 
     /**

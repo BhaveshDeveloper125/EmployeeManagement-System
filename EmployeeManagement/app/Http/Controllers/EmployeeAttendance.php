@@ -485,7 +485,12 @@ class EmployeeAttendance extends Controller
         $attendance = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('entry', Carbon::now()->month)->whereYear('entry', Carbon::now()->year)->count();
 
 
-        $lateattendance = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->whereMonth('entry', Carbon::now()->month)->where('entry', '>', SetTime::value('from'))->count();
+        $lateattendance = EmployeeTimeWatcher::where('user_id', Auth::user()->id)
+            ->whereMonth('entry', Carbon::now()->month)
+            ->whereYear('entry', Carbon::now()->year)
+            ->whereTime('entry', '>', SetTime::value('from'))
+            ->count();
+
 
         $currentMonthTotalDays = Carbon::now()->daysInMonth();
 
@@ -496,8 +501,9 @@ class EmployeeAttendance extends Controller
         $early_leave = EmployeeTimeWatcher::where('user_id', Auth::id())
             ->whereMonth('leave', Carbon::now()->month)
             ->whereYear('leave', Carbon::now()->year)
-            ->where('leave', '>', SetTime::value('to'))
+            ->whereTime('leave', '>', SetTime::value('to'))
             ->count();
+
 
         $to = SetTime::value('to');
 

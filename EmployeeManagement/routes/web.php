@@ -34,7 +34,7 @@ Route::get('/register', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware(LoginCheck::class);
 Route::get('/attendance/{id}', [EmployeeAttendance::class, 'EmployeeAttendance'])->middleware(LoginCheck::class);
 Route::get('/adminPanel', [AdminController::class, 'hello'])->middleware(AdminCheck::class);
-Route::get('/user_details_view', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class);
+Route::get('/user_details_view', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class); //Form the user adding form
 Route::get('/editemp', [AdminController::class, 'EditEmpData'])->middleware(LoginCheck::class);
 Route::get('/editemps/{id}', [AdminController::class, 'EditEmpDatas'])->middleware(LoginCheck::class);
 Route::get('/deleteemps/{id}', [AdminController::class, 'DeleteEmpDatas'])->middleware(LoginCheck::class);
@@ -43,7 +43,8 @@ Route::get('/homepage/{id}', [EmployeeAttendance::class, 'homepage'])->middlewar
 
 
 // Route::get('/add_latest_user', [AdminController::class, 'GetLatestUser'])->middleware(LoginCheck::class); 
-Route::get('/add_new_system', [AdminController::class, 'NewSystemInstallation'])->middleware(LoginCheck::class); //Hit this URL if you newly Installed the System
+//Hit this URL if you newly Installed the System but before visit the /register url in browser
+Route::get('/add_new_system', [AdminController::class, 'NewSystemInstallation'])->middleware(LoginCheck::class);
 
 
 Route::get('/filter', function () {
@@ -55,7 +56,7 @@ Route::get('get_user_info', function () {
 Route::get('/restore/{id}', [AdminController::class, 'RestoreUsers'])->middleware(LoginCheck::class);
 Route::get('/remove/{id}', [AdminController::class, 'RemoveUser'])->middleware(LoginCheck::class);
 Route::get('/mark_as_read', [LeaveController::class, 'MarkAsRead'])->middleware(LoginCheck::class);
-Route::get('/leave', [LeaveController::class, 'EmpLeaveList']);
+Route::get('/leave', [LeaveController::class, 'EmpLeaveList'])->middleware(LoginCheck::class);
 
 
 
@@ -81,7 +82,7 @@ Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
 Route::view('/filters', 'Filter')->middleware(LoginCheck::class);
 Route::view('/empfilter', 'EmployeeAttendanceFilter')->middleware(LoginCheck::class);
 // Route::view('/leave', 'EmpLeaveSection')->middleware(LoginCheck::class);
-// Route::view('/extraDetails', 'EployeeDetails');
+Route::view('/extraDetails', 'EployeeDetails'); //dont delete this comment
 
 
 

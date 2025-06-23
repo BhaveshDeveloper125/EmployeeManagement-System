@@ -615,7 +615,7 @@
                 </li>
                 <li>
                     <a href="/leave">
-                        <i class="fas fa-bed"></i> 
+                        <i class="fas fa-bed"></i>
                         <span>Leave Management</span>
                     </a>
                 </li>
