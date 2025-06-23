@@ -501,7 +501,7 @@ class EmployeeAttendance extends Controller
         $early_leave = EmployeeTimeWatcher::where('user_id', Auth::id())
             ->whereMonth('leave', Carbon::now()->month)
             ->whereYear('leave', Carbon::now()->year)
-            ->whereTime('leave', '>', SetTime::value('to'))
+            ->whereTime('leave', '<', SetTime::value('to'))
             ->count();
 
 

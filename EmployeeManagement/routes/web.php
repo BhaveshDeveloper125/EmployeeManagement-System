@@ -57,6 +57,7 @@ Route::get('/restore/{id}', [AdminController::class, 'RestoreUsers'])->middlewar
 Route::get('/remove/{id}', [AdminController::class, 'RemoveUser'])->middleware(LoginCheck::class);
 Route::get('/mark_as_read', [LeaveController::class, 'MarkAsRead'])->middleware(LoginCheck::class);
 Route::get('/leave', [LeaveController::class, 'EmpLeaveList'])->middleware(LoginCheck::class);
+Route::get('empfilter/{id}', [EmployeeAttendance::class, 'Filteration']);
 
 
 
