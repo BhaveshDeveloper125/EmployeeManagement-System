@@ -665,7 +665,6 @@ class EmployeeAttendance extends Controller
         ]);
     }
 
-
     public function APIWorkStart(Request $request)
     {
         $user = Auth::user();
@@ -706,6 +705,134 @@ class EmployeeAttendance extends Controller
     {
         $userData = User::where('id', Auth::id())->get();
         return response()->json(["Current Logged In User Data" => $userData]);
+    }
+
+    public function APIFilteration($id)
+    {
+
+        $time = SetTime::first();
+        $attend = EmployeeTimeWatcher::where('user_id', Auth::id())->whereMonth('entry', Carbon::now()->month)->get();
+        $user = User::find(Auth::id());
+        $extra = ExtraUserData::where('user_id', Auth::id())->get();
+        switch ($id) {
+            case 'attend':
+                return response()->json(['attend' => $attend, 'user' => $user, 'extra' => $extra, 'time' => $time]);
+
+            case 'late':
+                $late = EmployeeTimeWatcher::where('user_id', Auth::id())->whereMonth('entry', Carbon::now()->month)->whereTime('entry', '>', $time->from)->get();
+                return response()->json(['late' => $late]);
+
+            case 'absent':
+                $join_date = ExtraUserData::where('user_id', Auth::id())->value('joining_date');
+                $join = Carbon::parse($join_date)->month;
+                $year = Carbon::parse($join_date)->year;
+
+                if ($join == Carbon::now()->month && $year == Carbon::now()->year) {
+                    $iterator = (int) Carbon::parse($join_date)->diffInDays(Carbon::now());
+                    $totalDays = [];
+                    $date = Carbon::parse($join_date);
+                    for ($i = 0; $i <= $iterator; $i++) {
+                        $totalDays[] = $date->format('d-m-y , D');
+                        // echo $date->format('d-m-y , D') . "<br><br>";
+                        $date->addDay();
+                    }
+                    $holidayDays = [];
+                    $weeklyHolidays = WeeklyHolidays::first();
+                    $dayMap = [
+                        'mon' => 'Mon',
+                        'tue' => 'Tue',
+                        'wed' => 'Wed',
+                        'thurs' => 'Thu',
+                        'fri' => 'Fri',
+                        'satur' => 'Sat',
+                        'sun' => 'Sun'
+                    ];
+                    if ($weeklyHolidays) {
+                        foreach ($dayMap as $dbDay => $carbonDay) {
+                            if ($weeklyHolidays->$dbDay) {
+                                $holidayDays[] = $carbonDay;
+                            }
+                        }
+                    }
+
+
+                    $holiday_filter = [];
+
+                    foreach ($totalDays as $i) {
+                        if (!in_array(Carbon::parse($i)->format('D'), $holidayDays)) {
+                            $holiday_filter[] = $i;
+                        }
+                    }
+
+
+                    $present = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::now()->year)->whereMonth('entry', Carbon::now()->month)->get();
+                    $present_array = [];
+                    foreach ($present as $i) {
+                        $present_array[] = Carbon::parse($i->leave)->format('d-m-y , D');
+                    }
+                    $absent = array_diff($holiday_filter, $present_array);
+                    return response()->json(['absent' => $absent]);
+                } else {
+                    $present = EmployeeTimeWatcher::where('user_id', Auth::id())->whereYear('entry', Carbon::now()->year)->whereMonth('entry', Carbon::now()->month)->get();
+                    $present_array = [];
+
+                    foreach ($present as $i) {
+                        $present_array[] = Carbon::parse($i->leave)->format('d-m-y , D');
+                    }
+
+                    $holidayDays = [];
+                    $weeklyHolidays = WeeklyHolidays::first();
+                    $dayMap = [
+                        'mon' => 'Mon',
+                        'tue' => 'Tue',
+                        'wed' => 'Wed',
+                        'thurs' => 'Thu',
+                        'fri' => 'Fri',
+                        'satur' => 'Sat',
+                        'sun' => 'Sun'
+                    ];
+                    if ($weeklyHolidays) {
+                        foreach ($dayMap as $dbDay => $carbonDay) {
+                            if ($weeklyHolidays->$dbDay) {
+                                $holidayDays[] = $carbonDay;
+                            }
+                        }
+                    }
+                    $MonthStart = Carbon::now()->startOfMonth();
+                    $today = Carbon::today()->day;
+                    $CurrentDays = [];
+                    $TotalWorkings = [];
+
+                    for ($i = 1; $i <= $today; $i++) {
+                        $CurrentDays[] = $MonthStart->format('d-m-y , D');
+                        $MonthStart->addDay();
+                    }
+
+                    foreach ($CurrentDays as $i) {
+                        $day = trim(substr($i, strpos($i, ',') + 1));
+                        if (!in_array($day, $holidayDays)) {
+                            $TotalWorkings[] =   $i;
+                        }
+                    }
+                    $absent = array_diff($TotalWorkings, $present_array);
+                    return response()->json(['absent' => $absent]);
+                }
+
+            case 'early':
+                $early = EmployeeTimeWatcher::where('user_id', Auth::id())->whereTime('leave', '<', $time->to)->get();
+                return response()->json(['early' => $early, 'to' => $time->to]);
+
+            case 'overtime':
+                $overtime = EmployeeTimeWatcher::where('user_id', Auth::id())->whereTime('leave', '>', $time->to)->get();
+                return response()->json(['overtime' => $overtime]);
+
+            case 'holiday':
+                $holiday = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->get();
+                return response()->json(['holiday' => $holiday]);
+
+            default:
+                return view('EmployeeAttendanceFilter', ['message' => 'Error while fetching or Receiving Data']);
+        }
     }
 
     public function IPDatas(Request $request)
