@@ -217,6 +217,29 @@ class AdminController extends Controller
         // return response()->json($request->all());
     }
 
+    public function Holidays(Request $request)
+    {
+        $HoliDay = new Holiday();
+
+        $save = $HoliDay->fill($request->all())->save();
+
+        if ($save) {
+            return response()->json('saved success');
+        } else {
+            return response()->json('not success');
+        }
+    }
+
+    public function GetCustomeHolidays()
+    {
+        $HolidayNumbers = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->count();
+
+        dd($HolidayNumbers);
+    }
+
+
+    // APIS
+
     public function APIhello()
     {
         $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
@@ -237,7 +260,8 @@ class AdminController extends Controller
         $lateEmployees = EmployeeTimeWatcher::whereDate('entry', Carbon::today())->whereTime('entry', '>', '10:10:00')->count();
         $employeeTime = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->count();
         $earlyLeave = EmployeeTimeWatcher::whereDate('leave', Carbon::today())->whereTime('leave', '<', '19:00')->count();
-        return response()->json(['data' => $MergedData, 'userData' => $user, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance, 'earlyLeave' => $earlyLeave, 'absent' => $user - $todayAttendance]);
+        $HolidayNumbers = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->count();
+        return response()->json(['data' => $MergedData, 'userData' => $user, 'leaveToday' => $employeeTime, 'lateEmp' => $lateEmployees, 'presentToday' => $todayAttendance, 'earlyLeave' => $earlyLeave, 'absent' => $user - $todayAttendance, 'HolidayNumbers' => $HolidayNumbers]);
     }
 
     public function APIAddUserDetails(Request $request)
@@ -254,25 +278,6 @@ class AdminController extends Controller
         }
     }
 
-    public function Holidays(Request $request)
-    {
-        $HoliDay = new Holiday();
-
-        $save = $HoliDay->fill($request->all())->save();
-
-        if ($save) {
-            return response()->json('saved success');
-        } else {
-            return response()->json('not success');
-        }
-    }
-
-    public function GetCustomeHolidays()
-    {
-        $HolidayNumbers = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->count();
-
-        dd($HolidayNumbers);
-    }
 
     public function apigetData()
     {
@@ -308,7 +313,8 @@ class AdminController extends Controller
             return response()->json([$MergedData]);
         } catch (Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error fetching employee data: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'An error occurred while fetching employee data.');
+            // return redirect()->back()->with('error', 'An error occurred while fetching employee data.');
+            return response()->json(['error' => 'An error occurred while fetching employee data.'], 500);
         }
     }
 

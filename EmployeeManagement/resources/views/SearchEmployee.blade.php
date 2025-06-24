@@ -398,7 +398,7 @@
     <div class="dashboard-container">
         <x-menu />
 
-        <div class="main-content">
+        <div style="width: 100%; margin: 0%;" class="main-content">
             <h1>Employee Management</h1>
 
             <div class="form-container">
