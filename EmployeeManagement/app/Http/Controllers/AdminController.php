@@ -17,6 +17,7 @@ use App\Mail\WelcomeEmail;
 use App\Models\Leave;
 use App\Models\SetTime;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -278,6 +279,39 @@ class AdminController extends Controller
         }
     }
 
+    public function APISaveEditEmpDatas(Request $request, $id)
+    {
+        $user = ExtraUserData::find($id);
+        $user->post = $request->post;
+        $user->mobile = $request->mobile;
+        $user->address = $request->address;
+        $user->qualificatio = $request->qualificatio;
+        $user->exp = $request->exp;
+        $user->isAdmin = $request->isAdmin;
+
+        if ($user->save()) {
+            return response()->json("User Datas are Updated...");
+        } else {
+            return response()->json("Fails : User Datas are not Updated...");
+        }
+        // return response()->json($request->all());
+    }
+
+    public function APIDeleteEmpDatas($id)
+    {
+        try {
+            $extra_deleteuser = ExtraUserData::where('user_id', $id)->delete();
+            $deleteuser = User::find($id)->delete();
+            if ($extra_deleteuser && $deleteuser) {
+                return response()->json(['Employee Deleted Successfully']);
+            } else {
+                return response()->json(["User is not deleted please try again later..."]);
+            }
+        } catch (Exception $e) {
+            Log::info($e);
+            return response()->json($e);
+        }
+    }
 
     public function apigetData()
     {

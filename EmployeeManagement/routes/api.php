@@ -46,5 +46,8 @@ Route::group(["middleware" => "auth:sanctum"], function () {
         Route::get('/get_emp_details', [AdminController::class, 'APIhello']);
         Route::get('/records', [AdminController::class, 'apigetData']); //get the record
         Route::get('/downloadData', [MediaController::class, 'apiPDFGenerator']); //Download Data 
+        Route::put('/editedData/{id}', [AdminController::class, 'APISaveEditEmpDatas']); //Edit Employee Data
+        // Route::get(); //Remove Employee Data
+        Route::delete('/deleteemps/{id}', [AdminController::class, 'APIDeleteEmpDatas']);
     });
 });
