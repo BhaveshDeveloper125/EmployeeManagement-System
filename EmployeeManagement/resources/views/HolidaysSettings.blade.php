@@ -62,6 +62,7 @@
             margin-bottom: 0.75rem;
             position: relative;
             display: inline-block;
+            overflow: hidden;
         }
 
         h1.section-title::after {
@@ -323,6 +324,18 @@
     @if(session('error'))
     <script>
         window.addEventListener('DOMContentLoaded', () => alert('Error setting weekly holidays.'));
+    </script>
+    @endif
+
+
+    @if(session('saved success'))
+    <script>
+        window.addEventListener('DOMContentLoaded', () => alert('Holiday is set'));
+    </script>
+    @endif
+    @if(session('not success'))
+    <script>
+        window.addEventListener('DOMContentLoaded', () => alert('oops something went wrong please try again later...'));
     </script>
     @endif
 

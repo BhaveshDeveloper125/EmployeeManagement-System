@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\APIController;
+use App\Http\Controllers\HolidayController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -47,7 +48,12 @@ Route::group(["middleware" => "auth:sanctum"], function () {
         Route::get('/records', [AdminController::class, 'apigetData']); //get the record
         Route::get('/downloadData', [MediaController::class, 'apiPDFGenerator']); //Download Data 
         Route::put('/editedData/{id}', [AdminController::class, 'APISaveEditEmpDatas']); //Edit Employee Data
-        // Route::get(); //Remove Employee Data
-        Route::delete('/deleteemps/{id}', [AdminController::class, 'APIDeleteEmpDatas']);
+        Route::delete('/deleteemps/{id}', [AdminController::class, 'APIDeleteEmpDatas']); //Remove Employee Data
+        Route::post('/setweeklyholiday', [HolidayController::class, 'APISetWeeklyHoliday']); //Set Weekly Holidays
+        Route::post('/setholiday', [AdminController::class, 'APIHolidays']); //Set Festival Holidays
+        Route::post('/set_time', [AdminController::class, 'APITimeManagement']); //Set office time
+        Route::get('/trash_user', [AdminController::class, 'APITrashedUserList']); //Get the Trashed User
+        Route::get('/restore/{id}', [AdminController::class, 'APIRestoreUsers']); //Recover the User Data
+        Route::get('/remove/{id}', [AdminController::class, 'APIRemoveUser']); //Remove emp data from the trash bin
     });
 });

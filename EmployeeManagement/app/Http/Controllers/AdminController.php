@@ -225,9 +225,9 @@ class AdminController extends Controller
         $save = $HoliDay->fill($request->all())->save();
 
         if ($save) {
-            return response()->json('saved success');
+            return redirect()->back()->with(['saved success' => true]);
         } else {
-            return response()->json('not success');
+            return redirect()->back()->with(['not success' => true]);
         }
     }
 
@@ -236,6 +236,63 @@ class AdminController extends Controller
         $HolidayNumbers = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->count();
 
         dd($HolidayNumbers);
+    }
+
+    public function TimeManagement(Request $request)
+    {
+        try {
+            $time = new SetTime();
+
+            if ($time::truncate()) {
+                $save = $time->fill($request->all())->save();
+                if ($save) {
+                    return redirect()->back()->with('success', 'Data saved Successfully....');
+                } else {
+                    return redirect()->back()->with('unsuccess', 'oops Data are not saved please try again....');
+                }
+            } else {
+                return redirect()->back()->with('failure', 'oops previous data are not deleted please try again later....');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function TrashedUserList()
+    {
+        $users = User::onlyTrashed()->get();
+        return view('TrashedUsers', ['users' => $users]);
+    }
+
+    public function RestoreUsers($id)
+    {
+        $user = User::onlyTrashed()->find($id);
+        $user_detail = ExtraUserData::onlyTrashed()->where('user_id', $id)->restore();
+        if ($user && $user_detail) {
+            $restoring = $user->restore();
+
+            if ($restoring) {
+                return redirect()->back()->with('restore', 'User is Restored');
+            } else {
+                return redirect()->back()->with('not_restore', 'oops something went wrong ,  User or User related data are not Restored');
+            }
+        }
+    }
+
+    public function RemoveUser($id)
+    {
+        $force_delete = User::onlyTrashed()->find($id);
+
+        if ($force_delete) {
+            $delete = $force_delete->forceDelete();
+            if ($delete) {
+                return redirect()->back()->with('Success', 'User is Deleted Permanantly');
+            } else {
+                return redirect()->back()->with('error', 'oops something went wrong User can not deleted');
+            }
+        } else {
+            return redirect()->back()->with('error', 'User can not be found , check if this user exists or not');
+        }
     }
 
 
@@ -300,16 +357,92 @@ class AdminController extends Controller
     public function APIDeleteEmpDatas($id)
     {
         try {
-            $extra_deleteuser = ExtraUserData::where('user_id', $id)->delete();
-            $deleteuser = User::find($id)->delete();
-            if ($extra_deleteuser && $deleteuser) {
-                return response()->json(['Employee Deleted Successfully']);
+            if (User::find($id)) {
+                $extra_deleteuser = ExtraUserData::where('user_id', $id)->delete();
+                $deleteuser = User::find($id)->delete();
+                if ($extra_deleteuser && $deleteuser) {
+                    return response()->json(['Employee Deleted Successfully']);
+                } else {
+                    return response()->json(["User is not deleted please try again later..."]);
+                }
             } else {
-                return response()->json(["User is not deleted please try again later..."]);
+                return response()->json(["User Not Found..."]);
             }
         } catch (Exception $e) {
             Log::info($e);
             return response()->json($e);
+        }
+    }
+
+    public function APIHolidays(Request $request)
+    {
+        $HoliDay = new Holiday();
+
+        $save = $HoliDay->fill($request->all())->save();
+
+        if ($save) {
+            return response()->json('saved success');
+        } else {
+            return response()->json('not success');
+        }
+    }
+
+    public function APITimeManagement(Request $request)
+    {
+        try {
+            $time = new SetTime();
+
+            if ($time::truncate()) {
+                $save = $time->fill($request->all())->save();
+                if ($save) {
+                    return response()->json('Data saved Successfully....');
+                } else {
+                    return response()->json('oops Data are not saved please try again....');
+                }
+            } else {
+                return response()->json('oops previous data are not deleted please try again later....');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function APITrashedUserList()
+    {
+        $users = User::onlyTrashed()->get();
+        return response()->json(['users' => $users]);
+    }
+
+    public function APIRestoreUsers($id)
+    {
+        $user = User::onlyTrashed()->find($id);
+        $user_detail = ExtraUserData::onlyTrashed()->where('user_id', $id)->restore();
+        if ($user && $user_detail) {
+            $restoring = $user->restore();
+
+            if ($restoring) {
+                return response()->json('User is Restored');
+            } else {
+                return response()->json('oops something went wrong ,  User or User related data are not Restored');
+            }
+        } else {
+            return response()->json('oops something went wrong ,  User or User related data are not Found');
+        }
+    }
+
+    public function APIRemoveUser($id)
+    {
+        $force_delete = User::onlyTrashed()->find($id);
+
+        if ($force_delete) {
+            $delete = $force_delete->forceDelete();
+            if ($delete) {
+                return response()->json('User is Deleted Permanantly');
+            } else {
+                return response()->json('oops something went wrong User can not deleted');
+            }
+        } else {
+            return response()->json('oops something went wrong User can not deleted');
         }
     }
 
@@ -351,7 +484,6 @@ class AdminController extends Controller
             return response()->json(['error' => 'An error occurred while fetching employee data.'], 500);
         }
     }
-
 
     public function apiSearchUser(Request $request)
     {
@@ -453,62 +585,6 @@ class AdminController extends Controller
             }
         } else {
             return response()->json('  your system is new installed please Signup the new user or System is already configured....');
-        }
-    }
-
-    public function TrashedUserList()
-    {
-        $users = User::onlyTrashed()->get();
-        return view('TrashedUsers', ['users' => $users]);
-    }
-
-    public function RestoreUsers($id)
-    {
-        $user = User::onlyTrashed()->find($id);
-        $user_detail = ExtraUserData::onlyTrashed()->where('user_id', $id)->restore();
-        if ($user && $user_detail) {
-            $restoring = $user->restore();
-
-            if ($restoring) {
-                return redirect()->back()->with('restore', 'User is Restored');
-            } else {
-                return redirect()->back()->with('not_restore', 'oops something went wrong ,  User or User related data are not Restored');
-            }
-        }
-    }
-
-    public function RemoveUser($id)
-    {
-        $force_delete = User::onlyTrashed()->find($id);
-
-        if ($force_delete) {
-            $delete = $force_delete->forceDelete();
-            if ($delete) {
-                return redirect()->back()->with('Success', 'User is Deleted Permanantly');
-            } else {
-                return redirect()->back()->with('error', 'oops something went wrong User can not deleted');
-            }
-        } else {
-            return redirect()->back()->with('error', 'User can not be found , check if this user exists or not');
-        }
-    }
-    public function TimeManagement(Request $request)
-    {
-        try {
-            $time = new SetTime();
-
-            if ($time::truncate()) {
-                $save = $time->fill($request->all())->save();
-                if ($save) {
-                    return redirect()->back()->with('success', 'Data saved Successfully....');
-                } else {
-                    return redirect()->back()->with('unsuccess', 'oops Data are not saved please try again....');
-                }
-            } else {
-                return redirect()->back()->with('failure', 'oops previous data are not deleted please try again later....');
-            }
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
