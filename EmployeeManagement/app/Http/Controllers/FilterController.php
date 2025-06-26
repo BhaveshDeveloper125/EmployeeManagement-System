@@ -72,9 +72,9 @@ class FilterController extends Controller
         }
     }
 
-    public function apiFilterData(Request $request)
+    public function apiFilterData($id)
     {
-        switch ($request->filters) {
+        switch ($id) {
             case 'late':
                 $late = EmployeeTimeWatcher::whereDate('entry', Carbon::today())
                     ->whereDate('entry', '>', '10:00:00')
@@ -109,6 +109,23 @@ class FilterController extends Controller
                     ->get();
 
                 return response()->json([$early_leave]);
+
+            case 'absent':
+                $absent = User::leftJoin('employee_time_watchers', function ($join) {
+                    $join->on('users.id', '=', 'employee_time_watchers.user_id')
+                        ->whereDate('employee_time_watchers.entry', Carbon::today());
+                })
+                    ->leftJoin('extra_user_data', 'users.id', '=', 'extra_user_data.user_id') // Joining extra_user_data
+                    ->whereNull('employee_time_watchers.id')
+                    ->select('users.name', 'users.email', 'extra_user_data.mobile') // Fetch email & mobile
+                    ->get();
+
+                return response()->json(['absent' => $absent]);
+
+
+            case 'custome_holiday':
+                $CustomeHoliday = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->get();
+                return response()->json(['CustomeHoliday' => $CustomeHoliday]);
 
             default:
                 return response()->json(['message' => 'oops something went wrong...']);

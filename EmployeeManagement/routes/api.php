@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\APIController;
+use App\Http\Controllers\FilterController;
 use App\Http\Controllers\HolidayController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -42,7 +43,6 @@ Route::group(["middleware" => "auth:sanctum"], function () {
     Route::post('/get_user_info', [AdminController::class, 'apiSearchUser']); //search the user
     Route::post('/add_wifi', [AdminController::class, 'AddWifiData']); //Add the user wifi Details
 
-    // Route::post('/filter', [FilterController::class, 'apiFilterData']); //get emp data related to attendance
     Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
         Route::get('/get_emp_details', [AdminController::class, 'APIhello']);
         Route::get('/records', [AdminController::class, 'apigetData']); //get the record
@@ -55,5 +55,6 @@ Route::group(["middleware" => "auth:sanctum"], function () {
         Route::get('/trash_user', [AdminController::class, 'APITrashedUserList']); //Get the Trashed User
         Route::get('/restore/{id}', [AdminController::class, 'APIRestoreUsers']); //Recover the User Data
         Route::get('/remove/{id}', [AdminController::class, 'APIRemoveUser']); //Remove emp data from the trash bin
+        Route::get('/filter/{id}', [FilterController::class, 'apiFilterData']); //get emp data related to attendance
     });
 });
