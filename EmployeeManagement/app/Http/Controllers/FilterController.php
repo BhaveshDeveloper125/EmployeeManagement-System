@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EmployeeTimeWatcher;
 use App\Models\Holiday;
+use App\Models\SetTime;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class FilterController extends Controller
         switch ($request->filters) {
             case 'late':
                 $late = EmployeeTimeWatcher::whereDate('entry', Carbon::today())
-                    ->whereDate('entry', '>', '10:00:00')
+                    ->whereTime('entry', '>', SetTime::value('from'))
                     ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
                     ->select('employee_time_watchers.*', 'users.name')
                     ->get();
@@ -63,7 +64,6 @@ class FilterController extends Controller
 
             case 'custome_holiday':
                 $CustomeHoliday = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->get();
-                // dd($CustomeHoliday);
                 return view('Filter', ['CustomeHoliday' => $CustomeHoliday]);
 
 
