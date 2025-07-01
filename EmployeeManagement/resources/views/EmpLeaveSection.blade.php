@@ -483,9 +483,9 @@
                         <option value="" disabled selected>Select leave type</option>
                         <option value="medical_leave">Medical Leave</option>
                         <option value="casual_leave">Casual Leave</option>
-                        <option value="annual_leave">Annual Leave</option>
+                        <!-- <option value="annual_leave">Annual Leave</option>
                         <option value="maternity_leave">Maternity Leave</option>
-                        <option value="paternity_leave">Paternity Leave</option>
+                        <option value="paternity_leave">Paternity Leave</option> -->
                     </select>
                 </div>
 
@@ -495,7 +495,7 @@
                         <option value="" disabled selected>Select duration</option>
                         <option value="half_day">Half Day</option>
                         <option value="full_day">Full Day</option>
-                        <option value="multiple_days">Multiple Days</option>
+                        <!-- <option value="multiple_days">Multiple Days</option> -->
                     </select>
                 </div>
 
