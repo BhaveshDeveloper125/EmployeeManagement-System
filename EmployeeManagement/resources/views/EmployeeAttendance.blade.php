@@ -582,7 +582,7 @@
 </head>
 
 <body>
-    <header class="header" id="header">
+    <!-- <header class="header" id="header">
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle sidebar">
             <span></span>
             <span></span>
@@ -592,9 +592,9 @@
         <div style="width: 50px;"></div>
     </header>
 
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div> -->
 
-    <aside class="sidebar" id="sidebar">
+    <!-- <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo">AttendancePro</div>
         </div>
@@ -638,7 +638,9 @@
                 @endauth
             </ul>
         </nav>
-    </aside>
+    </aside> -->
+
+    <x-emp-menu />
 
     <main class="main-content" id="mainContent">
         <div class="dashboard-grid">

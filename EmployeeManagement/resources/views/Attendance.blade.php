@@ -395,6 +395,7 @@
 </head>
 
 <body>
+    <x-emp-menu />
     <div class="dashboard-container">
         <div class="dashboard-header">
             <h1 class="dashboard-title">Employee Attendance</h1>

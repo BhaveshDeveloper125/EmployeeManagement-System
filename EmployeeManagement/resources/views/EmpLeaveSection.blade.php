@@ -266,9 +266,10 @@
 </head>
 
 <body>
+    <x-emp-menu />
     <div class="container">
-        <h1>Leave Management System</h1>
-
+        <!-- <h1>Leave Management System</h1> -->
+        <br><br><br><br>
         <div class="form-container">
             <form action="/ask_leave" method="post">
                 @csrf
