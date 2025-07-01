@@ -24,10 +24,14 @@
             background-color: var(--light-gray);
             color: var(--deep-black);
             margin: 0;
-            padding: 20px;
+            display: flex;
+            /* padding: 20px; */
         }
 
         .container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
             max-width: 1400px;
             margin: 0 auto;
         }
@@ -218,6 +222,7 @@
 </head>
 
 <body>
+    <x-menu />
     <div class="container">
         <!-- Notification Dropdown -->
         <div class="notification-wrapper">

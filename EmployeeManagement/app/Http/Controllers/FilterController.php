@@ -15,6 +15,7 @@ class FilterController extends Controller
     {
         switch ($request->filters) {
             case 'late':
+                dd('asdas');
                 $late = EmployeeTimeWatcher::whereDate('entry', Carbon::today())
                     ->whereTime('entry', '>', SetTime::value('from'))
                     ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
@@ -64,6 +65,7 @@ class FilterController extends Controller
 
             case 'custome_holiday':
                 $CustomeHoliday = Holiday::whereYear('leaves', Carbon::now()->year)->whereMonth('leaves', Carbon::now()->month)->get();
+                // dd($CustomeHoliday);
                 return view('Filter', ['CustomeHoliday' => $CustomeHoliday]);
 
 
