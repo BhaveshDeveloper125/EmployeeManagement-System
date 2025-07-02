@@ -440,6 +440,11 @@
                 <span class="nav-text">Trashed Users</span>
                 <span class="nav-item-tooltip">Trashed Users</span>
             </a>
+            <a href="{{ url('/adminPanel/empleave') }}" class="nav-item {{ Request::is('adminPanel/trash_user') ? 'active' : '' }}">
+                <div class="nav-icon"><span class="material-icons-round">event_note</span></div>
+                <span class="nav-text">Emp Leave</span>
+                <span class="nav-item-tooltip">Emp Leave</span>
+            </a>
         </nav>
 
         <div class="logout-area">

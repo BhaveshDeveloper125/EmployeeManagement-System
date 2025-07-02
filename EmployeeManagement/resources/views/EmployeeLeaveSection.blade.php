@@ -43,6 +43,9 @@
         }
 
         .notification-bell {
+            width: fit-content;
+            position: relative;
+            padding: 8px;
             color: var(--navy-blue);
             font-size: 1.5rem;
             cursor: pointer;
@@ -51,15 +54,16 @@
             display: inline-block;
         }
 
-        .notification-bell:hover {
+        /* .notification-bell:hover {
             transform: scale(1.1);
             text-decoration: none;
-        }
+        } */
 
         .badge {
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: 0px;
+            right: 8px;
+            padding: 8;
             background-color: var(--vibrant-red);
             color: white;
             border-radius: 50%;
@@ -225,31 +229,29 @@
     <x-menu />
     <div class="container">
         <!-- Notification Dropdown -->
-        <div class="notification-wrapper">
-            <a href="#" class="notification-bell" id="notificationDropdown" role="button">
-                <i class="fas fa-bell"></i>
+        <a href="#" class="notification-bell" id="notificationDropdown" role="button">
+            <i class="fas fa-bell"></i>
+            @if (auth()->user()->unreadNotifications->count() > 0)
+            <span class="badge">{{ auth()->user()->unreadNotifications->count() }}</span>
+            @endif
+        </a>
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-header">
+                <span>Notifications</span>
                 @if (auth()->user()->unreadNotifications->count() > 0)
-                <span class="badge">{{ auth()->user()->unreadNotifications->count() }}</span>
-                @endif
-            </a>
-            <div class="dropdown-menu" id="dropdownMenu">
-                <div class="dropdown-header">
-                    <span>Notifications</span>
-                    @if (auth()->user()->unreadNotifications->count() > 0)
-                    <a href="/mark_as_read" class="mark-all-btn">Mark All as Read</a>
-                    @endif
-                </div>
-                @if (auth()->user()->unreadNotifications->count() > 0)
-                @foreach (auth()->user()->unreadNotifications as $notification)
-                <div class="dropdown-item">
-                    <div>{{ $notification->data['message'] }}</div>
-                    <small style="color: #6c757d;">{{ $notification->created_at->diffForHumans() }}</small>
-                </div>
-                @endforeach
-                @else
-                <div class="dropdown-item">No new notifications</div>
+                <a href="/mark_as_read" class="mark-all-btn">Mark All as Read</a>
                 @endif
             </div>
+            @if (auth()->user()->unreadNotifications->count() > 0)
+            @foreach (auth()->user()->unreadNotifications as $notification)
+            <div class="dropdown-item">
+                <div>{{ $notification->data['message'] }}</div>
+                <small style="color: #6c757d;">{{ $notification->created_at->diffForHumans() }}</small>
+            </div>
+            @endforeach
+            @else
+            <div class="dropdown-item">No new notifications</div>
+            @endif
         </div>
 
         <!-- Pending Leave Requests -->
@@ -278,7 +280,8 @@
                         <td>{{ $i->department }}</td>
                         <td>{{ $i->name }}</td>
                         <td>{{ $i->type == 'casual_leave' ? "Casual Leave" : "Medical Leave"}}</td>
-                        <td>{{ Carbon\Carbon::parse($i->from)->diffInDays($i->to) }}</td>
+                        <td>{{ Carbon\Carbon::parse($i->to)->format('d') - Carbon\Carbon::parse($i->from)->format('d') == 0 ? 1 : Carbon\Carbon::parse($i->to)->format('d') - Carbon\Carbon::parse($i->from)->format('d') +1 }}</td>
+                        <!-- <td>{{ Carbon\Carbon::parse($i->from)->diffInDays($i->to) }}</td> -->
                         <td>{{ $i->duration == 'full_day' ? "Full Day" : "Half Day" }}</td>
                         <td>{{ Carbon\Carbon::parse($i->from)->format('d M y') }}</td>
                         <td>{{ Carbon\Carbon::parse($i->to)->format('d M y') }}</td>

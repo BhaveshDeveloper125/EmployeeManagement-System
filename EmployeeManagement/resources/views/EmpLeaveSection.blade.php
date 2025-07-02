@@ -509,10 +509,21 @@
                     <input type="date" name="to" id="to" required>
                 </div>
 
-                <div class="form-group full-width">
+                <div class="form-group">
+                    <label for="duration">Duration Type</label>
+                    <select name="reason" id="duration" required>
+                        <option value="" disabled selected>Select duration</option>
+                        <option value="Health Issues">Health issues</option>
+                        <option value="Casual Leave">Casual Leave</option>
+                        <option value="Other Reason">Other Reason</option>
+                        <!-- <option value="multiple_days">Multiple Days</option> -->
+                    </select>
+                </div>
+
+                <!-- <div class="form-group full-width">
                     <label for="reason">Reason for Leave</label>
                     <textarea name="reason" id="reason" placeholder="Please explain the reason for your leave in detail..." required></textarea>
-                </div>
+                </div> -->
 
                 <button type="submit" class="submit-btn">
                     <i class="fas fa-paper-plane"></i> Submit Leave Request
