@@ -153,6 +153,10 @@ class AdminController extends Controller
         $EmployeeTime = EmployeeTimeWatcher::whereIn('user_id', $user_id)->get();
 
 
+        $search = User::where('name', 'LIKE', "%$request->name%")->get();
+
+
+
 
         $MergedData = EmployeeTimeWatcher::join('extra_user_data', 'employee_time_watchers.user_id', '=', 'extra_user_data.user_id')
             ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
@@ -175,7 +179,7 @@ class AdminController extends Controller
 
         // $alldata = DB::table('combined_user_data')->where('name', 'like', '%' . $request->name . '%')->get();
         // return redirect()->route('searchUser')->with('alldata', $alldata);
-        return view('SearchEmployee', ['alldata' => $MergedData]);
+        return view('SearchEmployee', ['alldata' => $search]);
     }
 
     public function EditEmpData()
