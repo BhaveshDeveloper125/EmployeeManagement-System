@@ -72,7 +72,7 @@ class LeaveController extends Controller
 
         $pending = Leave::where('user_id', Auth::id())->where('status', 'pending')->count();
         $approved = Leave::where('user_id', Auth::id())->where('status', 'Approved')->count();
-        $reject = Leave::where('user_id', Auth::id())->where('status', 'reject')->count();
+        $reject = Leave::where('user_id', Auth::id())->where('status', 'Rejected')->count();
         $remaining = ExtraUserData::where('user_id', Auth::id())->value('leaves');
 
         return view('EmpLeaveSection', ['list' => $list, 'pending' => $pending, 'approved' => $approved, 'reject' => $reject, 'remaining' => $remaining]);
