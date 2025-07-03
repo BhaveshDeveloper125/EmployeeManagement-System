@@ -7,3 +7,4 @@ Admin dont have the feature to edit the employee data like the email or address 
 New System insatllation Process
 ->If you newly insatll the system first visit the /register url and register the email and password for the admin and then visit the /add_new_system
 ->Bydefault office time is 9 to 5 so set the timing according to it
+->set the cron job when uploading the websites

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\APIController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\LeaveController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -39,9 +40,12 @@ Route::group(["middleware" => "auth:sanctum"], function () {
     Route::get('/empfilter/{id}', [EmployeeAttendance::class, 'APIFilteration']);
     Route::get('/attendance/{id}', [EmployeeAttendance::class, 'APIEmployeeAttendance']); //History
     Route::get('/get_wifi', [AdminController::class, 'GetWifi']);
+    Route::get('/leave', [LeaveController::class, 'APIEmpLeaveList']);
+
 
     Route::post('/get_user_info', [AdminController::class, 'apiSearchUser']); //search the user
     Route::post('/add_wifi', [AdminController::class, 'AddWifiData']); //Add the user wifi Details
+    Route::post('/ask_leave', [LeaveController::class, 'APIGetLeaves']); //Ask for Leave
 
     Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
         Route::get('/get_emp_details', [AdminController::class, 'APIhello']);
@@ -56,5 +60,7 @@ Route::group(["middleware" => "auth:sanctum"], function () {
         Route::get('/restore/{id}', [AdminController::class, 'APIRestoreUsers']); //Recover the User Data
         Route::get('/remove/{id}', [AdminController::class, 'APIRemoveUser']); //Remove emp data from the trash bin
         Route::get('/filter/{id}', [FilterController::class, 'apiFilterData']); //get emp data related to attendance
+        Route::get('/approve/{id}', [LeaveController::class, 'APIApprove']); //Approve the Leave
+        Route::get('/reject/{id}', [LeaveController::class, 'APIReject']); //Reject the Leave
     });
 });
