@@ -34,7 +34,8 @@ Route::post('/apilogin', [APIController::class, 'login']);
 
 Route::group(["middleware" => "auth:sanctum"], function () {
     Route::post('/logout', [EmployeeAttendance::class, 'APILogout']); //logout
-    Route::post('/logdata', [EmployeeAttendance::class, 'APILoggedUserData']); //Gives the Data of Current logged in user
+    Route::get('/homepage/{id}', [EmployeeAttendance::class, 'APIhomepage']);
+    Route::get('/logdata', [EmployeeAttendance::class, 'APILoggedUserData']); //Gives the Data of Current logged in user
     Route::post('/entry', [EmployeeAttendance::class, 'APIWorkStart']); //Checkin 
     Route::post('/leave', [EmployeeAttendance::class, 'APIWorkEnd']); //Checkout
     Route::get('/empfilter/{id}', [EmployeeAttendance::class, 'APIFilteration']);
