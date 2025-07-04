@@ -121,7 +121,6 @@ class LeaveController extends Controller
     {
 
         try {
-
             $validation = $request->validate([
                 'name' => 'required|string|max:255',
                 'user_id' => 'required|numeric',
@@ -148,10 +147,10 @@ class LeaveController extends Controller
                     if ($save) {
                         return response()->json(['leave_send' => ' Leave Request is sent! Please wait for the Response...']);
                     } else {
-                        return response()->json(['leave_not_send' => ' You dont have Leaves left that much leave...']);
+                        return response()->json(['leave_not_send' => 'You dont have Leaves left that much leave...']);
                     }
                 default:
-                    return response()->json(['leave_not_send' => 'oops something went wrong! please try again later']);
+                    return response()->json(['leave_not_send' => 'oops something went wrong! please try again later'], 500);
             }
         } catch (Exception $e) {
             Log::info("Error While Requesting Leave : $e");
