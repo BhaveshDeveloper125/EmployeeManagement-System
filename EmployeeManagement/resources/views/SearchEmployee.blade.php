@@ -418,10 +418,10 @@
                         <tr>
                             <th>Sr no</th>
                             <th>Name</th>
-                            <th>CheckIn</th>
-                            <th>CheckOut</th>
-                            <th>Working Hour</th>
-                            <th>Date</th>
+                            <!-- <th>CheckIn</th>
+                            <th>CheckOut</th> 
+                            <th>Working Hour</th>-->
+                            <th>Joining Date</th>
                             <th>Post</th>
                             <th>Mobile</th>
                             <th>Address</th>
@@ -434,19 +434,21 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $i->name }}</td>
-                            <td>{{ Carbon\Carbon::parse($i->entry)->format('H:i') }}</td>
-                            <td>{{ Carbon\Carbon::parse($i->leave)->format('H:i') }}</td>
+                            <!-- <td>{{ Carbon\Carbon::parse($i->entry)->format('H:i') }}</td>
+                            <td>{{ Carbon\Carbon::parse($i->leave)->format('H:i') }}</td> 
                             <td class="working-hours">
                                 {{ $i->entry && $i->leave ? \Carbon\Carbon::parse($i->entry)->diff(\Carbon\Carbon::parse($i->leave))->format('%H:%I') : '' }}
-                            </td>
-                            <td>{{ Carbon\Carbon::parse($i->entry)->format('d-m-y') }}</td>
-                            <td>{{ $i->post }}</td>
-                            <td>{{ $i->mobile }}</td>
-                            <td>{{ $i->address }}</td>
-                            <td>{{ $i->qualificatio }}</td>
+                            </td>-->
+                            @foreach ($i->extraUserData as $j)
+                            <td>{{ $j->joining_date }}</td>
+                            <td>{{ $j->post }}</td>
+                            <td>{{ $j->mobile }}</td>
+                            <td>{{ $j->address }}</td>
+                            <td>{{ $j->qualificatio }}</td>
+                            @endforeach
                             <td>
                                 <!-- <button title="Edit user"><i class="fas fa-pencil-alt"></i></button> -->
-                                <a href={{ "/editemps/".$i->user_id }}>
+                                <a href={{ "/editemps/{$i->user_id}" }}>
                                     Edit
                                 </a>
                                 <a href="">Delete</a>

@@ -153,7 +153,7 @@ class AdminController extends Controller
         $EmployeeTime = EmployeeTimeWatcher::whereIn('user_id', $user_id)->get();
 
 
-        $search = User::where('name', 'LIKE', "%$request->name%")->get();
+        $search = User::where('name', 'LIKE', "%$request->name%")->with('extraUserData')->get();
 
 
 
