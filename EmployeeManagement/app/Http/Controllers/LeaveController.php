@@ -135,13 +135,14 @@ class LeaveController extends Controller
             $availabel_leave = ExtraUserData::where('user_id', $validation['user_id'])->value('leaves');
             $diff = Carbon::parse($validation['from'])->diffInDays($validation['to']);
 
+            // dd("availabel leave $availabel_leave, diff $diff");
 
             switch ($availabel_leave) {
                 case $availabel_leave == null:
                     return response()->json(['leave_not_send' => 'please contact the HR/Manager you dont have a leaves']);
                 case $diff > $availabel_leave && $validation['type'] == "casual_leave":
                     return response()->json(['leave_not_send' => ' You dont have Leaves left that much leave...']);
-                case $diff < $availabel_leave:
+                case $diff <= $availabel_leave:
                     $save = Leave::create($validation);
 
                     if ($save) {
