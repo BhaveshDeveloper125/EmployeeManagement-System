@@ -941,12 +941,19 @@ class EmployeeAttendance extends Controller
 
             $gettingLeaveRow = EmployeeTimeWatcher::where('user_id', $user->id)->whereNull('leave')->latest()->first();
 
-            if ($gettingLeaveRow) {
-                $gettingLeaveRow->leave = $request->end;
+            $checkout_validation = EmployeeTimeWatcher::where('user_id', Auth::id())->whereDate('entry', Carbon::today()->toDateString())->where('leave', null)->exists();
 
-                if ($gettingLeaveRow->save()) {
-                    return  response()->json(['successCheckout' => 'Work Ends Success']);
+            if ($checkout_validation) {
+                if ($gettingLeaveRow) {
+                    $gettingLeaveRow->leave = $request->end;
+
+                    if ($gettingLeaveRow->save()) {
+                        return  response()->json(['successCheckout' => 'Work Ends Success']);
+                    }
                 }
+            } else {
+
+                return response()->json(['checkoutDone' => 'Employee has already checkout today'], 500);
             }
         } catch (Exception $e) {
             return  response()->json(['Error while checkout' => $e, 'warning' => 'please enter the date and time instead of the numbers and text'], 500);
