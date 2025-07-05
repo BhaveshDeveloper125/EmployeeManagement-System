@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Http;
 use Stevebauman\Location\Facades\Location;
 use App\Models\UserWifiData;
 use App\Models\WeeklyHolidays;
-
+use Exception;
 use Symfony\Component\Mime\Test\Constraint\EmailSubjectContains;
 use function Illuminate\Filesystem\join_paths;
 use function PHPSTORM_META\type;
@@ -914,31 +914,43 @@ class EmployeeAttendance extends Controller
 
     public function APIWorkStart(Request $request)
     {
-        $user = Auth::user();
-        $Entry = new EmployeeTimeWatcher();
-        $Entry->entry = $request->start;
-        $Entry->user_id = $user->id;
+        try {
+            $user = Auth::user();
+            $Entry = new EmployeeTimeWatcher();
+            $Entry->entry = $request->start;
+            $Entry->user_id = $user->id;
 
-        if ($Entry->save()) {
-            return  response()->json('Work Start Success');
+            $checkin_validation = EmployeeTimeWatcher::where('user_id', Auth::id())->whereDate('entry', Carbon::today()->toDateString())->exists();
+
+            if ($checkin_validation) {
+                return response()->json(['checkinDone' => 'Employee has already checkin today'], 500);
+            }
+
+            if ($Entry->save()) {
+                return  response()->json(['successCheckin' => 'Work Start Success']);
+            }
+        } catch (Exception $e) {
+            return  response()->json(['Error while checkin' => $e, 'warning' => 'please enter the date and time instead of the numbers and text'], 500);
         }
     }
 
     public function APIWorkEnd(Request $request)
     {
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
 
-        $gettingLeaveRow = EmployeeTimeWatcher::where('user_id', $user->id)->whereNull('leave')->latest()->first();
+            $gettingLeaveRow = EmployeeTimeWatcher::where('user_id', $user->id)->whereNull('leave')->latest()->first();
 
-        if ($gettingLeaveRow) {
-            $gettingLeaveRow->leave = $request->end;
+            if ($gettingLeaveRow) {
+                $gettingLeaveRow->leave = $request->end;
 
-            if ($gettingLeaveRow->save()) {
-                return response()->json('Work Ends Success');
+                if ($gettingLeaveRow->save()) {
+                    return  response()->json(['successCheckout' => 'Work Ends Success']);
+                }
             }
+        } catch (Exception $e) {
+            return  response()->json(['Error while checkout' => $e, 'warning' => 'please enter the date and time instead of the numbers and text'], 500);
         }
-
-        return response()->json($request->all());
     }
 
     public function APILogout(Request $request)
