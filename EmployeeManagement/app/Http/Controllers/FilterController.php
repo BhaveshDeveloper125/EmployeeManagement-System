@@ -15,7 +15,7 @@ class FilterController extends Controller
     {
         switch ($request->filters) {
             case 'late':
-                dd('asdas');
+                // dd('asdas');
                 $late = EmployeeTimeWatcher::whereDate('entry', Carbon::today())
                     ->whereTime('entry', '>', SetTime::value('from'))
                     ->join('users', 'employee_time_watchers.user_id', '=', 'users.id')
