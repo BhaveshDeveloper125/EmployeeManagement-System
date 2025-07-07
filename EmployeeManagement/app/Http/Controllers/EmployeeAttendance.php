@@ -420,6 +420,11 @@ class EmployeeAttendance extends Controller
 
     public function homepage($id)
     {
+
+        if ($id != Auth::id()) {
+            return response()->json('oops! there is something wrong with url please refresh the page or enter correct url....');
+        }
+
         $isadmin = ExtraUserData::where('user_id', $id)->where('isAdmin', '1')->value('isAdmin');
 
 
