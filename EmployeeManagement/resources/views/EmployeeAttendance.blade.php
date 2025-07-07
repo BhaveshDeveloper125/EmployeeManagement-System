@@ -588,7 +588,7 @@
             <span></span>
             <span></span>
         </button>
-        <h1 class="header-title">Attendance System</h1>
+        <h1 class="header-title">{{ auth()->user()->name }}</h1>
         <div style="width: 50px;"></div>
     </header>
 
