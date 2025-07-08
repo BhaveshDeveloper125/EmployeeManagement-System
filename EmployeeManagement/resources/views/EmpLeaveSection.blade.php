@@ -644,6 +644,9 @@
             "hideMethod": "fadeOut"
         };
     </script>
+    <script>
+        history.replaceState(null, '', '/')
+    </script>
 </body>
 
 </html>

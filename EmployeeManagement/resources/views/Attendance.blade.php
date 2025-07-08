@@ -988,7 +988,7 @@
         <nav class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="#">
+                    <a href="/">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
@@ -1183,6 +1183,9 @@
             updateTime();
             setInterval(updateTime, 1000);
         });
+    </script>
+    <script>
+        history.replaceState(null, '', '/')
     </script>
 </body>
 
