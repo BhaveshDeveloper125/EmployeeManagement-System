@@ -300,6 +300,28 @@ class AdminController extends Controller
         }
     }
 
+    public function EmpCheckout()
+    {
+        $checkout_null_data = EmployeeTimeWatcher::with('user')->where('leave', null)->get();
+        // dd($checkout_null_data);
+        return view('EmployeeCheckout', ['checkoutdata' => $checkout_null_data]);
+    }
+
+    public function EmployeeCheckout(Request $request)
+    {
+        try {
+            $insert_checkout_time = EmployeeTimeWatcher::where('id', $request->id)->update(['leave' => $request->end]);
+
+            if ($insert_checkout_time) {
+                return redirect()->back()->with('success_checkout', 'Work Ends Success');
+            } else {
+                return redirect()->back()->with('error_checkout', 'Oops! Something went wrong, please try again later');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error_checkout', 'Error: ' . $e->getMessage());
+        }
+    }
+
     // APIS
 
     public function APIhello()

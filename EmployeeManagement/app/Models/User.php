@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ExtraUserData::class, 'user_id', 'id');
     }
+
+    public function employeTimeWatcher()
+    {
+        return $this->hasMany(EmployeeTimeWatcher::class, 'user_id', 'id');
+    }
 }

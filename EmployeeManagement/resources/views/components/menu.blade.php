@@ -445,6 +445,12 @@
                 <span class="nav-text">Emp Leave</span>
                 <span class="nav-item-tooltip">Emp Leave</span>
             </a>
+            <a href="{{ url('/adminPanel/checkout') }}" class="nav-item {{ Request::is('adminPanel/trash_user') ? 'active' : '' }}">
+                <div class="nav-icon"><span class="material-icons-round">logout</span></div>
+                <span class="nav-text">CheckedOut</span>
+                <span class="nav-item-tooltip">Emp CheckOut</span>
+            </a>
+
         </nav>
 
         <div class="logout-area">
