@@ -100,6 +100,7 @@ Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
     Route::get('/empleave', [AdminController::class, 'LeveDataCollection']);
     Route::get('/approve/{id}', [LeaveController::class, 'Approve']);
     Route::get('/reject/{id}', [LeaveController::class, 'Reject']);
+    Route::get('/emp_data_filteration', [EmployeeAttendance::class, 'EmpfilterData']);
 
     Route::get('/checkout_emp', [AdminController::class, 'EmployeeCheckout']);
     // Route::get('/home', 'Admin');

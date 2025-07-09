@@ -1106,6 +1106,12 @@ class EmployeeAttendance extends Controller
         }
     }
 
+    public function EmpfilterData()
+    {
+        $users = User::with('employeTimeWatcher')->paginate(2);
+        return view('FilterData', ['users' => $users]);
+    }
+
     public function IPDatas(Request $request)
     {
         $output = [];

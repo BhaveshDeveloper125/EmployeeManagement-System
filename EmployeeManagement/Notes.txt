@@ -1,7 +1,7 @@
-Admin dont have the feature to edit the employee data like the email or address and employee also dont have this feature.
+
 
 #task
-->Responsive Design on the employee section
+Admin dont have the feature to edit the employee data like the email or address and employee also dont have this feature and this feature should be enabled for the employee also
 
 New System insatllation Process
 ->If you newly insatll the system first visit the /register url and register the email and password for the admin and then visit the /add_new_system
