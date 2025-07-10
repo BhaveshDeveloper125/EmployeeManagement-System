@@ -322,12 +322,17 @@ class AdminController extends Controller
         }
     }
 
-    public function GetSearchEmpdata($id)
+    public function GetSearchEmpdata(Request $request, $id)
     {
         $attendances = User::with('extraUserData')->findOrFail($id);
-        // $att = User::with('employeTimeWatcher')->paginate(2);
-        $att = EmployeeTimeWatcher::where('user_id', $id)->paginate(1);
-        return view('FilterData', ['attendances' => $attendances, 'record' => $att]);
+
+        if ($request->has('from') && $request->has('to')) {
+            $att = EmployeeTimeWatcher::where('user_id', $id)->whereBetween('entry', [$request->from, $request->to])->paginate(1);
+            return view('FilterData', ['attendances' => $attendances, 'record' => $att]);
+        } elseif (!$request->has('from') && !$request->has('to')) {
+            $att = EmployeeTimeWatcher::where('user_id', $id)->paginate(1);
+            return view('FilterData', ['attendances' => $attendances, 'record' => $att]);
+        }
     }
 
     // APIS

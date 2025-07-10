@@ -28,7 +28,14 @@
     <div class="filterationcontainer">
         <x-menu />
         <div class="ok">
-            <div style="width: 100%; background-color: red;">All filters here</div>
+            <div style="width: 100%; background-color: red;">
+                <form action="/emp_attendance_records/{{ Auth::id() }}" method="post">
+                    @csrf
+                    <input type="date" name="from" id="" required>
+                    <input type="date" name="to" id="" required>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
 
             <div class="employeeDataContainer">
                 @if ($attendances)
