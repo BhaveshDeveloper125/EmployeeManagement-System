@@ -451,7 +451,10 @@
                                 <a href={{ "/editemps/{$i->user_id}" }}>
                                     Edit
                                 </a>
+                                <br>
                                 <a href="">Delete</a>
+                                <br>
+                                <a href={{ "/attendance/".$j['user_id'] }}>Attendances</a>
                             </td>
                         </tr>
                         @endforeach

@@ -15,6 +15,11 @@
         .ok {
             flex: 1;
         }
+
+        .employeeDataContainer {
+            height: 50%;
+            width: 50%;
+        }
     </style>
 </head>
 
@@ -24,32 +29,55 @@
         <x-menu />
         <div class="ok">
             <div style="width: 100%; background-color: red;">All filters here</div>
+
+            <div class="employeeDataContainer">
+                @if ($attendances)
+                {{ $attendances->name }}
+                <br>
+                {{ $attendances->email }}
+                <br>
+
+                @foreach ($attendances->extraUserData as $i)
+                {{ $i->post }}
+                <br>
+                {{ $i->mobile }}
+                <br>
+                {{ $i->address }}
+                <br>
+                {{ $i->qualificatio }}
+                <br>
+                {{ $i->exp }}
+                <br>
+                {{ $i->joining_date }}
+                <br>
+                {{ $i->leaves }}
+                <br>
+                @endforeach
+
+                @endif
+            </div>
+
             <table border="1">
                 <tr>
-                    <th>name</th>
-                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Day</th>
                     <th>Checkin</th>
                     <th>Checkout</th>
                 </tr>
-                @forelse($users as $i)
+                @if ($attendances)
+                @forelse($attendances->employeTimeWatcher as $i)
                 <tr>
-                    <td>{{ $i->name }}</td>
-                    <td>{{ $i->email }}</td>
-                    @forelse($i->employeTimeWatcher as $j)
-                    <td>{{ $j->entry }}</td>
-                    <td>{{ $j->leave }}</td>
+                    <td>{{ $i->entry }}</td>
+                    <td>{{ $i->entry }}</td>
+                    <td>{{ $i->entry }}</td>
+                    <td>{{ $i->leave }}</td>
                     @empty
-                    <td>Empty</td>
-                    <td>Empty</td>
-                    @endforelse
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="4">Empty</td>
+                    <p>Empty</p>
                 </tr>
                 @endforelse
+                @endif
+
             </table>
-            {{ $users->links() }}
         </div>
     </div>
 

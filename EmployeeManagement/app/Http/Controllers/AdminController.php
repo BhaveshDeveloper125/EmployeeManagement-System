@@ -322,6 +322,17 @@ class AdminController extends Controller
         }
     }
 
+    public function GetSearchEmpdata($id)
+    {
+
+        // $attendance = User::with('extraUserData')->with('employeTimeWatcher')->where('user_id', $id);
+        $attendances = User::with(['extraUserData', 'employeTimeWatcher'])->find($id);
+
+        return view('FilterData', ['attendances' => $attendances]);
+
+        // return response()->json($attendances);
+    }
+
     // APIS
 
     public function APIhello()
@@ -623,5 +634,13 @@ class AdminController extends Controller
         $pending = Leave::whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year)->where('status', 'pending')->get()->sortByDesc('created_at');
 
         return view('EmployeeLeaveSection', ['rejection' => $rejected, 'approval' => $approves, 'pending' => $pending]);
+    }
+
+    public function APIGetSearchEmpdata($id)
+    {
+        // $attendance = User::with('extraUserData')->with('employeTimeWatcher')->where('user_id', $id);
+        $attendance = User::with(['extraUserData', 'employeTimeWatcher'])->find($id)->paginate(10);
+
+        return response()->json($attendance);
     }
 }
