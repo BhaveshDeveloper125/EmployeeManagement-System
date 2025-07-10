@@ -324,13 +324,10 @@ class AdminController extends Controller
 
     public function GetSearchEmpdata($id)
     {
-
-        // $attendance = User::with('extraUserData')->with('employeTimeWatcher')->where('user_id', $id);
-        $attendances = User::with(['extraUserData', 'employeTimeWatcher'])->find($id);
-
-        return view('FilterData', ['attendances' => $attendances]);
-
-        // return response()->json($attendances);
+        $attendances = User::with('extraUserData')->findOrFail($id);
+        // $att = User::with('employeTimeWatcher')->paginate(2);
+        $att = EmployeeTimeWatcher::where('user_id', $id)->paginate(1);
+        return view('FilterData', ['attendances' => $attendances, 'record' => $att]);
     }
 
     // APIS

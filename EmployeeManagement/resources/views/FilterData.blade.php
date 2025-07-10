@@ -64,18 +64,23 @@
                     <th>Checkin</th>
                     <th>Checkout</th>
                 </tr>
-                @if ($attendances)
-                @forelse($attendances->employeTimeWatcher as $i)
+                @forelse($record as $i)
                 <tr>
                     <td>{{ $i->entry }}</td>
                     <td>{{ $i->entry }}</td>
                     <td>{{ $i->entry }}</td>
                     <td>{{ $i->leave }}</td>
-                    @empty
-                    <p>Empty</p>
+                </tr>
+                @empty
+                <tr>
+                    <td>Empty</td>
                 </tr>
                 @endforelse
-                @endif
+                <tr>
+                    <td style="text-align: center;" colspan="4">
+                        {{ $record->links() }}
+                    </td>
+                </tr>
 
             </table>
         </div>
