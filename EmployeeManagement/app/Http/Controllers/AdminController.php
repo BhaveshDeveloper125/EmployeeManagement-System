@@ -16,8 +16,10 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeEmail;
 use App\Models\Leave;
 use App\Models\SetTime;
+use App\Models\Settings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use function PHPUnit\Framework\returnArgument;
 
 class AdminController extends Controller
 {
@@ -328,11 +330,32 @@ class AdminController extends Controller
 
         if ($request->has('from') && $request->has('to')) {
             $att = EmployeeTimeWatcher::where('user_id', $id)->whereBetween('entry', [$request->from, $request->to])->paginate(10);
-            // return response()->json(['attendances' => $attendances, 'record' => $att]);
             return view('FilterData', ['attendances' => $attendances, 'record' => $att]);
         } elseif (!$request->has('from') && !$request->has('to')) {
             $att = EmployeeTimeWatcher::where('user_id', $id)->paginate(10);
             return view('FilterData', ['attendances' => $attendances, 'record' => $att]);
+        }
+    }
+
+    public function Settings(Request $request)
+    {
+
+        try {
+            if ($request->hasFile('logo')) {
+                $path = $request->file('logo')->store('logo', 'public');
+                $request['logo'] = $path;
+            }
+            $filter_null_values = array_filter($request->only(['baseUrl', 'logo', 'appName', 'wifiName']), fn($i) => !is_null($i));
+
+
+            $update = Settings::updateOrCreate(['id' => 1,], $filter_null_values);
+            if ($update) {
+                return response()->json('Data is updated and if no data then new data in inserted ');
+            } else {
+                return response()->json(' oops something went wrong , data are not saved ');
+            }
+        } catch (Exception $e) {
+            return response()->json($e);
         }
     }
 

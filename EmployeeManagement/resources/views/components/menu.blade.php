@@ -440,12 +440,17 @@
                 <span class="nav-text">Trashed Users</span>
                 <span class="nav-item-tooltip">Trashed Users</span>
             </a>
-            <a href="{{ url('/adminPanel/empleave') }}" class="nav-item {{ Request::is('adminPanel/trash_user') ? 'active' : '' }}">
+            <a href="{{ url('/adminPanel/empleave') }}" class="nav-item {{ Request::is('adminPanel/empleave') ? 'active' : '' }}">
                 <div class="nav-icon"><span class="material-icons-round">event_note</span></div>
                 <span class="nav-text">Emp Leave</span>
                 <span class="nav-item-tooltip">Emp Leave</span>
             </a>
-            <a href="{{ url('/adminPanel/checkout') }}" class="nav-item {{ Request::is('adminPanel/trash_user') ? 'active' : '' }}">
+            <a href="{{ url('/adminPanel/settings') }}" class="nav-item {{ Request::is('adminPanel/trash_user') ? 'active' : '' }}">
+                <div class="nav-icon"><span class="material-icons-round">settings</span></div>
+                <span class="nav-text">Settings</span>
+                <span class="nav-item-tooltip">Settings</span>
+            </a>
+            <a href="{{ url('/adminPanel/checkout') }}" class="nav-item {{ Request::is('adminPanel/checkout') ? 'active' : '' }}">
                 <div class="nav-icon"><span class="material-icons-round">logout</span></div>
                 <span class="nav-text">CheckedOut</span>
                 <span class="nav-item-tooltip">Emp CheckOut</span>

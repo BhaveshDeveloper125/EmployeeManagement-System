@@ -79,6 +79,7 @@ Route::post('/setweeklyholiday', [HolidayController::class, 'SetWeeklyHoliday'])
 Route::post('/set_time', [AdminController::class, 'TimeManagement'])->middleware(LoginCheck::class);
 Route::post('/ask_leave', [LeaveController::class, 'GetLeaves'])->middleware(LoginCheck::class);
 Route::post('/emp_attendance_records/{id}', [AdminController::class, 'GetSearchEmpdata'])->middleware(LoginCheck::class);
+Route::post('/set_setting', [AdminController::class, 'Settings'])->middleware(LoginCheck::class);
 
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
@@ -93,6 +94,7 @@ Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
     Route::view('/generate_user', 'GenerateUser')->name('generate.user');
     Route::view('/holiday', 'HolidaysSettings');
     Route::view('/search_user', 'SearchEmployee')->name('searchUser');
+    Route::view('/settings', 'Settings');
     // Route::view('/checkout', 'EmployeeCheckout');
     Route::get('/checkout', [AdminController::class, 'EmpCheckout']);
     Route::get('/records', [AdminController::class, 'getData']);
