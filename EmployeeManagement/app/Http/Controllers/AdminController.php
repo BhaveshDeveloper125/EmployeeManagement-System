@@ -327,10 +327,11 @@ class AdminController extends Controller
         $attendances = User::with('extraUserData')->findOrFail($id);
 
         if ($request->has('from') && $request->has('to')) {
-            $att = EmployeeTimeWatcher::where('user_id', $id)->whereBetween('entry', [$request->from, $request->to])->paginate(1);
+            $att = EmployeeTimeWatcher::where('user_id', $id)->whereBetween('entry', [$request->from, $request->to])->paginate(10);
+            // return response()->json(['attendances' => $attendances, 'record' => $att]);
             return view('FilterData', ['attendances' => $attendances, 'record' => $att]);
         } elseif (!$request->has('from') && !$request->has('to')) {
-            $att = EmployeeTimeWatcher::where('user_id', $id)->paginate(1);
+            $att = EmployeeTimeWatcher::where('user_id', $id)->paginate(10);
             return view('FilterData', ['attendances' => $attendances, 'record' => $att]);
         }
     }
