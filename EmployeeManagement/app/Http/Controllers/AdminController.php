@@ -353,12 +353,12 @@ class AdminController extends Controller
             $update = Settings::updateOrCreate(['id' => 1], $filter_null_values);
 
             if ($update) {
-                return response()->json('Data updated or inserted successfully');
+                return redirect()->back()->with('settings success', 'Data updated or inserted successfully');
             } else {
-                return response()->json('Error: Data not saved');
+                return redirect()->back()->with('settings error', 'Error: Data not saved');
             }
         } catch (Exception $e) {
-            return response()->json($e);
+            return redirect()->back()->with('settings error', $e);
         }
     }
 

@@ -335,6 +335,38 @@
             </div>
         </div>
     </div>
+    @if(session('settings success'))
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": 5000,
+            "extendedTimeOut": 2000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr.success("{{ session('settings success') }}", "Error!");
+    </script>
+    @endif
+    @if(session('settings error'))
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": 5000,
+            "extendedTimeOut": 2000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr.error("{{ session('settings error') }}", "Error!");
+    </script>
+    @endif
 </body>
 
 </html>
