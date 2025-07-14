@@ -19,6 +19,7 @@ use App\Models\SetTime;
 use App\Models\Settings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use function PHPUnit\Framework\returnArgument;
 
 class AdminController extends Controller
@@ -339,20 +340,22 @@ class AdminController extends Controller
 
     public function Settings(Request $request)
     {
-
         try {
+
+            $data = $request->only(['baseUrl', 'logo', 'appName', 'wifiName', 'lantitude', 'longitude']);
+
             if ($request->hasFile('logo')) {
                 $path = $request->file('logo')->store('logo', 'public');
-                $request['logo'] = $path;
+                $data['logo'] = $path;
             }
-            $filter_null_values = array_filter($request->only(['baseUrl', 'logo', 'appName', 'wifiName']), fn($i) => !is_null($i));
+            $filter_null_values = array_filter($data, fn($i) => !is_null($i));
 
+            $update = Settings::updateOrCreate(['id' => 1], $filter_null_values);
 
-            $update = Settings::updateOrCreate(['id' => 1,], $filter_null_values);
             if ($update) {
-                return response()->json('Data is updated and if no data then new data in inserted ');
+                return response()->json('Data updated or inserted successfully');
             } else {
-                return response()->json(' oops something went wrong , data are not saved ');
+                return response()->json('Error: Data not saved');
             }
         } catch (Exception $e) {
             return response()->json($e);
