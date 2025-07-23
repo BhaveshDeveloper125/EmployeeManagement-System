@@ -454,49 +454,8 @@
 </button>
 
 <div class="dashboard-container">
-    <div class="admin-panel" id="panel">
-        <div class="panel-header">
-            <div class="logo">
-                <!-- Logo can be added here if needed -->
-            </div>
-            <button class="menu-toggle" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
+    <x-menu />
 
-        <nav class="panel-nav">
-            <a href="/adminPanel/records" class="nav-item active">
-                <div class="nav-icon"><img src="{{ URL('Images/directory.png') }}" alt="Records"></div>
-                <span class="nav-text">Records</span>
-            </a>
-            <a href="/adminPanel/generate_user" class="nav-item">
-                <div class="nav-icon"><img src="{{ URL('Images/working.png') }}" alt="Generate User"></div>
-                <span class="nav-text">Generate User</span>
-            </a>
-            <a href="/adminPanel/downloadData" class="nav-item">
-                <div class="nav-icon"><img src="{{ URL('Images/download.png') }}" alt="Download Data"></div>
-                <span class="nav-text">Download Data</span>
-            </a>
-            <a href="/adminPanel/search_user" class="nav-item">
-                <div class="nav-icon"><img src="{{ URL('Images/cv.png') }}" alt="Search User"></div>
-                <span class="nav-text">Search User</span>
-            </a>
-            <a href="/adminPanel/holiday" class="nav-item">
-                <div class="nav-icon"><img src="{{ URL('Images/travel.png') }}" alt="Holiday Settings"></div>
-                <span class="nav-text">Holiday Settings</span>
-            </a>
-        </nav>
-
-        <button class="logout-btn" onclick="document.querySelector('form').submit()">
-            <div class="logout-icon"><img src="{{ URL('Images/logout.png') }}" alt="Logout"></div>
-            <span>Logout</span>
-        </button>
-        <form action="/logout" method="post" style="display: none;">
-            @csrf
-        </form>
-    </div>
 
     <div class="main-content">
         <div class="content-header">
