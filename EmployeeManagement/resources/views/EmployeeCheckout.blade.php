@@ -200,7 +200,7 @@
 
     <div id="empcheckoutlist">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-            <h1>Employee Checkout</h1>
+            <h1>Employee Checkoutss</h1>
             <div style="font-size: 0.9rem; color: var(--light-navy);">
                 <span id="current-date-time"></span>
             </div>
@@ -213,6 +213,7 @@
                     <th>#</th>
                     <th>Employee</th>
                     <th>Email</th>
+                    <th>Check In Time</th>
                     <th>Checkout Time</th>
                     <th>Action</th>
                 </tr>
@@ -230,6 +231,7 @@
                             <div style="font-size: 0.8rem; color: rgba(17, 31, 77, 0.7);">ID: {{ $i->id }}</div>
                         </td>
                         <td>{{ $i->user->email }}</td>
+                        <td>{{ \Carbon\Carbon::parse($i->entry)->format('d-m-y H:i') }}</td>
                         <td>
                             <input type="datetime-local" name="end" class="datetime-input" required>
                         </td>
