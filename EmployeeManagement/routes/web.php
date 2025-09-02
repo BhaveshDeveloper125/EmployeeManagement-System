@@ -82,6 +82,7 @@ Route::post('/ask_leave', [LeaveController::class, 'GetLeaves'])->middleware(Log
 Route::post('/emp_attendance_records/{id}', [AdminController::class, 'GetSearchEmpdata'])->middleware(LoginCheck::class);
 Route::post('/set_setting', [AdminController::class, 'Settings'])->middleware(LoginCheck::class);
 Route::post('/ask_checkout', [AdminController::class, 'CheckoutRequest'])->middleware(LoginCheck::class);
+Route::post('/apply_filters', [MediaController::class, 'FilterData']);
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
 Route::view('/filters', 'Filter')->middleware(LoginCheck::class);

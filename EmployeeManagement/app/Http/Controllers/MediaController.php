@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmployeeTimeWatcher;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -25,6 +27,27 @@ class MediaController extends Controller
             )
             ->get();
         return view('Download', ['data' => $data]);
+    }
+
+    public function FilterData(Request $request)
+    {
+        try {
+            $validation = $request->validate([
+                'from' => 'required|date',
+                'to' => 'required|date'
+            ]);
+
+            $FilterData = User::with(['extraUserData', 'employeTimeWatcher'])
+                ->whereHas('employeTimeWatcher', function ($query) use ($validation) {
+                    $query->whereBetween('entry', [$validation['from'], $validation['to']]);
+                })
+                ->get();
+            return redirect()->back()->with('FilterData', $FilterData);
+
+            // return response()->json($FilterData);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function apiPDFGenerator()
