@@ -47,6 +47,10 @@ Route::group(["middleware" => "auth:sanctum"], function () {
     Route::post('/get_user_info', [AdminController::class, 'apiSearchUser']); //search the user
     Route::post('/add_wifi', [AdminController::class, 'AddWifiData']); //Add the user wifi Details
     Route::post('/ask_leave', [LeaveController::class, 'APIGetLeaves']); //Ask for Leave
+    Route::post('/ask_checkout', [AdminController::class, 'APICheckoutRequest'])->middleware(LoginCheck::class);
+    Route::get('/check_out', [AdminController::class, 'APIEMPCheckOutData']);
+
+
 
     Route::prefix('/adminPanel')->middleware(AdminCheck::class)->group(function () {
         Route::get('/get_emp_details', [AdminController::class, 'APIhello']);

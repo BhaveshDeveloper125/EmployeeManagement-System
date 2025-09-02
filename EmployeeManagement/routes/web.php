@@ -86,7 +86,6 @@ Route::post('/ask_checkout', [AdminController::class, 'CheckoutRequest'])->middl
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
 Route::view('/filters', 'Filter')->middleware(LoginCheck::class);
 Route::view('/empfilter', 'EmployeeAttendanceFilter')->middleware(LoginCheck::class);
-// Route::view('/check_out', 'EmpCheckOutRequest');
 // Route::view('/leave', 'EmpLeaveSection')->middleware(LoginCheck::class);
 Route::view('/extraDetails', 'EployeeDetails'); //dont delete this comment
 
