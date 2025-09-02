@@ -608,6 +608,12 @@
                     <span>Leave Management</span>
                 </a>
             </li>
+            <li>
+                <a href="/check_out">
+                    <i class="fas fa-home"></i>
+                    <span>Checkout Request</span>
+                </a>
+            </li>
             <li class="logout-form">
                 <form action="/logout" method="post">
                     @csrf

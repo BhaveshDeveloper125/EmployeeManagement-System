@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeEmail;
+use App\Models\CheckoutRequest;
 use App\Models\Leave;
 use App\Models\SetTime;
 use App\Models\Settings;
@@ -362,6 +363,28 @@ class AdminController extends Controller
         }
     }
 
+    public function EMPCheckOutData()
+    {
+        $checkouts = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->where('leave', null)->get();
+        return view('EmpCheckOutRequest', ['checkouts' => $checkouts]);
+    }
+
+    public function CheckoutRequest(Request $request)
+    {
+        try {
+            $validate = $request->validate([
+                'checkout' => 'required|date'
+            ]);
+
+            $msg = Auth::user()->name . " has request for the checkout at " . $validate['checkout'];
+            Mail::to('purvsoft@gmail.com')->send(new WelcomeEmail($msg, "Employee Checkout"));
+            return redirect()->back()->with('success', 'Request Sent Successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+
     // APIS
 
     public function APIhello()
@@ -671,5 +694,26 @@ class AdminController extends Controller
         $attendance = User::with(['extraUserData', 'employeTimeWatcher'])->find($id)->paginate(10);
 
         return response()->json($attendance);
+    }
+
+    public function APIEMPCheckOutData()
+    {
+        $checkouts = EmployeeTimeWatcher::where('user_id', Auth::user()->id)->where('leave', null)->get();
+        return response()->json(['checkouts' => $checkouts], 200);
+    }
+
+    public function APICheckoutRequest(Request $request)
+    {
+        try {
+            $validate = $request->validate([
+                'checkout' => 'required|date'
+            ]);
+
+            $msg = Auth::user()->name . " has request for the checkout at " . $validate['checkout'];
+            Mail::to('purvsoft@gmail.com')->send(new WelcomeEmail($msg, "Employee Checkout"));
+            return response()->json(['success' => 'Request Sent Successfully.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

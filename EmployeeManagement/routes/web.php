@@ -59,6 +59,7 @@ Route::get('/mark_as_read', [LeaveController::class, 'MarkAsRead'])->middleware(
 Route::get('/leave', [LeaveController::class, 'EmpLeaveList'])->middleware(LoginCheck::class);
 Route::get('empfilter/{id}', [EmployeeAttendance::class, 'Filteration']);
 Route::get('/attendance/{id}', [AdminController::class, 'GetSearchEmpdata']);
+Route::get('/check_out', [AdminController::class, 'EMPCheckOutData']);
 
 
 
@@ -80,11 +81,12 @@ Route::post('/set_time', [AdminController::class, 'TimeManagement'])->middleware
 Route::post('/ask_leave', [LeaveController::class, 'GetLeaves'])->middleware(LoginCheck::class);
 Route::post('/emp_attendance_records/{id}', [AdminController::class, 'GetSearchEmpdata'])->middleware(LoginCheck::class);
 Route::post('/set_setting', [AdminController::class, 'Settings'])->middleware(LoginCheck::class);
-
+Route::post('/ask_checkout', [AdminController::class, 'CheckoutRequest'])->middleware(LoginCheck::class);
 
 Route::view('/attendance', 'Attendance')->middleware(LoginCheck::class);
 Route::view('/filters', 'Filter')->middleware(LoginCheck::class);
 Route::view('/empfilter', 'EmployeeAttendanceFilter')->middleware(LoginCheck::class);
+// Route::view('/check_out', 'EmpCheckOutRequest');
 // Route::view('/leave', 'EmpLeaveSection')->middleware(LoginCheck::class);
 Route::view('/extraDetails', 'EployeeDetails'); //dont delete this comment
 
