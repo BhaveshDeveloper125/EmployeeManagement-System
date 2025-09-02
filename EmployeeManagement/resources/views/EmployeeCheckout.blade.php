@@ -200,7 +200,7 @@
 
     <div id="empcheckoutlist">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-            <h1>Employee Checkoutss</h1>
+            <h1>Employee Checkout</h1>
             <div style="font-size: 0.9rem; color: var(--light-navy);">
                 <span id="current-date-time"></span>
             </div>
