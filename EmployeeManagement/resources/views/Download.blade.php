@@ -305,12 +305,20 @@
                     </button>
                 </div>
 
-                <form action="/apply_filters" method="post">
-                    @csrf
-                    <input type="date" name="from" id="from">
-                    <input type="date" name="to" id="to">
-                    <input type="submit" value="Filter">
-                </form>
+                <div style="display: flex; gap: 20%;">
+                    <form action="/apply_filters" method="post">
+                        @csrf
+                        <input type="date" name="from" id="from" required>
+                        <input type="date" name="to" id="to" required>
+                        <input type="submit" value="Filter">
+                    </form>
+
+                    <form action="/name_filter" method="post">
+                        @csrf
+                        <input type="text" name="name" id="name" placeholder="Enter Name" required>
+                        <input type="submit" value="Filter">
+                    </form>
+                </div>
 
                 @if (session('FilterData'))
                 <table>
@@ -328,6 +336,51 @@
                     </thead>
                     <tbody>
                         @foreach (session('FilterData') as $i)
+                        @foreach ($i->employeTimeWatcher as $j)
+                        <tr>
+                            <td>{{ $i->name }}</td>
+                            <td>
+                                {{ Carbon\Carbon::parse($j->entry)->format('d-m-y H:i') }}
+                            </td>
+                            <td>
+                                {{ Carbon\Carbon::parse($i->entry)->format('H:i') }}
+                            </td>
+                            <td>
+                                {{ Carbon\Carbon::parse($i->leave)->format('H:i') }}
+                            </td>
+                            <td>
+                                {{ $i->extraUserData->first()->post }}
+                            </td>
+                            <td>
+                                {{ $i->extraUserData->first()->mobile }}
+                            </td>
+                            <td>
+                                {{ $i->extraUserData->first()->address }}
+                            </td>
+                            <td>
+                                {{ $i->extraUserData->first()->qualificatio }}
+                            </td>
+                        </tr>
+                        @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+                @elseif(session('FilterName'))
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>CheckIn</th>
+                            <th>CheckOut</th>
+                            <th>Post</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Qualification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (session('FilterName') as $i)
                         @foreach ($i->employeTimeWatcher as $j)
                         <tr>
                             <td>{{ $i->name }}</td>

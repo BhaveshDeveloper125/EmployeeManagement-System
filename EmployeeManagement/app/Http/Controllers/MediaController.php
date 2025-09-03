@@ -7,7 +7,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Psy\Command\ListCommand\FunctionEnumerator;
 
 class MediaController extends Controller
 {
@@ -29,7 +29,7 @@ class MediaController extends Controller
         return view('Download', ['data' => $data]);
     }
 
-    public function FilterData(Request $request)
+    public function FilterDataDateWise(Request $request)
     {
         try {
             $validation = $request->validate([
@@ -43,10 +43,25 @@ class MediaController extends Controller
                 })
                 ->get();
             return redirect()->back()->with('FilterData', $FilterData);
-
-            // return response()->json($FilterData);
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function FilterDataNameWise(Request $request)
+    {
+        try {
+            $validation = $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
+
+            $FilterName = User::with(['extraUserData', 'employeTimeWatcher'])
+                ->where('name', 'LIKE', '%' . $validation['name'] . '%')
+                ->get();
+
+            return redirect()->back()->with('FilterName', $FilterName);
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
